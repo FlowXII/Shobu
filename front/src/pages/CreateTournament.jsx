@@ -42,7 +42,10 @@ const TournamentCreationForm = () => {
               onChange={handleInputChange}
               className="text-white"
               labelProps={{
-                className: "text-gray-300"
+                className: "text-red-500 peer-focus:text-white peer-focus:border-red-500"
+              }}
+              inputProps={{
+                className: 'text-red-500 placeholder-red-500 focus:text-white focus:border-red-500 focus:ring-red-500'
               }}
             />
           </div>
@@ -56,7 +59,10 @@ const TournamentCreationForm = () => {
               onChange={handleInputChange}
               className="text-white h-32"
               labelProps={{
-                className: "text-gray-300"
+                className: "text-red-500 peer-focus:text-white peer-focus:border-red-500"
+              }}
+              inputProps={{
+                className: 'text-red-500 placeholder-red-500 focus:text-white focus:border-red-500 focus:ring-red-500'
               }}
             />
           </div>
@@ -71,7 +77,10 @@ const TournamentCreationForm = () => {
               onChange={handleInputChange}
               className="text-white"
               labelProps={{
-                className: "text-gray-300"
+                className: "text-red-500 peer-focus:text-white peer-focus:border-red-500"
+              }}
+              inputProps={{
+                className: 'text-red-500 placeholder-red-500 focus:text-white focus:border-red-500 focus:ring-red-500'
               }}
             />
           </div>
@@ -86,7 +95,10 @@ const TournamentCreationForm = () => {
               onChange={handleInputChange}
               className="text-white"
               labelProps={{
-                className: "text-gray-300"
+                className: "text-red-500 peer-focus:text-white peer-focus:border-red-500"
+              }}
+              inputProps={{
+                className: 'text-red-500 placeholder-red-500 focus:text-white focus:border-red-500 focus:ring-red-500'
               }}
             />
           </div>
@@ -94,7 +106,7 @@ const TournamentCreationForm = () => {
           {/* Submit Button */}
           <Button
             type="submit"
-            className="bg-red-600 hover:bg-red-700 text-white w-full"
+            className="bg-red-500 hover:bg-red-600 text-white w-full"
           >
             Create Tournament
           </Button>
