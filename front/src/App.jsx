@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import TournamentCreationForm from './pages/CreateTournament';
+import UpcomingTournaments from './pages/UpcomingTournaments';  // Import the new component
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/create" element={<TournamentCreationForm />} />
+                        <Route path="/upcoming" element={<UpcomingTournaments/>} /> 
                     </Routes>
                 </div>
             </div>

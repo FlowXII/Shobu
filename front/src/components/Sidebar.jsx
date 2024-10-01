@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Typography } from "@material-tailwind/react";
 import { Home, Trophy, LogIn, UserPlus, Menu, LayoutDashboard, User, MessageSquare, Tv, BarChart2, Users, Newspaper } from "lucide-react";
+import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,10 +15,10 @@ const Sidebar = () => {
   ];
 
   const sidebarEssentialItems = [
-    { name: 'Home', icon: Home, color: 'text-red-400', hoverColor: 'hover:bg-red-800' },
-    { name: 'Dashboard', icon: LayoutDashboard, color: 'text-red-400', hoverColor: 'hover:bg-red-800' },
-    { name: 'Tournaments', icon: Trophy, color: 'text-red-400', hoverColor: 'hover:bg-red-800' },
-    { name: 'Statistics', icon: BarChart2, color: 'text-red-400', hoverColor: 'hover:bg-red-800' },
+    { name: 'Home', icon: Home, color: 'text-red-400', hoverColor: 'hover:bg-red-800', path: '/' },
+    { name: 'Dashboard', icon: LayoutDashboard, color: 'text-red-400', hoverColor: 'hover:bg-red-800', path: '/dashboard' },
+    { name: 'Tournaments', icon: Trophy, color: 'text-red-400', hoverColor: 'hover:bg-red-800', path: '/upcoming' },
+    { name: 'Statistics', icon: BarChart2, color: 'text-red-400', hoverColor: 'hover:bg-red-800', path: '/statistics' },
   ];
 
   const sidebarStreamsItems = [
@@ -32,8 +33,9 @@ const Sidebar = () => {
 
   const renderSidebarItems = (items) => (
     items.map((item, index) => (
-      <div
+      <Link
         key={index}
+        to={item.path}
         className={`flex items-center px-4 py-3 mb-2 cursor-pointer ${item.hoverColor} rounded-md transition-colors`}
       >
         <item.icon size={24} className={`mr-4 ${item.color}`} />
@@ -45,7 +47,7 @@ const Sidebar = () => {
         >
           {item.name}
         </Typography>
-      </div>
+      </Link>
     ))
   );
 

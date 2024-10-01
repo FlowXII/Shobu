@@ -1,15 +1,23 @@
-// backend/server.js
+// back/server.js
 import express from 'express';
-import userRoutes from './routes/userRoutes.js';
+import dotenv from 'dotenv';
+import cors from 'cors';  // Import the cors package
+import upcomingTournamentsRoute from './routes/upcomingTournamentsRoute.js';
+
+dotenv.config();
 
 const app = express();
-app.use(express.json());
 
-// Ajoutez vos routes ici
-app.use('/api/users', userRoutes);
+// Set up CORS
+app.use(cors());
 
-// Démarrez le serveur
+app.use(express.json());  // Add this line to parse JSON request bodies
+app.use('/api/tournaments', upcomingTournamentsRoute);
+
+// Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Serveur en cours d'exécution sur le port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
+
+export default app;
