@@ -69,7 +69,7 @@ function UpcomingTournaments() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start bg-gradient-to-r from-blue-900 via-purple-900 to-red-900 p-4 overflow-x-hidden">
+    <div className="flex flex-col items-center justify-start p-4 overflow-x-hidden">
       <Card className="w-full max-w-4xl bg-gray-900 p-6 rounded-lg shadow-lg mb-6">
         <CardBody>
           <Typography variant="h4" className="mb-6 text-center text-red-700 font-bold">Upcoming Tournaments</Typography>

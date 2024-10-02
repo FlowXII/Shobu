@@ -18,11 +18,10 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
+import { useSidebar } from '../contexts/SidebarContext';
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(true);
-
-  const toggleSidebar = () => setIsOpen(!isOpen);
+  const { isOpen, toggleSidebar } = useSidebar();
 
   const sidebarItems = [
     { name: 'Home', icon: Home, color: 'text-red-400', hoverColor: 'hover:bg-red-800', path: '/' },
@@ -61,11 +60,11 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`fixed top-0 left-0 h-full bg-gray-950 text-white shadow-xl ${
+      className={`fixed top-0 left-0 h-screen bg-gray-950 text-white shadow-xl ${
         isOpen ? 'w-56' : 'w-16'
-      } transition-all duration-300 ease-in-out z-40`}
+      } transition-all duration-300 ease-in-out z-50`}
     >
-      <div className="flex flex-col h-full py-8 px-2 mt-5 space-y-4">
+      <div className="flex flex-col h-full py-2 px-2 space-y-3">
         <div className="flex justify-end mb-4">
           <IconButton
             color="gray"
@@ -73,7 +72,7 @@ const Sidebar = () => {
             size="sm"
             onClick={toggleSidebar}
           >
-            {isOpen ? <ChevronLeft size={24} /> : <ChevronRight size={24} />}
+            {isOpen ? <ChevronLeft size={12} /> : <ChevronRight size={12} />}
           </IconButton>
         </div>
         {renderSidebarItems(sidebarItems)}

@@ -74,7 +74,7 @@ function StationViewer() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start bg-gradient-to-r from-blue-900 via-purple-900 to-red-900 p-4 overflow-x-hidden">
+    <div className="flex flex-col items-center justify-start p-4 overflow-x-hidden">
       <Card className="w-full bg-gray-900 p-6 rounded-lg shadow-lg mb-6">
         <CardBody>
           {!submittedEventId ? (
