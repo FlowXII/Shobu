@@ -2,25 +2,31 @@
         "version": 2,
         "builds": [
           {
-            "src": "back/server.js",
-            "use": "@vercel/node"
+            "src": "front/package.json",
+            "use": "@vercel/node",
+            "config": {
+              "buildCommand": "npm install && npm run build"
+            }
           },
           {
-            "src": "front/dist/**/*",
-            "use": "@vercel/static",
+            "src": "back/package.json",
+            "use": "@vercel/node",
             "config": {
-            "distDir": "front/dist"
-          }
+              "buildCommand": "npm install"
+            }
           }
         ],
         "routes": [
           {
             "src": "/api/(.*)",
-            "dest": "/back/server.js"
+            "dest": "back/server.js"
+          },
+          {
+            "handle": "filesystem"
           },
           {
             "src": "/(.*)",
-            "dest": "/back/server.js"
+            "dest": "front/dist/index.html"
           }
         ]
       }
