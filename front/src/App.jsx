@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import TournamentCreationForm from './pages/CreateTournament';
 import UpcomingTournaments from './pages/UpcomingTournaments';  // Import the new component
+import StationViewer from './pages/StationViewer';  // Import the StationViewer component
 
 function App() {
     return (
@@ -18,7 +19,8 @@ function App() {
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/create" element={<TournamentCreationForm />} />
-                        <Route path="/upcoming" element={<UpcomingTournaments/>} /> 
+                        <Route path="/upcoming" element={<UpcomingTournaments />} />
+                        <Route path="/station-viewer" element={<StationViewer />} />  {/* Add the route for StationViewer */}
                     </Routes>
                 </div>
             </div>

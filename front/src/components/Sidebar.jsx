@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Typography } from "@material-tailwind/react";
-import { Home, Trophy, LogIn, UserPlus, Menu, LayoutDashboard, User, MessageSquare, Tv, BarChart2, Users, Newspaper } from "lucide-react";
+import { Home, Trophy, LogIn, UserPlus, Menu, LayoutDashboard, User, MessageSquare, Tv, BarChart2, Users, Newspaper, Presentation } from "lucide-react"; // Import the Station icon
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
@@ -19,6 +19,7 @@ const Sidebar = () => {
     { name: 'Dashboard', icon: LayoutDashboard, color: 'text-red-400', hoverColor: 'hover:bg-red-800', path: '/dashboard' },
     { name: 'Tournaments', icon: Trophy, color: 'text-red-400', hoverColor: 'hover:bg-red-800', path: '/upcoming' },
     { name: 'Statistics', icon: BarChart2, color: 'text-red-400', hoverColor: 'hover:bg-red-800', path: '/statistics' },
+    { name: 'Stations', icon: Presentation, color: 'text-red-400', hoverColor: 'hover:bg-red-800', path: '/station-viewer' }, // New Stations item
   ];
 
   const sidebarStreamsItems = [
@@ -36,14 +37,12 @@ const Sidebar = () => {
       <Link
         key={index}
         to={item.path}
-        className={`flex items-center px-4 py-3 mb-2 cursor-pointer ${item.hoverColor} rounded-md transition-colors`}
+        className={`flex items-center px-3 py-2 mb-2 cursor-pointer ${item.hoverColor} rounded-md transition-colors`}
       >
-        <item.icon size={24} className={`mr-4 ${item.color}`} />
+        <item.icon size={24} className={`mr-2 ${item.color}`} /> {/* Increased size and removed opacity transition */}
         <Typography
           variant="small"
-          className={`font-medium ${
-            isOpen ? 'opacity-100' : 'opacity-0 lg:opacity-100'
-          } transition-opacity duration-300`}
+          className={`font-medium ${isOpen ? 'opacity-100' : 'opacity-0 lg:opacity-100'} transition-opacity duration-300`}
         >
           {item.name}
         </Typography>
@@ -67,7 +66,7 @@ const Sidebar = () => {
           isOpen ? 'w-56' : 'w-16'
         } lg:w-56 transition-all duration-300 ease-in-out z-40`}
       >
-        <div className="flex flex-col h-full py-8 px-4 mt-5 space-y-4">
+        <div className="flex flex-col h-full py-8 px-2 mt-5 space-y-4"> {/* Reduced padding */}
           <div>{renderSidebarItems(sidebarEssentialItems)}</div>
           <hr className="border-gray-700 my-2" />
           <div>{renderSidebarItems(sidebarSocialItems)}</div>
