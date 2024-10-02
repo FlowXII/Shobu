@@ -1,13 +1,21 @@
 import express from 'express';
-import fetch from 'node-fetch';
+import { getUpcomingTournaments } from '../controllers/upcomingTournamentsController.js';
 
 const router = express.Router();
 
 router.post('/upcoming', async (req, res) => {
   const { cCode, perPage, videogameId } = req.body;
-  console.log('Received request with:', { cCode, perPage, videogameId });
+  console.log('Received request in route with:', { cCode, perPage, videogameId });
 
-  // ... rest of your backend code ...
+  try {
+    await getUpcomingTournaments(
+      { query: { countryCode: cCode, perPage, videogameId } },
+      res
+    );
+  } catch (error) {
+    console.error('Error in route handler:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 export default router;
