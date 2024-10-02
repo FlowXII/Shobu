@@ -4,7 +4,7 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import upcomingTournamentsRoute from './routes/upcomingTournamentsRoute.js';
-import stationViewerRoute from './routes/StationViewerRoute.js';
+import stationViewerRoute from './routes/stationViewerRoute.js';
 
 dotenv.config();
 
