@@ -1,30 +1,42 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Sidebar from './components/Sidebar';  // Import the Sidebar component
+import { SidebarProvider, useSidebar } from './contexts/SidebarContext';
+import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import TournamentCreationForm from './pages/CreateTournament';
-import UpcomingTournaments from './pages/UpcomingTournaments';  // Import the new component
-import StationViewer from './pages/StationViewer';  // Import the StationViewer component
+import UpcomingTournaments from './pages/UpcomingTournaments';
+import StationViewer from './pages/StationViewer';
+
+const MainContent = () => {
+    const { isOpen } = useSidebar();
+    return (
+        <div className={`flex-1 bg-gray-900 min-h-screen transition-all duration-300 ${isOpen ? 'pl-56' : 'pl-16'} overflow-x-hidden`}>
+            <div className="p-4 max-w-full">
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/create" element={<TournamentCreationForm />} />
+                    <Route path="/upcoming" element={<UpcomingTournaments />} />
+                    <Route path="/station-viewer" element={<StationViewer />} />
+                </Routes>
+            </div>
+        </div>
+    );
+};
 
 function App() {
     return (
-        <Router>
-            <div className="flex">
-                <Sidebar />
-                <div className="flex-1 bg-gray-900 min-h-screen flex justify-center items-center">
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/create" element={<TournamentCreationForm />} />
-                        <Route path="/upcoming" element={<UpcomingTournaments />} />
-                        <Route path="/station-viewer" element={<StationViewer />} />  {/* Add the route for StationViewer */}
-                    </Routes>
+        <SidebarProvider>
+            <Router>
+                <div className="flex">
+                    <Sidebar />
+                    <MainContent />
                 </div>
-            </div>
-        </Router>
+            </Router>
+        </SidebarProvider>
     );
 }
 

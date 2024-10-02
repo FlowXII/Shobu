@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import {
   Card,
-  CardContent,
+  CardBody,
   Typography,
-  Grid,
-  Box,
-  TextField,
+  Input,
   Button,
-  CircularProgress,
-  Container
-} from '@mui/material';
+  Spinner
+} from "@material-tailwind/react";
 
 const REFRESH_INTERVAL = 5000;
+
+const StationCard = ({ number, isUsed }) => (
+  <Card className={`w-12 h-12 flex items-center justify-center ${isUsed ? 'bg-gray-700 border-2 border-dashed border-gray-500' : 'bg-gray-800'}`}>
+    <Typography variant="h6" color={isUsed ? "gray" : "white"} className="text-center">
+      {number}
+    </Typography>
+  </Card>
+);
 
 function StationViewer() {
   const [eventId, setEventId] = useState('');
@@ -29,25 +34,17 @@ function StationViewer() {
   }, [submittedEventId]);
 
   const url = `${import.meta.env.VITE_API_BASE_URL}/stations/${submittedEventId}`;
-  console.log(url);
 
   const fetchTournaments = async () => {
     try {
       const response = await fetch(url);
-      console.log('Submitted event ID:', submittedEventId); 
-      console.log('Response status:', response.status); 
-
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
       const data = await response.json();
-      console.log('Response data:', data);
-
       if (!data.data || !data.data.event || !data.data.event.sets || !data.data.event.sets.nodes) {
         throw new Error('Unexpected data structure from API');
       }
-
       setTournamentData(data.data);
     } catch (error) {
       console.error('Error fetching tournaments:', error.message);
@@ -57,89 +54,114 @@ function StationViewer() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmittedEventId(eventId); 
-    setEventId(''); 
-    console.log('Submitted event ID:', eventId);
+    setSubmittedEventId(eventId);
+    setEventId('');
+  };
+
+  const getStations = () => {
+    if (!tournamentData || !tournamentData.event || !tournamentData.event.sets || !tournamentData.event.sets.nodes) {
+      return Array.from({ length: 20 }, (_, i) => ({ number: i + 1, isUsed: false }));
+    }
+    const usedStations = tournamentData.event.sets.nodes.map(set => set.station?.number).filter(Boolean);
+    return Array.from({ length: 20 }, (_, i) => ({
+      number: i + 1,
+      isUsed: usedStations.includes(i + 1)
+    }));
+  };
+
+  const getAvailableStations = () => {
+    return getStations().filter(station => !station.isUsed).map(station => station.number);
   };
 
   return (
-    <Container sx={{ mt: 4 }}>
-      {!submittedEventId ? (
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant='h3' gutterBottom>Station Viewer</Typography>
-          <form onSubmit={handleSubmit} style={{ margin: '20px 0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Grid container spacing={2} alignItems="center" justifyContent="center">
-              <Grid item>
-                <TextField
-                  label="Enter Event ID"
-                  value={eventId}
-                  onChange={(e) => setEventId(e.target.value)}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item>
-                <Button type="submit" variant="contained" color="primary">Submit</Button>
-              </Grid>
-            </Grid>
-          </form>
-          <Typography variant="body2" sx={{ mt: 1 }}>
-            Warning, this feature is meant for now for TO's and testing purposes only! <br />
-            The event ID can be found in the URL of the admin event page on start.gg <br />
-            (https://www.start.gg/admin/tournament/tournament-for-testing-1/brackets/1140299/1664029/2480004)<br />
-            There, the event ID would be 1140299. (use this number if you wanna test this)
-          </Typography>
-        </Box>
-      ) : (
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant='h4' gutterBottom>Station Viewer</Typography>
-          <Typography variant="h5" gutterBottom>
-            Current Matches:
-          </Typography>
-          {tournamentData === null ? (
-            <CircularProgress />
+    <div className="flex flex-col items-center justify-start bg-gradient-to-r from-blue-900 via-purple-900 to-red-900 p-4 overflow-x-hidden">
+      <Card className="w-full bg-gray-900 p-6 rounded-lg shadow-lg mb-6">
+        <CardBody>
+          {!submittedEventId ? (
+            <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-4">
+              <Input
+                type="text"
+                label="Enter Event ID"
+                value={eventId}
+                onChange={(e) => setEventId(e.target.value)}
+                className="text-white"
+                labelProps={{
+                  className: "text-red-500 peer-focus:text-white peer-focus:border-red-500"
+                }}
+                containerProps={{
+                  className: "min-w-[200px]"
+                }}
+              />
+              <Button type="submit" className="bg-red-500 hover:bg-red-600 text-white">
+                Submit
+              </Button>
+              <Typography variant="small" className="text-gray-400 text-center mt-2">
+                Warning: This feature is meant for TOs and testing purposes only.<br />
+                The event ID can be found in the URL of the admin event page on start.gg<br />
+                (e.g., https://www.start.gg/admin/tournament/.../1140299/...)<br />
+                In this case, the event ID would be 1140299.
+              </Typography>
+            </form>
           ) : (
-            tournamentData.event && tournamentData.event.sets && tournamentData.event.sets.nodes ? (
-              <Grid container spacing={2} sx={{ mt: 2 }}>
-                {tournamentData.event.sets.nodes.map(({ id, state, station, slots }) => (
-                  <Grid item xs={12} sm={6} md={4} lg={3} key={id}>
-                    <Card sx={{ borderColor: state === 2 ? 'white' : state === 6 ? 'orange' : 'inherit', borderWidth: 2, borderStyle: 'solid' }}>
-                      <CardContent>
-                        <Typography variant="h4" component="div">
-                          Station {station.number}
+            <div className="flex flex-col h-full">
+              <div className="flex justify-between items-start mb-4">
+                <Typography variant="h4" color="white" className="text-center">
+                  Current Matches
+                </Typography>
+                <Card className="bg-gray-800 p-2">
+                  <Typography variant="h6" color="white" className="text-center mb-2">
+                    Available Stations
+                  </Typography>
+                  <div className="flex flex-wrap gap-1">
+                    {getAvailableStations().map(station => (
+                      <span key={station} className="bg-gray-700 text-white px-2 py-1 rounded-md text-sm">
+                        {station}
+                      </span>
+                    ))}
+                  </div>
+                </Card>
+              </div>
+              {tournamentData === null ? (
+                <div className="flex justify-center">
+                  <Spinner className="h-12 w-12" color="red" />
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
+                  {tournamentData.event.sets.nodes.map(({ id, state, station, slots }) => (
+                    <Card key={id} className={`bg-gray-800 ${state === 6 ? 'border-2 border-orange-500' : ''}`}>
+                      <CardBody className="p-2">
+                        <Typography variant="h6" color="white" className="text-center">
+                          Station {station?.number || "N/A"}
                         </Typography>
-                        <Typography variant="h6" component="div" sx={{ color: state === 6 ? 'orange' : 'inherit' }}>
-                          {state === 2 ? 'Ongoing' : 'Called'}
+                        <Typography variant="small" color={state === 6 ? "orange" : "green"} className="text-center">
+                          {state === 6 ? 'Called' : 'Ongoing'}
                         </Typography>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, mt: 2 }}>
-                          <Card sx={{ width: '100%', bgcolor: '#102385', color: 'white' }}>
-                            <CardContent>
-                              <Typography variant="h6">
+                        <div className="space-y-1 mt-1">
+                          <Card className="bg-blue-900">
+                            <CardBody className="p-1">
+                              <Typography variant="small" color="white" className="text-center truncate">
                                 {slots[0]?.entrant?.name || 'TBD'}
                               </Typography>
-                            </CardContent>
+                            </CardBody>
                           </Card>
-                          <Card sx={{ width: '100%', bgcolor: '#102385', color: 'white' }}>
-                            <CardContent>
-                              <Typography variant="h6">
+                          <Card className="bg-red-900">
+                            <CardBody className="p-1">
+                              <Typography variant="small" color="white" className="text-center truncate">
                                 {slots[1]?.entrant?.name || 'TBD'}
                               </Typography>
-                            </CardContent>
+                            </CardBody>
                           </Card>
-                        </Box>
-                      </CardContent>
+                        </div>
+                      </CardBody>
                     </Card>
-                  </Grid>
-                ))}
-              </Grid>
-            ) : (
-              <Typography variant="body1">
-                No data available for this event.
-              </Typography>
-            )
+                  ))}
+                </div>
+              )}
+            </div>
           )}
-        </Box>
-      )}
-    </Container>
+        </CardBody>
+      </Card>
+    </div>
   );
 }
 
