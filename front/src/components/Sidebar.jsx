@@ -34,8 +34,8 @@ const Sidebar = () => {
     { name: 'Messages', icon: MessageSquare, color: 'text-blue-400', hoverColor: 'hover:bg-blue-800' },
     { name: 'Streams', icon: Tv, color: 'text-purple-400', hoverColor: 'hover:bg-purple-800' },
     { name: 'Your Profile', icon: User, color: 'text-yellow-400', hoverColor: 'hover:bg-yellow-800' },
-    { name: 'Login', icon: LogIn, color: 'text-yellow-400', hoverColor: 'hover:bg-yellow-800' },
-    { name: 'Register', icon: UserPlus, color: 'text-yellow-400', hoverColor: 'hover:bg-yellow-800' },
+    { name: 'StartGG Login', icon: LogIn, color: 'text-yellow-400', hoverColor: 'hover:bg-yellow-800', path: '/login' },
+    { name: 'Register', icon: UserPlus, color: 'text-yellow-400', hoverColor: 'hover:bg-yellow-800', path: '/register' },
   ];
 
   const renderSidebarItems = (items) => (

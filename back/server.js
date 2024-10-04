@@ -5,6 +5,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import upcomingTournamentsRoute from './routes/upcomingTournamentsRoute.js';
 import stationViewerRoute from './routes/stationViewerRoute.js';
+import startggAuthRoutes from './routes/auth/startgg.routes.js';
+import cookieParser from 'cookie-parser';
+import dashboardRoute from './routes/dashboardRoute.js';
 
 dotenv.config();
 
@@ -13,13 +16,18 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Set up CORS
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true
+}));
 
 app.use(express.json());
-
+app.use(cookieParser());
 // API routes
 app.use('/api/tournaments', upcomingTournamentsRoute);
 app.use('/api', stationViewerRoute);
+app.use('/api', startggAuthRoutes);
+app.use('/api', dashboardRoute);
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '..', 'build')));

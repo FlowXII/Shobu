@@ -1,20 +1,11 @@
 import React from 'react';
 import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
 
-const STARTGG_OAUTH_URL = "https://start.gg/oauth/authorize";
-const CLIENT_ID = "YOUR_CLIENT_ID"; // Replace with your actual Start.gg client ID
-const REDIRECT_URI = "http://localhost:3000/oauth/callback"; // Replace with your actual redirect URI
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000/api';
 
 function Login() {
   const handleLogin = () => {
-    const params = new URLSearchParams({
-      client_id: CLIENT_ID,
-      redirect_uri: REDIRECT_URI,
-      response_type: 'code',
-      scope: 'user.identity tournament.read event.read' // Adjust scopes as needed
-    });
-
-    window.location.href = `${STARTGG_OAUTH_URL}?${params.toString()}`;
+    window.location.href = `${API_BASE_URL}/auth/startgg`;
   };
 
   return (
