@@ -9,7 +9,8 @@ import {
 } from "@material-tailwind/react";
 
 const Dashboard = () => {
-  const [dashboardData, setDashboardData] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [tournamentData, setTournamentData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -19,7 +20,8 @@ const Dashboard = () => {
         const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/dashboard`, {
           withCredentials: true
         });
-        setDashboardData(response.data.data?.currentUser || null);
+        setUserData(response.data.user);
+        setTournamentData(response.data.tournaments);
         setLoading(false);
       } catch (err) {
         console.error('Error fetching dashboard data:', err);
@@ -33,7 +35,7 @@ const Dashboard = () => {
 
   if (loading) return <div className="flex justify-center items-center h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div></div>;
   if (error) return <Typography color="red">{error}</Typography>;
-  if (!dashboardData) return <Typography>No dashboard data available</Typography>;
+  if (!userData || !tournamentData) return <Typography>No dashboard data available</Typography>;
 
   const TournamentEventCard = ({ tournament, event, loggedInPlayerName }) => {
     const playerSets = event.sets.nodes.filter(set => 
@@ -97,26 +99,26 @@ const Dashboard = () => {
         <div className="md:col-span-1">
           <div className="flex flex-col items-center">
             <Avatar 
-              src={dashboardData.images?.[1]?.url} 
-              alt={dashboardData.player?.gamerTag || 'User'}
+              src={userData.images?.[1]?.url} 
+              alt={userData.player?.gamerTag || 'User'}
               size="xxl"
               className="mb-4"
             />
             <Typography variant="h4" className="mb-4">
-              {dashboardData.player?.gamerTag || 'User'}
+              {userData.player?.gamerTag || 'User'}
             </Typography>
           </div>
         </div>
         <div className="md:col-span-3">
           <Typography variant="h4" className="mb-4">Your Tournaments</Typography>
-          {dashboardData.tournaments.nodes.length > 0 ? (
-            dashboardData.tournaments.nodes.flatMap((tournament) => 
-              tournament.events.map((event) => (
+          {Array.isArray(tournamentData) && tournamentData.length > 0 ? (
+            tournamentData.flatMap((tournament) => 
+              (tournament.events || []).map((event) => (
                 <TournamentEventCard 
                   key={`${tournament.id}-${event.id}`} 
                   tournament={tournament} 
                   event={event} 
-                  loggedInPlayerName={dashboardData.player?.gamerTag}
+                  loggedInPlayerName={userData.player?.gamerTag}
                 />
               ))
             )

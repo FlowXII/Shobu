@@ -1,30 +1,8 @@
 import axios from 'axios';
 
-export const fetchUserName = async (accessToken) => {
-  const userNameQuery = `
+export const fetchUserData = async (accessToken) => {
+  const userQuery = `
     query {
-      currentUser {
-        name
-      }
-    }
-  `;
-
-  const response = await axios.post('https://api.start.gg/gql/alpha', 
-    { query: userNameQuery },
-    {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json'
-      }
-    }
-  );
-
-  return response.data.data.currentUser.name;
-};
-
-export const fetchDashboardData = async (accessToken, userName) => {
-  const dashboardQuery = `
-    query DashboardQuery {
       currentUser {
         name
         id
@@ -45,55 +23,74 @@ export const fetchDashboardData = async (accessToken, userName) => {
           gamerTag
           prefix
         }
-        tournaments(query: {
-          perPage: 1,
-          filter: { upcoming: false }
-        }) {
-          nodes {
+      }
+    }
+  `;
+
+  const response = await axios.post('https://api.start.gg/gql/alpha', 
+    { query: userQuery },
+    {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      }
+    }
+  );
+
+  return response.data.data.currentUser;
+};
+
+export const fetchTournamentData = async (accessToken, userName) => {
+  const tournamentQuery = `
+    query TournamentQuery($userName: String!) {
+      tournaments(query: {
+        perPage: 5,
+        filter: { upcoming: true }
+      }) {
+        nodes {
+          id
+          name
+          startAt
+          endAt
+          venueAddress
+          city
+          state
+          countryCode
+          slug
+          events {
             id
             name
             startAt
-            endAt
-            venueAddress
-            city
             state
-            countryCode
+            numEntrants
             slug
-            events {
-              id
-              name
-              startAt
-              state
-              numEntrants
-              slug
-              entrants(query: {
+            entrants(query: {
                 page: 1,
                 perPage: 20,
-                filter: { name: "${userName}" }
+                filter: { name: $userName }
               }) {
                 nodes {
                   id
                   name
                 }
               }
-              sets(
-                page: 1
-                perPage: 20
-                filters: { state: [2, 6] }
-              ) {
-                nodes {
+            sets(
+              page: 1
+              perPage: 20
+              filters: { state: [2, 6] }
+            ) {
+              nodes {
+                id
+                state
+                station {
                   id
-                  state
-                  station {
+                  number
+                }
+                slots {
+                  id
+                  entrant {
                     id
-                    number
-                  }
-                  slots {
-                    id
-                    entrant {
-                      id
-                      name
-                    }
+                    name
                   }
                 }
               }
@@ -105,7 +102,10 @@ export const fetchDashboardData = async (accessToken, userName) => {
   `;
 
   const response = await axios.post('https://api.start.gg/gql/alpha', 
-    { query: dashboardQuery },
+    { 
+      query: tournamentQuery,
+      variables: { userName }
+    },
     {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
@@ -114,5 +114,33 @@ export const fetchDashboardData = async (accessToken, userName) => {
     }
   );
 
-  return response.data;
+  console.log('Tournament API Response:', JSON.stringify(response.data, null, 2));
+
+  if (response.data && response.data.data && response.data.data.tournaments) {
+    return response.data.data.tournaments.nodes;
+  } else {
+    console.error('Unexpected API response structure:', response.data);
+    throw new Error('Unexpected API response structure');
+  }
+};
+
+export const fetchDashboardData = async (accessToken) => {
+  try {
+    const userData = await fetchUserData(accessToken);
+    console.log('User Data:', userData);
+    
+    if (!userData || !userData.player || !userData.player.gamerTag) {
+      throw new Error('User data is incomplete or missing gamerTag');
+    }
+    
+    const tournamentData = await fetchTournamentData(accessToken, userData.player.gamerTag);
+    
+    return {
+      user: userData,
+      tournaments: tournamentData
+    };
+  } catch (error) {
+    console.error('Error in fetchDashboardData:', error);
+    throw error;
+  }
 };

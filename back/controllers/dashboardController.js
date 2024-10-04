@@ -1,4 +1,4 @@
-import { fetchUserName, fetchDashboardData } from '../services/dashboardService.js';
+import { fetchDashboardData } from '../services/dashboardService.js';
 import jwt from 'jsonwebtoken';
 import config from '../config/startgg.config.js';
 
@@ -18,10 +18,7 @@ export const getDashboard = async (req, res) => {
 
     console.log('Access token retrieved:', accessToken ? 'Yes' : 'No');
 
-    const userName = await fetchUserName(accessToken);
-    console.log('User name retrieved:', userName);
-
-    const dashboardData = await fetchDashboardData(accessToken, userName);
+    const dashboardData = await fetchDashboardData(accessToken);
     console.log('Dashboard data retrieved successfully');
 
     res.json(dashboardData);
