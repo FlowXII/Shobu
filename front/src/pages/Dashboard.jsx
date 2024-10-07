@@ -38,9 +38,10 @@ const Dashboard = () => {
   if (!userData || !tournamentData) return <Typography>No dashboard data available</Typography>;
 
   const TournamentEventCard = ({ tournament, event, loggedInPlayerName }) => {
-    const playerSets = event.sets.nodes.filter(set => 
+    // Check if event.sets and event.sets.nodes are defined
+    const playerSets = event.sets?.nodes?.filter(set => 
       set.slots.some(slot => slot.entrant?.name === loggedInPlayerName)
-    );
+    ) || [];
 
     const getSetStateChip = (state) => {
       if (state === '6') return <Chip value="Called" className="bg-orange-500 text-white" />;
