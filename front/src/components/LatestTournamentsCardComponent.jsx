@@ -53,7 +53,7 @@ const LatestTournamentsCardComponent = ({ tournament }) => {
           <Chip
             icon={<Users className="h-4 w-4" />}
             value={`${tournament.numAttendees} Attendees`}
-            className="bg-green-500 text-white"
+            className="bg-yellow-600 text-white"
           />
         </div>
         

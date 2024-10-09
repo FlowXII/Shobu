@@ -8,6 +8,7 @@ import stationViewerRoute from './routes/stationViewerRoute.js';
 import startggAuthRoutes from './routes/auth/startgg.routes.js';
 import cookieParser from 'cookie-parser';
 import dashboardRoute from './routes/dashboardRoute.js';
+import pushNotificationsRoute from './routes/pushNotificationsRoute.js';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use('/api/tournaments', upcomingTournamentsRoute);
 app.use('/api', stationViewerRoute);
 app.use('/api', startggAuthRoutes);
 app.use('/api', dashboardRoute);
+app.use('/api/notifications', pushNotificationsRoute);
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '..', 'build')));

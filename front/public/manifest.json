@@ -1,0 +1,28 @@
+{
+  "short_name": "Shobu",
+  "name": "Shobu - Your Place for the FGC",
+  "icons": [
+    {
+      "src": "vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+  "screenshots": [
+    {
+      "src": "screenshot-desktop.png",
+      "sizes": "1282x802",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "screenshot-mobile.png",
+      "sizes": "376x671",
+      "type": "image/png"
+    }
+  ]
+}
