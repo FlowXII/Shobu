@@ -43,7 +43,12 @@ query UserTournamentsQuery($userName: String!) {
         city
         state
         countryCode
+        numAttendees
         slug
+        images {
+          url
+          type
+        }
         events {
           id
           name
@@ -51,11 +56,17 @@ query UserTournamentsQuery($userName: String!) {
           state
           numEntrants
           slug
+          videogame {
+            id
+          }
           entrants(query: {
             filter: { name: $userName }
           }) {
             nodes {
               id
+              standing {
+                placement
+              }
             }
           }
         }
@@ -133,9 +144,21 @@ const processData = (userData, tournamentsData) => {
     const filteredEvents = tournament.events.filter(event => {
       const hasUserEntrant = event.entrants.nodes.length > 0;
       console.log(`  Event: ${event.name}, User participated: ${hasUserEntrant}`);
+
+      // Log entrant standings
+      event.entrants.nodes.forEach(entrant => {
+        const entrantName = entrant.name || 'Unknown';
+        const entrantPlacement = entrant.standing?.placement || 'N/A';
+        console.log(`    Entrant: ${entrantName}, Placement: ${entrantPlacement}`);
+      });
+
       return hasUserEntrant;
     });
-    return { ...tournament, events: filteredEvents };
+
+    // Extract videogameId from the first event (assuming all events in a tournament have the same videogameId)
+    const videogameId = filteredEvents.length > 0 ? filteredEvents[0].videogame.id : null;
+
+    return { ...tournament, events: filteredEvents, videogameId };
   }).filter(tournament => {
     const hasEvents = tournament.events.length > 0;
     console.log(`Tournament ${tournament.name} has events: ${hasEvents}`);
