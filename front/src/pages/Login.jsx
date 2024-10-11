@@ -1,11 +1,15 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000/api';
 
 function Login() {
+  const navigate = useNavigate();
+
   const handleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/startgg`;
+    // Instead of directly changing window.location, use navigate
+    navigate('/api/auth/startgg');
   };
 
   return (

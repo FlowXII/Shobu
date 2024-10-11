@@ -2,7 +2,8 @@
 import { getAuthUrl, handleCallback } from './startgg.service.js';
 
 export const startGGAuth = (req, res) => {
-  res.redirect(getAuthUrl());
+  const authUrl = getAuthUrl();
+  res.redirect(authUrl);
 };
 
 export const startGGCallback = async (req, res) => {
