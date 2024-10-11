@@ -9,7 +9,7 @@
         "src": "front/package.json",
         "use": "@vercel/static-build",
         "config": {
-          "distDir": "front/dist"
+          "distDir": "dist"
         }
       }
     ],
