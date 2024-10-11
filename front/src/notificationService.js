@@ -1,4 +1,4 @@
-const publicVapidKey = 'BMMsDUJXifYYR995-NeZwB7Uo1c6-cIjJw5U3hYoORRIuMJ6ZyuZLX092xyE3CHjrdF3gNnoWSs2bHpuouA88rg';
+export const publicVapidKey = 'BMMsDUJXifYYR995-NeZwB7Uo1c6-cIjJw5U3hYoORRIuMJ6ZyuZLX092xyE3CHjrdF3gNnoWSs2bHpuouA88rg';
 
 export async function subscribeUserToPush() {
   try {
@@ -39,3 +39,5 @@ function urlBase64ToUint8Array(base64String) {
   }
   return outputArray;
 }
+
+export { urlBase64ToUint8Array };

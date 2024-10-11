@@ -61,4 +61,39 @@ pushNotificationsRoute.post('/send-test-notification', async (req, res) => {
   }
 });
 
+pushNotificationsRoute.post('/send-set-notification', async (req, res) => {
+  console.log('Received request body:', req.body);
+  const { subscription, set } = req.body;
+
+  if (!subscription || !set) {
+    console.error('Invalid request: missing subscription or set data');
+    return res.status(400).json({ error: 'Invalid request: missing subscription or set data' });
+  }
+
+  const payload = JSON.stringify({
+    title: 'You have to play a set!',
+    body: `${set.tournamentName} - ${set.eventName}\n${set.fullRoundText}\nStatus: ${getStateText(set.state)}`,
+  });
+
+  try {
+    await webpush.sendNotification(subscription, payload);
+    console.log('Set notification sent successfully');
+    res.status(200).json({ message: 'Set notification sent successfully' });
+  } catch (error) {
+    console.error('Error sending set notification:', error);
+    res.status(500).json({ error: `Failed to send set notification: ${error.message}`, stack: error.stack });
+  }
+});
+
+function getStateText(state) {
+  switch (state) {
+    case 1: return 'Created';
+    case 2: return 'Ongoing';
+    case 4: return 'Ready';
+    case 6: return 'Called';
+    case 7: return 'Completed';
+    default: return 'Unknown';
+  }
+}
+
 export default pushNotificationsRoute;

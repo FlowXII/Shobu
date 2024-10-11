@@ -13,7 +13,7 @@ export const processData = (userData, tournamentsAndSetsData) => {
         if (!set) return null;
         return {
           id: set.id,
-          state: parseInt(set.state, 10), // Ensure set state is an integer
+          state: parseInt(set.state, 10),
           station: set.station,
           fullRoundText: set.fullRoundText || 'Unknown Round',
           slots: (set.slots || []).map(slot => ({

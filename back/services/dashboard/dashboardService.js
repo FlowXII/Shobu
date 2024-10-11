@@ -31,9 +31,6 @@ export const fetchDashboardData = async (accessToken) => {
 
     // Step 3: Process and combine the data
     const processedData = processData(userData, tournamentsAndSetsData);
-    console.log('Processed Data:', JSON.stringify(processedData, null, 2));
-
-    console.log('Dashboard data fetched successfully');
     console.timeEnd('fetchDashboardData');
     
     return processedData;
