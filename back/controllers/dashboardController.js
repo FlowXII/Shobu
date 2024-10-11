@@ -1,4 +1,4 @@
-import { fetchDashboardData } from '../services/dashboardService.js';
+import { fetchDashboardData } from '../services/dashboard/dashboardService.js';
 import jwt from 'jsonwebtoken';
 import config from '../config/startgg.config.js';
 

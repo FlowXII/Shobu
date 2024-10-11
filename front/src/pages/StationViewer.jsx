@@ -7,6 +7,7 @@ import {
   Button,
   Spinner
 } from "@material-tailwind/react";
+import SetCardComponent from '../components/SetCardComponent';
 
 const REFRESH_INTERVAL = 5000;
 
@@ -73,6 +74,13 @@ function StationViewer() {
     return getStations().filter(station => !station.isUsed).map(station => station.number);
   };
 
+  const allSets = tournamentData?.event?.sets?.nodes || [];
+  const relevantSets = allSets.filter(set => [1, 2, 4, 6, 7].includes(set.state))
+    .map(set => ({
+      ...set,
+      fullRoundText: set.fullRoundText || 'Unknown Round'
+    }));
+
   return (
     <div className="flex flex-col items-center justify-start p-4 overflow-x-hidden">
       <Card className="w-full bg-gray-900 p-6 rounded-lg shadow-lg mb-6">
@@ -127,33 +135,14 @@ function StationViewer() {
                 </div>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
-                  {tournamentData.event.sets.nodes.map(({ id, state, station, slots }) => (
-                    <Card key={id} className={`bg-gray-800 ${state === 6 ? 'border-2 border-orange-500' : ''}`}>
-                      <CardBody className="p-2">
-                        <Typography variant="h6" color="white" className="text-center">
-                          Station {station?.number || "N/A"}
-                        </Typography>
-                        <Typography variant="small" color={state === 6 ? "orange" : "green"} className="text-center">
-                          {state === 6 ? 'Called' : 'Ongoing'}
-                        </Typography>
-                        <div className="space-y-1 mt-1">
-                          <Card className="bg-blue-900">
-                            <CardBody className="p-1">
-                              <Typography variant="small" color="white" className="text-center truncate">
-                                {slots[0]?.entrant?.name || 'TBD'}
-                              </Typography>
-                            </CardBody>
-                          </Card>
-                          <Card className="bg-red-900">
-                            <CardBody className="p-1">
-                              <Typography variant="small" color="white" className="text-center truncate">
-                                {slots[1]?.entrant?.name || 'TBD'}
-                              </Typography>
-                            </CardBody>
-                          </Card>
-                        </div>
-                      </CardBody>
-                    </Card>
+                  {relevantSets.map(set => (
+                    <SetCardComponent key={set.id} set={{
+                      ...set,
+                      slots: set.slots.map(slot => ({
+                        ...slot,
+                        entrantName: slot.entrant?.name || 'TBD'
+                      }))
+                    }} />
                   ))}
                 </div>
               )}

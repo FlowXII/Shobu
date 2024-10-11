@@ -23,13 +23,15 @@ export async function FetchStations(eventId) {
               name
               sets(
                 page: 1
-                perPage: 20
+                perPage: 128
                 filters: {
-                  state: [2, 6] # State 2 is Ongoing, State 6 is Called.
+                  state: [1, 2, 4, 6, 7],
+                  hideEmpty: true
                 }
               ) {
                 nodes {
                   id
+                  fullRoundText
                   state
                   station {
                     id

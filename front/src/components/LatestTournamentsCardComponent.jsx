@@ -14,31 +14,47 @@ const LatestTournamentsCardComponent = ({ tournament }) => {
   const gameOptions = useMemo(() => GameOptionsComponent(), []);
   
   const gameOption = useMemo(() => {
-    if (!tournament || !tournament.videogameId) return null;
-    return gameOptions.find(option => option.id === tournament.videogameId.toString());
+    if (!tournament || !tournament.videogameId) {
+      console.log('No videogameId found for tournament:', tournament);
+      return null;
+    }
+    const option = gameOptions.find(option => option.id === tournament.videogameId.toString());
+    if (!option) {
+      console.log('No matching game option found for videogameId:', tournament.videogameId);
+    }
+    return option;
   }, [gameOptions, tournament]);
   
   const boxArt = gameOption ? gameOption.image : null;
 
-  if (!tournament) return null;
+  if (!tournament) {
+    console.log('No tournament data provided to LatestTournamentsCardComponent');
+    return null;
+  }
+
+  console.log('Rendering tournament:', tournament);
 
   return (
     <Card className="w-full max-w-[48rem] bg-gray-900 text-white shadow-lg my-4">
       <CardHeader floated={false} className="relative h-56 m-0">
-        {tournament.images && tournament.images.length > 0 && (
+        {tournament.images && tournament.images.length > 0 ? (
           <img
             src={tournament.images[0].url}
             alt={tournament.name}
             className="w-full h-full object-cover"
           />
+        ) : (
+          <div className="w-full h-full bg-gray-800 flex items-center justify-center">
+            <Typography>No image available</Typography>
+          </div>
         )}
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-end">
           <div className="p-4">
             <Typography variant="h4" color="white" className="font-bold text-lg md:text-2xl">
-              {tournament.name}
+              {tournament.name || 'Unnamed Tournament'}
             </Typography>
             <Typography color="white" className="mt-1 font-normal opacity-75 text-sm md:text-base">
-              {new Date(tournament.startAt * 1000).toLocaleDateString()}
+              {tournament.startAt ? new Date(tournament.startAt * 1000).toLocaleDateString() : 'Date not available'}
             </Typography>
           </div>
         </div>
@@ -52,12 +68,12 @@ const LatestTournamentsCardComponent = ({ tournament }) => {
           />
           <Chip
             icon={<Users className="h-4 w-4" />}
-            value={`${tournament.numAttendees} Attendees`}
+            value={`${tournament.numAttendees || 0} Attendees`}
             className="bg-yellow-600 text-white"
           />
         </div>
         
-        {tournament.events && tournament.events.length > 0 && (
+        {tournament.events && tournament.events.length > 0 ? (
           <div className="mt-4">
             <Typography variant="h6" color="blue-gray" className="mb-2 text-base md:text-lg">
               Events
@@ -71,19 +87,19 @@ const LatestTournamentsCardComponent = ({ tournament }) => {
                     )}
                     <div className="flex-grow p-3 md:p-4">
                       <Typography variant="h6" color="white" className="text-sm md:text-base">
-                        {event.name}
+                        {event.name || 'Unnamed Event'}
                       </Typography>
                       <Typography color="blue-gray" className="text-xs md:text-sm opacity-75">
-                        {event.numEntrants} participants
+                        {event.numEntrants || 0} participants
                       </Typography>
                     </div>
-                    {event.entrants && event.entrants.nodes.length > 0 && event.entrants.nodes[0].standing && (
+                    {event.entrants && event.entrants.nodes && event.entrants.nodes.length > 0 && event.entrants.nodes[0].standing && (
                       <div className="bg-red-500 p-3 md:p-4 flex flex-col items-center justify-center h-full">
                         <Typography variant="h4" color="white" className="font-bold text-2xl md:text-3xl">
                           {event.entrants.nodes[0].standing.placement}
                         </Typography>
                         <Typography color="white" className="text-xs md:text-sm opacity-75">
-                          /{event.numEntrants}
+                          /{event.numEntrants || 0}
                         </Typography>
                       </div>
                     )}
@@ -92,13 +108,15 @@ const LatestTournamentsCardComponent = ({ tournament }) => {
               </Card>
             ))}
           </div>
+        ) : (
+          <Typography>No events found for this tournament.</Typography>
         )}
         
         <Button
           size="lg"
           color="red"
           className="mt-4 w-full text-sm md:text-base"
-          onClick={() => window.open(`http://start.gg/${tournament.slug}`, '_blank')}
+          onClick={() => window.open(`http://start.gg/${tournament.slug || ''}`, '_blank')}
         >
           View Tournament
         </Button>
