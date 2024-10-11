@@ -15,7 +15,6 @@
     "routes": [
       { "src": "/api/(.*)", "dest": "back/index.js" },
       { "src": "/(.*)", "dest": "/front/$1" }
-    ],
-    "buildCommand": "npm install --prefix back && npm install --prefix front && npm run build --prefix front"
+    ]
   }
   
