@@ -9,7 +9,7 @@
         "src": "front/package.json",
         "use": "@vercel/static-build",
         "config": {
-          "distDir": "dist"
+          "distDir": "front/dist"
         }
       }
     ],
@@ -23,8 +23,12 @@
         "dest": "/front/dist/assets/$1"
       },
       {
-        "src": "^/favicon.ico",
-        "dest": "/front/dist/favicon.ico"
+        "src": "^/service-worker.js",
+        "dest": "/front/dist/service-worker.js"
+      },
+      {
+        "src": "^/manifest.json",
+        "dest": "/front/dist/manifest.json"
       },
       {
         "src": "^/(.*)\\.(.+)",

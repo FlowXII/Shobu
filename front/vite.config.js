@@ -15,6 +15,7 @@ export default defineConfig({
             input: {
                 main: 'index.html',
                 manifest: 'public/manifest.json',
+                serviceWorker: 'public/service-worker.js'
             },
         },
     },
