@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "cd front && npm run build"
+  }
+}
+

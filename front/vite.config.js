@@ -1,6 +1,7 @@
 // frontend/vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import path from 'path';
 
 export default defineConfig({
     plugins: [react()],
@@ -10,12 +11,11 @@ export default defineConfig({
         }
     },
     build: {
-        outDir: 'dist',
+        outDir: path.resolve(__dirname, 'dist'),
         rollupOptions: {
             input: {
-                main: 'index.html',
-                manifest: 'public/manifest.json',
-                serviceWorker: 'public/service-worker.js'
+                main: path.resolve(__dirname, 'index.html'),
+                manifest: path.resolve(__dirname, 'public/manifest.json'),
             },
         },
     },
