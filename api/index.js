@@ -28,22 +28,5 @@ app.use('/api', startggAuthRoutes);
 app.use('/api', dashboardRoute);
 app.use('/api/notifications', pushNotificationsRoute);
 
-// Serverless function handler
-export default async function handler(req, res) {
-  await new Promise((resolve, reject) => {
-    app(req, res, (result) => {
-      if (result instanceof Error) {
-        return reject(result);
-      }
-      return resolve(result);
-    });
-  });
-}
-
-// For local development
-if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
-}
+// Export the app
+export default app;
