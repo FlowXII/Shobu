@@ -28,10 +28,17 @@ app.use('/api', startggAuthRoutes);
 app.use('/api', dashboardRoute);
 app.use('/api/notifications', pushNotificationsRoute);
 
-// Handler for serverless environments
-export const handler = async (req, res) => {
-  app(req, res);
-};
+// Serverless function handler
+export default async function handler(req, res) {
+  await new Promise((resolve, reject) => {
+    app(req, res, (result) => {
+      if (result instanceof Error) {
+        return reject(result);
+      }
+      return resolve(result);
+    });
+  });
+}
 
 // For local development
 if (process.env.NODE_ENV !== 'production') {
@@ -40,6 +47,3 @@ if (process.env.NODE_ENV !== 'production') {
     console.log(`Server is running on port ${PORT}`);
   });
 }
-
-// Export the Express app
-export default app;
