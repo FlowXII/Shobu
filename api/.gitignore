@@ -3,3 +3,4 @@ mongostring.txt
 token.txt
 vapidkeys.txt
 vapidkeygen.js
+.env
