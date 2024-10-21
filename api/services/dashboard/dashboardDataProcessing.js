@@ -38,22 +38,22 @@ export const processData = (userData, tournamentsAndSetsData) => {
   return {
     user: userData ? {
       name: userData.name || 'Unknown',
-      id: userData.id,
       location: userData.location || {},
       images: userData.images || [],
       slug: userData.slug || '',
-      player: userData.player || {}
+      player: userData.player || {},
+      bio: userData.bio || '',
+      genderPronoun: userData.genderPronoun || ''
     } : null,
     tournaments: processedTournaments
   };
 };
 
 /*
-Data structure:
+Updated Data structure:
 {
   user: {
     name: string,
-    id: string,
     location: {
       city: string,
       state: string,
@@ -66,7 +66,9 @@ Data structure:
       id: string,
       gamerTag: string,
       prefix: string
-    }
+    },
+    bio: string,
+    genderPronoun: string
   },
   tournaments: Array<{
     id: string,

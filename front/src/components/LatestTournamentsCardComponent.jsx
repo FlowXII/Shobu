@@ -35,7 +35,7 @@ const LatestTournamentsCardComponent = ({ tournament }) => {
   console.log('Rendering tournament:', tournament);
 
   return (
-    <Card className="w-full max-w-[48rem] bg-gray-900 text-white shadow-lg my-4">
+    <Card className="w-full max-w-[48rem] bg-gradient-to-br from-gray-800 to-gray-950 text-white shadow-xl border border-white border-opacity-20 rounded-lg overflow-hidden">
       <CardHeader floated={false} className="relative h-56 m-0">
         {tournament.images && tournament.images.length > 0 ? (
           <img

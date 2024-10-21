@@ -14,10 +14,11 @@ import Dashboard from './pages/Dashboard';
 const Layout = ({ children }) => {
     const { isOpen } = useSidebar();
     return (
-        <div className="flex min-h-screen bg-gradient-to-r from-blue-900 via-purple-900 to-red-900">
+        <div className="flex min-h-screen bg-gradient-to-br from-blue-900 to-red-900">
+            <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:20px_20px]" style={{ maskImage: 'linear-gradient(to bottom, transparent, black)', WebkitMaskImage: 'linear-gradient(to bottom, transparent, black)' }}></div>
             <Sidebar />
-            <div className={`flex-1 min-h-screen transition-all duration-300 ${isOpen ? 'ml-48' : 'ml-16'}`}>
-                <div className={`p-4 max-w-full h-full ${isOpen ? 'lg:ml-16' : 'lg:ml-16'}`}>
+            <div className={`flex-1 min-h-screen transition-all duration-300 ${isOpen ? 'ml-56' : 'ml-16'}`}>
+                <div className="p-4 max-w-full h-full">
                     {children}
                 </div>
             </div>

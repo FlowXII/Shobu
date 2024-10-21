@@ -6,6 +6,8 @@ query UserInfoQuery {
   currentUser {
     name
     id
+    bio
+    genderPronoun
     location {
       city
       state
