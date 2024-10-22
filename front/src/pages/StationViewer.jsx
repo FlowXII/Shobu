@@ -23,6 +23,7 @@ function StationViewer() {
   const [eventId, setEventId] = useState('');
   const [submittedEventId, setSubmittedEventId] = useState(null);
   const [tournamentData, setTournamentData] = useState(null);
+  const [showOnlyCalled, setShowOnlyCalled] = useState(false);
 
   useEffect(() => {
     if (submittedEventId) {
@@ -81,9 +82,17 @@ function StationViewer() {
       fullRoundText: set.fullRoundText || 'Unknown Round'
     }));
 
+  const filteredSets = showOnlyCalled
+    ? relevantSets.filter(set => [2, 6].includes(set.state)) // Ongoing (2) and Called (6)
+    : relevantSets;
+
+  const toggleFilter = () => {
+    setShowOnlyCalled(!showOnlyCalled);
+  };
+
   return (
     <div className="flex flex-col items-center justify-start p-4 overflow-x-hidden">
-      <Card className="w-full bg-gray-900 p-6 rounded-lg shadow-lg mb-6">
+      <Card className="w-full p-6 rounded-lg bg-gray-950/50 border border-white border-opacity-20 mb-6">
         <CardBody>
           {!submittedEventId ? (
             <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-4">
@@ -114,20 +123,28 @@ function StationViewer() {
             <div className="flex flex-col h-full">
               <div className="flex justify-between items-start mb-4">
                 <Typography variant="h4" color="white" className="text-center">
-                  Current Matches
+                  {/* Current Matches */}
                 </Typography>
-                <Card className="bg-gray-800 p-2">
-                  <Typography variant="h6" color="white" className="text-center mb-2">
-                    Available Stations
-                  </Typography>
-                  <div className="flex flex-wrap gap-1">
-                    {getAvailableStations().map(station => (
-                      <span key={station} className="bg-gray-700 text-white px-2 py-1 rounded-md text-sm">
-                        {station}
-                      </span>
-                    ))}
-                  </div>
-                </Card>
+                <div className="flex flex-col items-end space-y-2">
+                  <Card className="bg-gradient-to-r from-gray-800 to-gray-950 p-2 rounded-lg border border-white border-opacity-20">
+                    <Typography variant="h6" color="white" className="text-center mb-2">
+                      Available Stations
+                    </Typography>
+                    <div className="flex flex-wrap gap-1">
+                      {getAvailableStations().map(station => (
+                        <span key={station} className="bg-gray-700 text-white px-2 py-1 rounded-md text-sm">
+                          {station}
+                        </span>
+                      ))}
+                    </div>
+                  </Card>
+                  <Button
+                    onClick={toggleFilter}
+                    className="bg-gradient-to-r from-gray-700 to-gray-900 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    {showOnlyCalled ? "Show All Sets" : "Show Only Called Sets"}
+                  </Button>
+                </div>
               </div>
               {tournamentData === null ? (
                 <div className="flex justify-center">
@@ -135,7 +152,7 @@ function StationViewer() {
                 </div>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
-                  {relevantSets.map(set => (
+                  {filteredSets.map(set => (
                     <SetCardComponent key={set.id} set={{
                       ...set,
                       slots: set.slots.map(slot => ({

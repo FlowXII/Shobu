@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Typography, IconButton } from "@material-tailwind/react";
 import {
   Home,
@@ -21,6 +21,7 @@ import { useSidebar } from '../contexts/SidebarContext';
 
 const Sidebar = () => {
   const { isOpen, toggleSidebar } = useSidebar();
+  const location = useLocation();
 
   const sidebarItems = [
     { name: 'Home', icon: Home, color: 'text-red-400', hoverColor: 'hover:bg-red-800/30', path: '/' },
@@ -38,38 +39,55 @@ const Sidebar = () => {
   ];
 
   const renderSidebarItems = (items) => (
-    items.map((item, index) => (
-      <Link
-        key={index}
-        to={item.path}
-        className={`flex items-center w-full px-3 py-3 mt-1 cursor-pointer ${item.hoverColor} rounded-md transition-all duration-300 hover:scale-105 bg-gray-900/50 border border-white/10`}
-      >
-        <item.icon size={isOpen ? 24 : 20} className={`${item.color} transition-all duration-300`} />
-        {isOpen && (
-          <Typography
-            variant="small"
-            className="ml-3 font-medium transition-opacity duration-300"
-          >
-            {item.name}
-          </Typography>
-        )}
-      </Link>
-    ))
+    items.map((item, index) => {
+      const isActive = location.pathname === item.path;
+      return (
+        <Link
+          key={index}
+          to={item.path}
+          className={`
+            flex items-center w-full px-4 py-3 mt-2 cursor-pointer
+            ${item.hoverColor} rounded-lg transition-all duration-300
+            ${isActive ? 'bg-gray-800/60 shadow-md' : 'bg-transparent'}
+            hover:bg-gray-800/40 border border-white/5
+          `}
+        >
+          <item.icon 
+            size={24} 
+            className={`${item.color} transition-all duration-300 ${isActive ? 'scale-110' : ''}`} 
+          />
+          {isOpen && (
+            <Typography
+              variant="small"
+              className={`
+                ml-3 font-medium transition-all duration-300
+                ${isActive ? 'text-white' : 'text-gray-400'}
+              `}
+            >
+              {item.name}
+            </Typography>
+          )}
+        </Link>
+      );
+    })
   );
 
   return (
     <div
-      className={`fixed top-0 left-0 h-screen bg-gray-950 text-white shadow-xl ${
-        isOpen ? 'w-56' : 'w-16'
-      } transition-all duration-300 ease-in-out z-50 flex flex-col`}
+      className={`
+        fixed top-0 left-0 h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-950
+        text-white shadow-2xl ${isOpen ? 'w-64' : 'w-20'}
+        transition-all duration-300 ease-in-out z-50 flex flex-col
+      `}
     >
-      <div className="p-2">
+      <div className="p-4">
         <IconButton
           color="white"
           variant="text"
           size="lg"
           onClick={toggleSidebar}
-          className="w-full justify-center hover:bg-gray-700/50 transition-all duration-300 hover:scale-105 bg-white/5 border border-white/10 rounded-md"
+          className="w-full justify-center hover:bg-gray-800/40 transition-all duration-300
+                     hover:scale-105 bg-white/5 border border-white/10 rounded-lg"
         >
           {isOpen ? (
             <ChevronLeft size={28} className="text-white" />
@@ -78,10 +96,8 @@ const Sidebar = () => {
           )}
         </IconButton>
       </div>
-      <div className="flex-grow flex flex-col py-4 px-2">
-        <div className="space-y-4">
-          {renderSidebarItems(sidebarItems)}
-        </div>
+      <div className="flex-grow flex flex-col py-6 px-4 space-y-2">
+        {renderSidebarItems(sidebarItems)}
       </div>
     </div>
   );

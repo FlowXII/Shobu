@@ -20,9 +20,9 @@ function UpcomingTournaments() {
 
   return (
     <div className="flex flex-col items-center justify-start p-4 overflow-x-hidden">
-      <Card className="w-full max-w-4xl bg-gray-900 p-6 rounded-lg shadow-lg mb-6">
+      <Card className="w-full max-w-[48rem] bg-gradient-to-br from-gray-800 to-gray-950 text-white shadow-xl border border-white border-opacity-20 rounded-lg overflow-hidden mb-6">
         <CardBody>
-          <Typography variant="h4" className="mb-6 text-center text-red-700 font-bold">Upcoming Tournaments</Typography>
+          <Typography variant="h4" className="mb-6 text-center text-red-500 font-bold">Upcoming Tournaments</Typography>
           <TournamentFilterForm
             cCode={cCode}
             setCCode={setCCode}
@@ -30,9 +30,9 @@ function UpcomingTournaments() {
             setPerPage={setPerPage}
             videogameId={videogameId}
             setVideogameId={setVideogameId}
-            videogameOptions={videogameOptions}
             handleFormSubmit={handleFormSubmit}
             loading={loading}
+            videogameOptions={videogameOptions}
           />
         </CardBody>
       </Card>
@@ -40,13 +40,13 @@ function UpcomingTournaments() {
       {error && <ErrorMessage error={error} />}
       {loading && <LoadingIndicator />}
       {data && (
-        <div className="w-full max-w-4xl">
+        <div className="w-full max-w-[48rem]">
           {data.tournaments && data.tournaments.nodes ? (
             data.tournaments.nodes.map((tournament) => (
               <TournamentCardComponent key={tournament.id} tournament={tournament} boxArt={boxArt} />
             ))
           ) : (
-            <Typography className="text-red-700">No tournaments found or unexpected data structure.</Typography>
+            <Typography className="text-red-500">No tournaments found or unexpected data structure.</Typography>
           )}
         </div>
       )}

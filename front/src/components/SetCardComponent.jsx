@@ -11,7 +11,7 @@ const stateStyles = {
 };
 
 const SetCardComponent = ({ set }) => {
-  const stateNumber = parseInt(set.state, 10);
+  const stateNumber = parseInt(set?.state, 10);
   const { color, text, icon: Icon } = stateStyles[stateNumber] || { color: "gray", text: "Unknown", icon: AlertCircle };
 
   return (
@@ -19,37 +19,37 @@ const SetCardComponent = ({ set }) => {
       <CardBody className="p-2">
         <div className="flex justify-between items-center mb-2">
           <Chip
-            value={`Station ${set.station?.number || "N/A"}`}
-            className="bg-white text-black font-semibold"
-            icon={<MonitorIcon className="h-4 w-4 text-black" />}
-          />
-          <Chip
             value={text}
             color={color}
             size="sm"
             className="font-semibold"
             icon={<Icon className="h-4 w-4" />}
           />
+          <Chip
+            value={set?.fullRoundText || "Unknown Round"}
+            className="bg-gray-700 text-white font-semibold"
+            icon={<Swords className="h-4 w-4 text-white" />}
+          />
         </div>
         <div className="flex justify-center mb-2">
           <Chip
-            value={set.fullRoundText || "Unknown Round"}
-            className="bg-gray-700 text-white font-semibold"
-            icon={<Swords className="h-4 w-4 text-white" />}
+            value={`Station ${set?.station?.number || "N/A"}`}
+            className="bg-white text-black font-semibold text-base py-2 px-2"
+            icon={<MonitorIcon className="h-5 w-4  text-black" />}
           />
         </div>
         <div className="space-y-1">
           <Card className="bg-blue-900 border border-white border-opacity-20">
             <CardBody className="p-1">
               <Typography variant="small" color="white" className="text-center truncate">
-                {set.slots[0]?.entrantName || 'TBD'}
+                {set?.slots?.[0]?.entrantName || 'TBD'}
               </Typography>
             </CardBody>
           </Card>
           <Card className="bg-red-900 border border-white border-opacity-20">
             <CardBody className="p-1">
               <Typography variant="small" color="white" className="text-center truncate">
-                {set.slots[1]?.entrantName || 'TBD'}
+                {set?.slots?.[1]?.entrantName || 'TBD'}
               </Typography>
             </CardBody>
           </Card>

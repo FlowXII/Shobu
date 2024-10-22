@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input, Select, Option, Button } from '@material-tailwind/react';
 
-const TournamentFilterForm = ({ cCode, setCCode, perPage, setPerPage, videogameId, setVideogameId, videogameOptions, handleFormSubmit, loading }) => {
+const TournamentFilterForm = ({ cCode, setCCode, perPage, setPerPage, videogameId, setVideogameId, handleFormSubmit, loading, videogameOptions }) => {
   return (
     <form onSubmit={handleFormSubmit} className="mb-6">
       <div className="flex flex-col gap-4">
@@ -25,9 +25,13 @@ const TournamentFilterForm = ({ cCode, setCCode, perPage, setPerPage, videogameI
           value={videogameId}
           onChange={(value) => setVideogameId(value || "")}
           color="red"
+          className="text-white"
+          menuProps={{
+            className: "bg-gray-800 border border-gray-700"
+          }}
         >
           {videogameOptions.map((option) => (
-            <Option key={option.id} value={option.id}>
+            <Option key={option.id} value={option.id} className="text-white hover:bg-gray-700">
               {option.name}
             </Option>
           ))}

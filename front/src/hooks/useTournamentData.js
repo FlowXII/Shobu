@@ -1,13 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const useTournamentData = (videogameOptions) => {
   const [cCode, setCCode] = useState("FR");
   const [perPage, setPerPage] = useState("64");
-  const [videogameId, setVideogameId] = useState("1386");
+  const [videogameId, setVideogameId] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
   const [boxArt, setBoxArt] = useState(null);
+
+  useEffect(() => {
+    if (videogameOptions.length > 0 && !videogameId) {
+      setVideogameId(videogameOptions[0].id);
+    }
+  }, [videogameOptions, videogameId]);
+
+  useEffect(() => {
+    const game = videogameOptions.find(option => option.id === videogameId);
+    setBoxArt(game ? game.image : null);
+  }, [videogameId, videogameOptions]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -37,10 +48,6 @@ const useTournamentData = (videogameOptions) => {
       }
       setData(result.data);
       console.log('Set data:', result.data);
-
-      // Set box art only after successfully fetching data
-      const game = videogameOptions.find(option => option.id === videogameId);
-      setBoxArt(game ? game.image : null);
     } catch (err) {
       console.error("Error fetching data:", err);
       setError(err instanceof Error ? err.message : String(err));
