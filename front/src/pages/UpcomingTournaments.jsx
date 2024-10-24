@@ -3,7 +3,7 @@ import { Card, CardBody, Typography } from '@material-tailwind/react';
 import TournamentCardComponent from '../components/TournamentCardComponent';
 import TournamentFilterForm from '../components/TournamentFilterForm';
 import LoadingIndicator from '../components/LoadingIndicator';
-import ErrorMessage from '../components/ErrorMessage';
+import ErrorMessage from '../components/common/ErrorMessage';
 import useTournamentData from '../hooks/useTournamentData';
 import GameOptionsComponent from '../components/GameOptionsComponent';
 

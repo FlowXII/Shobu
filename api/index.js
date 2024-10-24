@@ -7,7 +7,7 @@ import startggAuthRoutes from './routes/auth/startgg.routes.js';
 import cookieParser from 'cookie-parser';
 import dashboardRoute from './routes/dashboardRoute.js';
 import pushNotificationsRoute from './routes/pushNotificationsRoute.js';
-
+import stationReportingRoute from './routes/stationReportingRoute.js';
 dotenv.config();
 
 const app = express();
@@ -27,6 +27,8 @@ app.use('/api', stationViewerRoute);
 app.use('/api', startggAuthRoutes);
 app.use('/api', dashboardRoute);
 app.use('/api/notifications', pushNotificationsRoute);
+// API reporting routes
+app.use('/api', stationReportingRoute);
 
 // Export the app
 export default app;

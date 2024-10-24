@@ -8,17 +8,25 @@ export const startGGAuth = (req, res) => {
 
 export const startGGCallback = async (req, res) => {
   try {
-    const token = await handleCallback(req.query.code);
+    const tokens = await handleCallback(req.query.code);
     
-    // Set the token in a secure HTTP-only cookie
-    res.cookie('auth_token', token, {
+    // Auth token remains httpOnly
+    res.cookie('auth_token', tokens.authToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
-    // Redirect to the dashboard without the token in the URL
+    // User info token accessible to JavaScript
+    res.cookie('user_info', tokens.userInfoToken, {
+      httpOnly: false,  // Changed to false
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
+
+    // Redirect to the dashboard
     res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
   } catch (error) {
     console.error('Error in startGGCallback:', error);

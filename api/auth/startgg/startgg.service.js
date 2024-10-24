@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import config from '../../config/startgg.config.js';
+import { fetchAndEncodeUserInfo } from '../../services/auth/userInfoService.js';
 
 // Generate auth URL
 export const getAuthUrl = () => {
@@ -29,8 +30,11 @@ export const handleCallback = async (code) => {
 
     const { access_token, refresh_token } = await tokenResponse.json();
 
-    // Create JWT with StartGG tokens
-    const token = jwt.sign(
+    // Get user info and encode it
+    const userInfoToken = await fetchAndEncodeUserInfo(access_token);
+
+    // Create auth JWT with StartGG tokens
+    const authToken = jwt.sign(
       { 
         startgg_access_token: access_token,
         startgg_refresh_token: refresh_token 
@@ -39,7 +43,10 @@ export const handleCallback = async (code) => {
       { expiresIn: '7d' }
     );
 
-    return token;
+    return {
+      authToken,
+      userInfoToken
+    };
   } catch (error) {
     console.error('StartGG auth error:', error);
     throw new Error('Authentication failed');

@@ -9,6 +9,9 @@ import TournamentCreationForm from './pages/CreateTournament';
 import UpcomingTournaments from './pages/UpcomingTournaments';
 import StationViewer from './pages/StationViewer';
 import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
+import { Provider } from 'react-redux';
+import store from './store';
 
 // Create a layout component to handle the sidebar and main content
 const Layout = ({ children }) => {
@@ -28,21 +31,24 @@ const Layout = ({ children }) => {
 
 function App() {
     return (
-        <SidebarProvider>
-            <Router>
-                <Layout>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/create" element={<TournamentCreationForm />} />
-                        <Route path="/upcoming" element={<UpcomingTournaments />} />
-                        <Route path="/station-viewer" element={<StationViewer />} />
-                        <Route path="/dashboard" element={<Dashboard />} />
-                    </Routes>
-                </Layout>
-            </Router>
-        </SidebarProvider>
+        <Provider store={store}>
+            <SidebarProvider>
+                <Router>
+                    <Layout>
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/register" element={<Register />} />
+                            <Route path="/create" element={<TournamentCreationForm />} />
+                            <Route path="/upcoming" element={<UpcomingTournaments />} />
+                            <Route path="/station-viewer" element={<StationViewer />} />
+                            <Route path="/dashboard" element={<Dashboard />} />
+                            <Route path="/profile" element={<Profile />} />
+                        </Routes>
+                    </Layout>
+                </Router>
+            </SidebarProvider>
+        </Provider>
     );
 }
 

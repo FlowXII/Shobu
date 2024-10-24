@@ -33,7 +33,7 @@ const Sidebar = () => {
     { name: 'Spaces', icon: Users, color: 'text-blue-400', hoverColor: 'hover:bg-blue-800/30' },
     { name: 'Messages', icon: MessageSquare, color: 'text-blue-400', hoverColor: 'hover:bg-blue-800/30' },
     { name: 'Streams', icon: Tv, color: 'text-purple-400', hoverColor: 'hover:bg-purple-800/30' },
-    { name: 'Your Profile', icon: User, color: 'text-yellow-400', hoverColor: 'hover:bg-yellow-800/30' },
+    { name: 'Your Profile', icon: User, color: 'text-yellow-400', hoverColor: 'hover:bg-yellow-800/30' , path: '/profile' },
     { name: 'StartGG Login', icon: LogIn, color: 'text-yellow-400', hoverColor: 'hover:bg-yellow-800/30', path: '/login' },
     { name: 'Register', icon: UserPlus, color: 'text-yellow-400', hoverColor: 'hover:bg-yellow-800/30', path: '/register' },
   ];
