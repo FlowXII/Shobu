@@ -2,46 +2,31 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { Card, CardBody, Typography, Spinner } from "@material-tailwind/react";
 
-// Constants
-const LAYOUT_CONSTANTS = {
-  MATCH_CARD_HEIGHT: 90,
-  ROUND_SPACING_WIDTH: 250,
-  MIN_GAP_BETWEEN_MATCHES: 10
-};
-
-const ROUND_ORDER = [
-  'Winners Round 1',
-  'Winners Round 2',
-  'Winners Round 3',
-  'Winners Round 4',
-  'Winners Round 5',
-  'Winners Quarter-Final',
-  'Winners Semi-Final',
-  'Winners Final',
-  'Grand Finals',
-  'Losers Round 1',
-  'Losers Round 2',
-  'Losers Round 3',
-  'Losers Round 4',
-  'Losers Round 5',
-  'Losers Quarters',
-  'Losers Semi',
-  'Losers Finals'
-];
-
-// Types of brackets
-const BRACKET_TYPES = {
-  WINNERS: 'winners',
-  LOSERS: 'losers'
-};
-
-// Add this constant near the other constants at the top
-const STATE_STYLES = {
-  1: { color: "blue", label: "In Progress" },    // CREATED
-  2: { color: "yellow", label: "In Queue" },     // CALLED
-  3: { color: "green", label: "Complete" },      // COMPLETED
-  4: { color: "red", label: "Invalid" },         // INVALID
-  // Add more states as needed
+// Group related constants together in a single object
+const BRACKET_CONFIG = {
+  LAYOUT: {
+    MATCH_CARD_HEIGHT: 90,
+    ROUND_SPACING_WIDTH: 250,
+    MIN_GAP_BETWEEN_MATCHES: 10
+  },
+  TYPES: {
+    WINNERS: 'winners',
+    LOSERS: 'losers'
+  },
+  ROUND_ORDER: [
+    'Winners Round 1', 'Winners Round 2', 'Winners Round 3',
+    'Winners Round 4', 'Winners Round 5', 'Winners Quarter-Final',
+    'Winners Semi-Final', 'Winners Final', 'Grand Finals',
+    'Losers Round 1', 'Losers Round 2', 'Losers Round 3',
+    'Losers Round 4', 'Losers Round 5', 'Losers Quarters',
+    'Losers Semi', 'Losers Finals'
+  ],
+  MATCH_STATES: {
+    1: { color: "blue", label: "In Progress" },    // CREATED
+    2: { color: "yellow", label: "In Queue" },     // CALLED
+    3: { color: "green", label: "Complete" },      // COMPLETED
+    4: { color: "red", label: "Invalid" },         // INVALID
+  }
 };
 
 const BracketViewer = () => {
@@ -87,30 +72,23 @@ const BracketViewer = () => {
     }
   };
 
+  // Simplify the organizeSets function
   const organizeSets = (sets) => {
-    // Group sets by round
-    const roundSets = sets.reduce((acc, set) => {
+    return sets.reduce((acc, set) => {
       const round = set.fullRoundText || 'Unknown Round';
       if (!acc[round]) acc[round] = [];
       acc[round].push(set);
+      acc[round].sort((a, b) => 
+        a.identifier.length === b.identifier.length 
+          ? a.identifier.localeCompare(b.identifier)
+          : a.identifier.length - b.identifier.length
+      );
       return acc;
     }, {});
-
-    // Sort sets within each round
-    Object.keys(roundSets).forEach(round => {
-      roundSets[round].sort((a, b) => {
-        const [aId, bId] = [a.identifier, b.identifier];
-        return aId.length !== bId.length ? 
-          aId.length - bId.length : 
-          aId.localeCompare(bId);
-      });
-    });
-
-    return roundSets;
   };
 
   const calculateLayoutMetrics = (roundIndex, matches, totalRounds) => {
-    const { MATCH_CARD_HEIGHT, ROUND_SPACING_WIDTH, MIN_GAP_BETWEEN_MATCHES } = LAYOUT_CONSTANTS;
+    const { MATCH_CARD_HEIGHT, ROUND_SPACING_WIDTH, MIN_GAP_BETWEEN_MATCHES } = BRACKET_CONFIG.LAYOUT;
     const matchesInRound = matches.length;
     
     // Handle final rounds
@@ -138,8 +116,8 @@ const BracketViewer = () => {
 
   const sortRounds = (rounds) => {
     return rounds.sort((a, b) => {
-      const aIndex = ROUND_ORDER.findIndex(r => a.toLowerCase().includes(r.toLowerCase()));
-      const bIndex = ROUND_ORDER.findIndex(r => b.toLowerCase().includes(r.toLowerCase()));
+      const aIndex = BRACKET_CONFIG.ROUND_ORDER.findIndex(r => a.toLowerCase().includes(r.toLowerCase()));
+      const bIndex = BRACKET_CONFIG.ROUND_ORDER.findIndex(r => b.toLowerCase().includes(r.toLowerCase()));
       
       if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
       if (aIndex !== -1) return -1;
@@ -148,9 +126,10 @@ const BracketViewer = () => {
     });
   };
 
+  // Simplify MatchCard component
   const MatchCard = ({ set }) => {
-    const stateNumber = parseInt(set?.state, 10);
-    const stateStyle = STATE_STYLES[stateNumber] || { color: "gray", label: "Unknown" };
+    const stateStyle = BRACKET_CONFIG.MATCH_STATES[parseInt(set?.state, 10)] || 
+                      { color: "gray", label: "Unknown" };
 
     return (
       <Card className={`w-48 bg-gray-800 text-white border-2 border-${stateStyle.color}-500 shadow-xl`}>
@@ -165,9 +144,9 @@ const BracketViewer = () => {
             <div key={`slot-${index}`} className="flex items-center">
               <div className={`w-4 h-4 ${index === 0 ? 'bg-blue-500' : 'bg-red-500'} rounded-full mr-2`} />
               <Typography variant="small" className="truncate text-white">
-                {slot.entrant ? 
-                  `${slot.entrant.name} (Seed ${slot.entrant.seeds?.[0]?.seedNum || 'N/A'})` : 
-                  'TBD'}
+                {slot.entrant 
+                  ? `${slot.entrant.name} (Seed ${slot.entrant.seeds?.[0]?.seedNum || 'N/A'})`
+                  : 'TBD'}
               </Typography>
               {slot.standing && (
                 <Typography variant="small" className="ml-2 text-white">
@@ -239,10 +218,10 @@ const BracketViewer = () => {
   const roundSets = organizeSets(tournamentData.event.sets.nodes);
   const rounds = Object.keys(roundSets);
   const winnerRounds = rounds.filter(round => 
-    round.toLowerCase().includes(BRACKET_TYPES.WINNERS)
+    round.toLowerCase().includes(BRACKET_CONFIG.TYPES.WINNERS)
   );
   const loserRounds = rounds.filter(round => 
-    round.toLowerCase().includes(BRACKET_TYPES.LOSERS)
+    round.toLowerCase().includes(BRACKET_CONFIG.TYPES.LOSERS)
   );
 
   return (
