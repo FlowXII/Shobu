@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import {
   Card,
   CardBody,
@@ -37,6 +37,7 @@ function StationViewer() {
     message: '',
     type: 'success' // or 'error'
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (submittedEventId) {
@@ -89,14 +90,17 @@ function StationViewer() {
   };
 
   const allSets = tournamentData?.event?.sets?.nodes || [];
-  const relevantSets = allSets.filter(set => [1, 2, 4, 6, 7].includes(set.state))
+  
+  // Updated to include finished matches (state 3)
+  const relevantSets = allSets.filter(set => [1, 2, 3, 4, 6, 7].includes(set.state))
     .map(set => ({
       ...set,
       fullRoundText: set.fullRoundText || 'Unknown Round'
     }));
 
+  // Updated to include finished matches in the filter
   const filteredSets = showOnlyCalled
-    ? relevantSets.filter(set => [2, 6].includes(set.state)) // Ongoing (2) and Called (6)
+    ? relevantSets.filter(set => [2, 3, 6].includes(set.state)) // Ongoing (2), Completed (3), and Called (6)
     : relevantSets;
 
   const toggleFilter = () => {
@@ -402,7 +406,7 @@ function StationViewer() {
                     onClick={toggleFilter}
                     className="bg-gradient-to-r from-gray-700 to-gray-900 text-white shadow-lg hover:shadow-xl transition-all duration-300"
                   >
-                    {showOnlyCalled ? "Show All Sets" : "Show Only Called Sets"}
+                    {showOnlyCalled ? "Show All Sets" : "Show Only Called and Completed Sets"}
                   </Button>
                 </div>
               </div>
@@ -520,6 +524,12 @@ function StationViewer() {
           )}
         </CardBody>
       </Card>
+      <Button
+        onClick={() => navigate(`/bracket/${submittedEventId}`, { state: { tournamentData } })}
+        className="mb-4 bg-blue-500 hover:bg-blue-600"
+      >
+        View Bracket
+      </Button>
     </div>
   );
 }

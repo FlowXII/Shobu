@@ -12,6 +12,7 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import { Provider } from 'react-redux';
 import store from './store';
+import BracketViewer from './pages/BracketViewer';
 
 // Create a layout component to handle the sidebar and main content
 const Layout = ({ children }) => {
@@ -44,6 +45,7 @@ function App() {
                             <Route path="/station-viewer" element={<StationViewer />} />
                             <Route path="/dashboard" element={<Dashboard />} />
                             <Route path="/profile" element={<Profile />} />
+                            <Route path="/bracket/:eventId" element={<BracketViewer />} />
                         </Routes>
                     </Layout>
                 </Router>

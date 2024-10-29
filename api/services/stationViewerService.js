@@ -21,27 +21,35 @@ export async function FetchStations(eventId) {
             event(id: $eventId) {
               id
               name
+              numEntrants
               sets(
                 page: 1
                 perPage: 128
                 filters: {
-                  state: [1, 2, 4, 6, 7],
-                  hideEmpty: true
+                  state: [1, 2, 3, 4, 6, 7],
+                  hideEmpty: false
                 }
               ) {
                 nodes {
                   id
                   fullRoundText
                   state
+                  round
+                  identifier
                   station {
                     id
                     number
                   }
                   slots {
                     id
-                    entrant {
+                    slotIndex
+                    entrant
+                   {
                       id
                       name
+                      seeds {
+                      seedNum
+                      }
                     }
                   }
                 }

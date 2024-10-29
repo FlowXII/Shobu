@@ -1,13 +1,15 @@
 import React from 'react';
 import { Card, CardBody, Typography, Chip } from "@material-tailwind/react";
-import { Clock, Play, CheckCircle, Bell, AlertCircle, MonitorIcon, Swords } from "lucide-react";
+import { Clock, Play, CheckCircle, Bell, AlertCircle, MonitorIcon, Swords, XCircle, List } from "lucide-react";
 
-const stateStyles = {
+export const stateStyles = {
   1: { color: "blue", text: "Created", icon: Clock },
-  2: { color: "green", text: "Ongoing", icon: Play },
+  2: { color: "green", text: "Active", icon: Play },
+  3: { color: "purple", text: "Complete", icon: CheckCircle },
   4: { color: "yellow", text: "Ready", icon: AlertCircle },
+  5: { color: "red", text: "Invalid", icon: XCircle },
   6: { color: "orange", text: "Called", icon: Bell },
-  7: { color: "purple", text: "Completed", icon: CheckCircle },
+  7: { color: "gray", text: "Queued", icon: List },
 };
 
 const SetCardComponent = ({ set }) => {
@@ -35,7 +37,7 @@ const SetCardComponent = ({ set }) => {
           <Chip
             value={`Station ${set?.station?.number || "N/A"}`}
             className="bg-white text-black font-semibold text-base py-2 px-2"
-            icon={<MonitorIcon className="h-5 w-4  text-black" />}
+            icon={<MonitorIcon className="h-5 w-4 text-black" />}
           />
         </div>
         <div className="space-y-1">
