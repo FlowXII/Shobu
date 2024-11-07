@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_BASE_URL=http://localhost:4000/api
+
+  backend:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+      - FRONTEND_URL=http://localhost
+    env_file:
+      - ./api/.env 

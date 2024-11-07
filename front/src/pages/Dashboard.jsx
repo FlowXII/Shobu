@@ -57,7 +57,7 @@ const Dashboard = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col items-center mb-8">
         <Card className="w-full max-w-3xl bg-gradient-to-r from-gray-800 to-gray-900 text-white shadow-lg border border-white border-opacity-10 rounded-lg overflow-hidden">
           <CardBody className="p-4">
             <Typography variant="h3" className="text-center font-bold mb-2">
@@ -68,7 +68,6 @@ const Dashboard = () => {
             </Typography>
           </CardBody>
         </Card>
-        <DashboardRefresher onRefresh={refreshDashboard} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -158,8 +157,9 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Set Watcher */}
+        {/* Dashboard Refresher and Set Watcher */}
         <div className="lg:col-span-3">
+          <DashboardRefresher onRefresh={refreshDashboard} />
           <SetWatcherComponent tournaments={localTournaments} />
         </div>
       </div>
