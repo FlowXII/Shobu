@@ -1,18 +1,25 @@
 import jwt from 'jsonwebtoken';
-import config from '../../config/startgg.config.js';
 
 export const verifyToken = (req, res, next) => {
-  const token = req.cookies.auth_token; // Get the token from cookies
+  console.log('🔒 Verifying token...');
+  const jwtToken = req.cookies.jwt;
 
-  if (!token) {
-    return res.status(401).json({ error: 'No token provided' });
+  if (!jwtToken) {
+    console.log('❌ No JWT token found in cookies');
+    return res.status(401).json({ error: 'Please log in first' });
   }
 
   try {
-    const decoded = jwt.verify(token, config.startgg.jwtSecret);
-    req.user = decoded; // Attach the decoded token to the request
+    console.log('🔑 Attempting to verify JWT...');
+    const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
+    console.log('✅ JWT verified successfully for user:', decoded.userId);
+    req.user = { userId: decoded.userId };
     next();
   } catch (error) {
+    console.error('❌ Token verification failed:', {
+      error: error.message,
+      stack: error.stack
+    });
     return res.status(401).json({ error: 'Invalid token' });
   }
 };

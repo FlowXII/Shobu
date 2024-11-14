@@ -12,9 +12,9 @@ import {
   Alert
 } from "@material-tailwind/react";
 import SetCardComponent from '../components/SetCardComponent';
-import Login from './Login';
+import Login from './StartGGLogin';
 
-const REFRESH_INTERVAL = 5000;
+const REFRESH_INTERVAL = 30000;
 
 const StationCard = ({ number, isUsed }) => (
   <Card className={`w-16 h-16 flex items-center justify-center ${isUsed ? 'bg-gray-700 border-2 border-dashed border-gray-500' : 'bg-gray-800'} shadow-lg transition-transform transform hover:scale-105`}>
@@ -25,7 +25,13 @@ const StationCard = ({ number, isUsed }) => (
 );
 
 function StationViewer() {
-  const { user, loading } = useSelector((state) => state.user);
+  const { user, initialized } = useSelector(state => state.user);
+  const { isAuthenticated } = useSelector(state => state.auth);
+  const navigate = useNavigate();
+  
+  // State declarations
+  const [pageLoading, setPageLoading] = useState(true);
+  const [fetchLoading, setFetchLoading] = useState(false);
   const [eventId, setEventId] = useState('');
   const [submittedEventId, setSubmittedEventId] = useState(null);
   const [tournamentData, setTournamentData] = useState(null);
@@ -35,25 +41,130 @@ function StationViewer() {
   const [notification, setNotification] = useState({
     show: false,
     message: '',
-    type: 'success' // or 'error'
+    type: 'success'
   });
-  const navigate = useNavigate();
 
+  // Define URL based on submittedEventId
+  const getUrl = () => submittedEventId ? 
+    `${import.meta.env.VITE_API_BASE_URL}/stations/${submittedEventId}` : 
+    null;
+
+  // Initialization effect
   useEffect(() => {
-    if (submittedEventId) {
-      const interval = setInterval(() => {
-        fetchTournaments();
-      }, REFRESH_INTERVAL);
-
-      return () => clearInterval(interval);
+    if (initialized) {
+      setPageLoading(false);
     }
-  }, [submittedEventId]);
+  }, [initialized]);
 
-  const url = `${import.meta.env.VITE_API_BASE_URL}/stations/${submittedEventId}`;
+  // Tournament fetching effect
+  useEffect(() => {
+    let intervalId;
+    let isMounted = true;
+    
+    const fetchData = async () => {
+      const url = getUrl();
+      if (!url || !user?.startgg?.accessToken || !isMounted) return;
+      
+      try {
+        setFetchLoading(true);
+        const response = await fetch(url, {
+          headers: {
+            'Authorization': `Bearer ${user.startgg.accessToken}`,
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include'
+        });
+        
+        if (!isMounted) return;
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        if (!data.data || !data.data.event || !data.data.event.sets || !data.data.event.sets.nodes) {
+          throw new Error('Unexpected data structure from API');
+        }
+        setTournamentData(data.data);
+      } catch (error) {
+        if (!isMounted) return;
+        console.error('Error fetching tournaments:', error.message);
+        setTournamentData(null);
+        setNotification({
+          show: true,
+          message: `Error fetching tournaments: ${error.message}`,
+          type: 'error'
+        });
+      } finally {
+        if (isMounted) {
+          setFetchLoading(false);
+        }
+      }
+    };
+
+    // Initial fetch
+    fetchData();
+
+    // Set up interval only if we have an event ID
+    if (submittedEventId) {
+      intervalId = setInterval(fetchData, REFRESH_INTERVAL);
+    }
+
+    // Cleanup function
+    return () => {
+      isMounted = false;
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [submittedEventId, user?.startgg?.accessToken]); // Removed url from dependencies
+
+  // Loading state check
+  if (pageLoading) {
+    return <div className="flex justify-center items-center h-screen">
+      <Spinner className="h-12 w-12" color="blue" />
+    </div>;
+  }
+
+  // Authentication checks
+  if (!isAuthenticated || !user) {
+    return <Navigate to="/login" />;
+  }
+
+  // Start.gg integration check
+  if (!user.startgg?.accessToken) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <Card className="bg-gradient-to-br from-gray-900 to-blue-950 text-white">
+          <CardBody className="text-center">
+            <Typography variant="h4" className="mb-4">
+              Start.gg Integration Required
+            </Typography>
+            <Typography className="mb-6">
+              To access the station viewer, you need to connect your Start.gg account.
+            </Typography>
+            <Button
+              color="purple"
+              onClick={() => navigate('/profile')}
+            >
+              Go to Profile to Connect
+            </Button>
+          </CardBody>
+        </Card>
+      </div>
+    );
+  }
 
   const fetchTournaments = async () => {
     try {
-      const response = await fetch(url);
+      setFetchLoading(true);
+      const response = await fetch(getUrl(), {
+        headers: {
+          'Authorization': `Bearer ${user.startgg.accessToken}`,
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+      });
+      
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -65,6 +176,13 @@ function StationViewer() {
     } catch (error) {
       console.error('Error fetching tournaments:', error.message);
       setTournamentData(null);
+      setNotification({
+        show: true,
+        message: `Error fetching tournaments: ${error.message}`,
+        type: 'error'
+      });
+    } finally {
+      setFetchLoading(false);
     }
   };
 
@@ -180,11 +298,12 @@ function StationViewer() {
 
   const handleResetSet = async (setId) => {
     try {
+      setFetchLoading(true);
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/reset-set`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}`
+          'Authorization': `Bearer ${user.startgg.accessToken}`
         },
         body: JSON.stringify({ setId, resetDependentSets: false }),
         credentials: 'include'
@@ -212,16 +331,19 @@ function StationViewer() {
         message: `Error resetting set: ${error.message}`,
         type: 'error'
       });
+    } finally {
+      setFetchLoading(false);
     }
   };
 
   const handleMarkSetCalled = async (setId) => {
     try {
+      setFetchLoading(true);
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/mark-set-called`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}`
+          'Authorization': `Bearer ${user.startgg.accessToken}`
         },
         body: JSON.stringify({ setId }),
         credentials: 'include'
@@ -249,16 +371,19 @@ function StationViewer() {
         message: `Error marking set as called: ${error.message}`,
         type: 'error'
       });
+    } finally {
+      setFetchLoading(false);
     }
   };
 
   const handleMarkSetInProgress = async (setId) => {
     try {
+      setFetchLoading(true);
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/mark-set-in-progress`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}`
+          'Authorization': `Bearer ${user.startgg.accessToken}`
         },
         body: JSON.stringify({ setId }),
         credentials: 'include'
@@ -286,6 +411,8 @@ function StationViewer() {
         message: `Error marking set as in progress: ${error.message}`,
         type: 'error'
       });
+    } finally {
+      setFetchLoading(false);
     }
   };
 
@@ -317,10 +444,6 @@ function StationViewer() {
     );
   };
 
-  if (loading) {
-    return <div className="flex justify-center items-center h-screen"><Spinner className="h-12 w-12" color="blue" /></div>;
-  }
-
   if (!user) {
     return <Navigate to="/login" replace />;
   }
@@ -330,7 +453,7 @@ function StationViewer() {
       <Card className="mb-4 shadow-xl">
         <CardBody>
           <Typography variant="h5" color="blue-gray" className="mb-2">
-            Welcome, {user.player.gamerTag}!
+            Welcome, {user.startgg?.player?.gamerTag || user.username}!
           </Typography>
           <Typography color="gray">
             You are logged in and can access the Station Viewer. Click on a set to report the result.
@@ -410,7 +533,7 @@ function StationViewer() {
                   </Button>
                 </div>
               </div>
-              {tournamentData === null ? (
+              {fetchLoading ? (
                 <div className="flex justify-center">
                   <Spinner className="h-12 w-12" color="red" />
                 </div>

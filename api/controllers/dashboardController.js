@@ -1,29 +1,17 @@
 import { fetchDashboardData } from '../services/dashboard/dashboardService.js';
-import jwt from 'jsonwebtoken';
-import config from '../config/startgg.config.js';
+import User from '../models/User.js';
 
 export const getDashboard = async (req, res) => {
-  console.log('Dashboard route accessed');
-
-  const token = req.cookies.auth_token;
-  if (!token) {
-    console.log('Unauthorized access attempt');
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-
   try {
-    // Verify and decode the JWT token
-    const decoded = jwt.verify(token, config.startgg.jwtSecret);
-    const accessToken = decoded.startgg_access_token;
+    const user = await User.findById(req.user.userId);
+    if (!user?.startgg?.accessToken) {
+      return res.status(401).json({ error: 'Start.gg not connected' });
+    }
 
-    console.log('Access token retrieved:', accessToken ? 'Yes' : 'No');
-
-    const dashboardData = await fetchDashboardData(accessToken);
-    console.log('Dashboard data retrieved successfully');
-
+    const dashboardData = await fetchDashboardData(user.startgg.accessToken);
     res.json(dashboardData);
   } catch (error) {
-    console.error('Error fetching user dashboard:', error.message);
+    console.error('Error fetching dashboard:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };

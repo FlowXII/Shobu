@@ -5,6 +5,7 @@ import {
   Home,
   LayoutDashboard,
   Trophy,
+  PlusCircle,
   BarChart2,
   Presentation,
   Newspaper,
@@ -16,6 +17,7 @@ import {
   UserPlus,
   ChevronLeft,
   ChevronRight,
+  Activity,
 } from 'lucide-react';
 import { useSidebar } from '../contexts/SidebarContext';
 
@@ -27,14 +29,15 @@ const Sidebar = () => {
     { name: 'Home', icon: Home, color: 'text-red-400', hoverColor: 'hover:bg-red-800/30', path: '/' },
     { name: 'Dashboard', icon: LayoutDashboard, color: 'text-red-400', hoverColor: 'hover:bg-red-800/30', path: '/dashboard' },
     { name: 'Tournaments', icon: Trophy, color: 'text-red-400', hoverColor: 'hover:bg-red-800/30', path: '/upcoming' },
+    { name: 'Create Tournament', icon: PlusCircle, color: 'text-red-400', hoverColor: 'hover:bg-red-800/30', path: '/tournaments/create' },
     { name: 'Statistics', icon: BarChart2, color: 'text-red-400', hoverColor: 'hover:bg-red-800/30', path: '/statistics' },
     { name: 'Stations', icon: Presentation, color: 'text-red-400', hoverColor: 'hover:bg-red-800/30', path: '/station-viewer' },
-    { name: 'Timeline', icon: Newspaper, color: 'text-blue-400', hoverColor: 'hover:bg-blue-800/30' },
-    { name: 'Spaces', icon: Users, color: 'text-blue-400', hoverColor: 'hover:bg-blue-800/30' },
-    { name: 'Messages', icon: MessageSquare, color: 'text-blue-400', hoverColor: 'hover:bg-blue-800/30' },
-    { name: 'Streams', icon: Tv, color: 'text-purple-400', hoverColor: 'hover:bg-purple-800/30' },
+    { name: 'Feed', icon: Newspaper, color: 'text-blue-400', hoverColor: 'hover:bg-blue-800/30', path: '/feed' },
+    { name: 'Spaces', icon: Users, color: 'text-blue-400', hoverColor: 'hover:bg-blue-800/30', path: '/spaces' },
+    { name: 'Messages', icon: MessageSquare, color: 'text-blue-400', hoverColor: 'hover:bg-blue-800/30', path: '/messages' },
+    { name: 'Streams', icon: Tv, color: 'text-purple-400', hoverColor: 'hover:bg-purple-800/30', path: '/streams' },
     { name: 'Your Profile', icon: User, color: 'text-yellow-400', hoverColor: 'hover:bg-yellow-800/30' , path: '/profile' },
-    { name: 'StartGG Login', icon: LogIn, color: 'text-yellow-400', hoverColor: 'hover:bg-yellow-800/30', path: '/login' },
+    { name: 'Login', icon: LogIn, color: 'text-yellow-400', hoverColor: 'hover:bg-yellow-800/30', path: '/login' },
     { name: 'Register', icon: UserPlus, color: 'text-yellow-400', hoverColor: 'hover:bg-yellow-800/30', path: '/register' },
   ];
 

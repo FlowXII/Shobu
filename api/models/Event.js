@@ -1,12 +1,19 @@
 import mongoose from 'mongoose';
 
 const eventSchema = new mongoose.Schema({
-  tournamentId: { type: mongoose.Schema.Types.ObjectId, ref: "Tournament" },
+  tournamentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Tournament', required: true },
   name: { type: String, required: true },
-  videogameId: Number,
+  slug: String,
+  startAt: Date,
+  state: Number,
   numEntrants: Number,
+  videogame: {
+    id: String
+  },
+  sets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Set' }],
+  phases: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Phase' }],
   createdAt: { type: Date, default: Date.now },
-  phases: [{ type: mongoose.Schema.Types.ObjectId, ref: "Phase" }],
+  updatedAt: { type: Date, default: Date.now }
 });
 
 export default mongoose.model('Event', eventSchema); 

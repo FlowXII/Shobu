@@ -1,62 +1,202 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import {
+  Card,
+  CardBody,
+  Typography,
+  Input,
+  Button,
+} from "@material-tailwind/react";
 import axios from 'axios';
-import { Input, Button, Card, CardBody } from '@material-tailwind/react';
+import { setUser, setError } from '../store/slices/userSlice';
 
 function Register() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading } = useSelector((state) => state.user);
+  
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [formErrors, setFormErrors] = useState({});
 
-    const handleRegister = async () => {
-        try {
-            const response = await axios.post('/api/users/register', { username, password });
-            console.log('Registration successful:', response.data);
-        } catch (error) {
-            console.error('Error registering:', error);
-        }
-    };
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.username || formData.username.length < 3) {
+      errors.username = 'Username must be at least 3 characters';
+    }
+    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = 'Please enter a valid email';
+    }
+    if (!formData.password || formData.password.length < 6) {
+      errors.password = 'Password must be at least 6 characters';
+    }
+    if (formData.password !== formData.confirmPassword) {
+      errors.confirmPassword = 'Passwords do not match';
+    }
+    return errors;
+  };
 
-    return (
-        <div className="fixed top-0 left-0 h-full w-full bg-gray-900 text-white flex items-center justify-center p-4">
-            <Card className="w-full max-w-md bg-gray-800 p-6 rounded-lg shadow-lg">
-                <CardBody>
-                    <h1 className="text-2xl font-semibold mb-6 text-yellow-400 text-center">Register</h1>
-                    <div className="mb-4">
-                        <Input
-                            type="text"
-                            label="Username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            className="text-white"
-                            containerProps={{ className: 'mb-4' }}
-                            inputProps={{
-                                className: 'text-yellow-400 placeholder-yellow-400 focus:text-white focus:border-yellow-400 focus:ring-yellow-400'
-                            }}
-                            labelProps={{
-                                className: 'text-yellow-400 peer-focus:text-white peer-focus:border-yellow-400'
-                            }}
-                        />
-                    </div>
-                    <div className="mb-6">
-                        <Input
-                            type="password"
-                            label="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="text-white"
-                            containerProps={{ className: 'mb-4' }}
-                            inputProps={{
-                                className: 'text-yellow-400 placeholder-yellow-400 focus:text-white focus:border-yellow-400 focus:ring-yellow-400'
-                            }}
-                            labelProps={{
-                                className: 'text-yellow-400 peer-focus:text-white peer-focus:border-yellow-400'
-                            }}
-                        />
-                    </div>
-                    <Button color="yellow" onClick={handleRegister} fullWidth>Register</Button>
-                </CardBody>
-            </Card>
-        </div>
-    );
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/register`, {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password
+      });
+
+      if (response.data.success) {
+        dispatch(setUser(response.data.data));
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      dispatch(setError(error.response?.data?.error || 'Registration failed'));
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    // Clear error when user starts typing
+    if (formErrors[name]) {
+      setFormErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  };
+
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 to-gray-950">
+      <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:20px_20px]" 
+           style={{ 
+             maskImage: 'linear-gradient(to bottom, transparent, black)', 
+             WebkitMaskImage: 'linear-gradient(to bottom, transparent, black)' 
+           }}>
+      </div>
+      
+      <Card className="w-full max-w-md bg-gradient-to-br from-gray-800 to-gray-950 text-white shadow-xl border border-white border-opacity-20">
+        <CardBody className="flex flex-col gap-4">
+          <Typography variant="h3" color="white" className="text-center mb-2">
+            Create Account
+          </Typography>
+          
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div>
+              <Input
+                type="text"
+                name="username"
+                label="Username"
+                value={formData.username}
+                onChange={handleChange}
+                className="!text-white !border-white/20"
+                labelProps={{
+                  className: "!text-gray-400",
+                }}
+                error={!!formErrors.username}
+              />
+              {formErrors.username && (
+                <Typography color="red" className="mt-1 text-xs">
+                  {formErrors.username}
+                </Typography>
+              )}
+            </div>
+
+            <div>
+              <Input
+                type="email"
+                name="email"
+                label="Email"
+                value={formData.email}
+                onChange={handleChange}
+                className="!text-white !border-white/20"
+                labelProps={{
+                  className: "!text-gray-400",
+                }}
+                error={!!formErrors.email}
+              />
+              {formErrors.email && (
+                <Typography color="red" className="mt-1 text-xs">
+                  {formErrors.email}
+                </Typography>
+              )}
+            </div>
+
+            <div>
+              <Input
+                type="password"
+                name="password"
+                label="Password"
+                value={formData.password}
+                onChange={handleChange}
+                className="!text-white !border-white/20"
+                labelProps={{
+                  className: "!text-gray-400",
+                }}
+                error={!!formErrors.password}
+              />
+              {formErrors.password && (
+                <Typography color="red" className="mt-1 text-xs">
+                  {formErrors.password}
+                </Typography>
+              )}
+            </div>
+
+            <div>
+              <Input
+                type="password"
+                name="confirmPassword"
+                label="Confirm Password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className="!text-white !border-white/20"
+                labelProps={{
+                  className: "!text-gray-400",
+                }}
+                error={!!formErrors.confirmPassword}
+              />
+              {formErrors.confirmPassword && (
+                <Typography color="red" className="mt-1 text-xs">
+                  {formErrors.confirmPassword}
+                </Typography>
+              )}
+            </div>
+
+            <Button
+              type="submit"
+              className="mt-4 bg-red-500 hover:bg-red-600"
+              disabled={loading}
+              fullWidth
+            >
+              {loading ? 'Creating Account...' : 'Register'}
+            </Button>
+          </form>
+
+          <Typography className="text-center mt-4 text-sm text-gray-400">
+            Already have an account?{' '}
+            <a href="/login" className="text-red-400 hover:text-red-300">
+              Login here
+            </a>
+          </Typography>
+        </CardBody>
+      </Card>
+    </div>
+  );
 }
 
 export default Register;

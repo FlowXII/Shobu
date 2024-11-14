@@ -6,8 +6,7 @@ const config = {
           clientId: process.env.STARTGG_CLIENT_ID,
           clientSecret: process.env.STARTGG_CLIENT_SECRET,
           redirectUri: process.env.STARTGG_REDIRECT_URI,
-          jwtSecret: process.env.JWT_SECRET,
-          scopes: ['user.identity', 'user.email', 'tournament.manager', 'tournament.reporter'] // Add more scopes as needed
+          scopes: ['user.identity', 'user.email', 'tournament.manager', 'tournament.reporter']
         }
       };
       

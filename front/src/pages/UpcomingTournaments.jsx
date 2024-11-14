@@ -1,5 +1,7 @@
 import React from 'react';
-import { Card, CardBody, Typography } from '@material-tailwind/react';
+import { Card, CardBody, Typography, Button } from '@material-tailwind/react';
+import { Trophy, Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import TournamentCardComponent from '../components/TournamentCardComponent';
 import TournamentFilterForm from '../components/TournamentFilterForm';
 import LoadingIndicator from '../components/LoadingIndicator';
@@ -8,6 +10,7 @@ import useTournamentData from '../hooks/useTournamentData';
 import GameOptionsComponent from '../components/GameOptionsComponent';
 
 function UpcomingTournaments() {
+  const navigate = useNavigate();
   const videogameOptions = GameOptionsComponent();
 
   const {
@@ -20,9 +23,53 @@ function UpcomingTournaments() {
 
   return (
     <div className="flex flex-col items-center justify-start p-4 overflow-x-hidden">
+      {/* Archades Tournaments Section */}
       <Card className="w-full max-w-[48rem] bg-gradient-to-br from-gray-800 to-gray-950 text-white shadow-xl border border-white border-opacity-20 rounded-lg overflow-hidden mb-6">
         <CardBody>
-          <Typography variant="h4" className="mb-6 text-center text-red-500 font-bold">Upcoming Tournaments</Typography>
+          <div className="flex items-center gap-3 mb-6 justify-center">
+            <Trophy className="h-6 w-6 text-red-500" />
+            <Typography variant="h4" className="text-center text-red-500 font-bold">
+              Tournaments on Shobu
+            </Typography>
+          </div>
+          
+          <div className="text-center mb-6">
+            <Typography className="text-gray-300 mb-4">
+              View all tournaments created on Shobu !
+            </Typography>
+            <Button
+              size="lg"
+              className="bg-red-500 hover:bg-red-600 transition-colors shadow-lg"
+              onClick={() => navigate('/tournaments')}
+            >
+              Browse Tournaments
+            </Button>
+          </div>
+        </CardBody>
+      </Card>
+
+      {/* Stylish OR Divider */}
+      <div className="w-full max-w-[48rem] flex items-center gap-4 mb-6">
+        <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+        <div className="relative">
+          <div className="absolute inset-0 blur-sm bg-white/20 rounded-full"></div>
+          <Typography className="px-4 py-2 text-white font-bold relative z-10">
+            OR
+          </Typography>
+        </div>
+        <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+      </div>
+
+      {/* Start.gg Search Section */}
+      <Card className="w-full max-w-[48rem] bg-gradient-to-br from-gray-800 to-gray-950 text-white shadow-xl border border-white border-opacity-20 rounded-lg overflow-hidden mb-6">
+        <CardBody>
+          <div className="flex items-center gap-3 mb-6 justify-center">
+            <Search className="h-6 w-6 text-red-500" />
+            <Typography variant="h4" className="text-center text-red-500 font-bold">
+              Search Start.gg Tournaments
+            </Typography>
+          </div>
+          
           <TournamentFilterForm
             cCode={cCode}
             setCCode={setCCode}
