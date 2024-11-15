@@ -15,6 +15,7 @@ import {
 } from "@material-tailwind/react";
 import { Trophy, MapPin, Calendar, Users, Image as ImageIcon, ChevronDown } from 'lucide-react';
 import { toast } from 'react-toastify';
+import Breadcrumbs from '../components/Breadcrumbs';
 
 const CreateTournament = () => {
   const navigate = useNavigate();
@@ -138,12 +139,9 @@ const CreateTournament = () => {
 
   // Updated input styles to match the theme
   const inputStyles = {
-    className: "!border-t-blue-gray-200 focus:!border-red-500 bg-gray-800",
+    className: "!border-t-blue-gray-200 focus:!border-red-500 bg-gray-800/50 !text-white !border-white/20",
     labelProps: {
-      className: "text-gray-300 peer-focus:text-red-500"
-    },
-    containerProps: {
-      className: "min-w-[100px]"
+      className: "!text-gray-400 peer-focus:!text-red-500"
     }
   };
 
@@ -171,12 +169,13 @@ const CreateTournament = () => {
 
   return (
     <div className="flex flex-col items-center justify-start p-8 min-h-screen w-full">
+      <Breadcrumbs />
       {/* Remove or update the background pattern div */}
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:20px_20px]">
       </div>
 
       {/* Header Card */}
-      <Card className="w-full max-w-[64rem] bg-gradient-to-br from-gray-800 to-gray-900 text-white shadow-xl border border-white border-opacity-20 rounded-lg overflow-hidden mb-8 relative z-10">
+      <Card className="w-full max-w-[64rem] bg-gray-800/50 text-white shadow-xl border border-white/10 rounded-lg overflow-hidden mb-8 relative z-10">
         <CardBody className="p-8">
           <Typography variant="h3" className="mb-4 text-center text-red-500 font-bold">
             Create Tournament
@@ -188,14 +187,14 @@ const CreateTournament = () => {
       </Card>
 
       {/* Main Form Card */}
-      <Card className="w-full max-w-[64rem] bg-gradient-to-br from-gray-800 to-gray-900 text-white shadow-xl border border-white border-opacity-20 rounded-lg overflow-hidden mb-8 relative z-10">
+      <Card className="w-full max-w-[64rem] bg-gray-800/50 text-white shadow-xl border border-white/10 rounded-lg overflow-hidden mb-8 relative z-10">
         <CardBody className="p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Basic Info Accordion */}
             <Accordion
               open={open === 1}
               animate={CUSTOM_ANIMATION}
-              className="border border-white/10 rounded-lg mb-6"
+              className="border border-white/10 rounded-lg mb-6 bg-gray-800/50"
             >
               <AccordionHeader
                 onClick={() => handleOpen(1)}
@@ -212,46 +211,29 @@ const CreateTournament = () => {
               <AccordionBody className="px-8 pb-8 pt-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                   <Input
+                    {...inputStyles}
                     type="text"
                     label="Tournament Name"
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="!text-white !border-white/20"
-                    labelProps={{
-                      className: "!text-gray-400 peer-placeholder-shown:text-gray-400",
-                    }}
-                    containerProps={{
-                      className: "min-w-[100px]",
-                    }}
-                    placeholder=" "
                   />
                   <Input
+                    {...inputStyles}
                     type="text"
                     label="Slug"
                     name="slug"
                     value={formData.slug}
                     onChange={handleInputChange}
-                    className="!text-white !border-white/20"
-                    labelProps={{
-                      className: "!text-gray-400",
-                    }}
                   />
                 </div>
                 <div className="mt-4">
                   <Textarea
+                    {...inputStyles}
                     label="Description"
                     name="description"
                     value={formData.description}
                     onChange={handleInputChange}
-                    className="!text-white !border-white/20"
-                    labelProps={{
-                      className: "!text-gray-400 peer-placeholder-shown:text-gray-400",
-                    }}
-                    containerProps={{
-                      className: "min-w-[100px]",
-                    }}
-                    placeholder=" "
                     rows={4}
                   />
                 </div>
@@ -279,38 +261,29 @@ const CreateTournament = () => {
               <AccordionBody className="px-8 pb-8 pt-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                   <Input
+                    {...inputStyles}
                     type="datetime-local"
                     label="Start Date"
                     name="startAt"
                     value={formData.startAt}
                     onChange={handleInputChange}
-                    className="!text-white !border-white/20"
-                    labelProps={{
-                      className: "!text-gray-400",
-                    }}
                   />
                   <Input
+                    {...inputStyles}
                     type="datetime-local"
                     label="End Date"
                     name="endAt"
                     value={formData.endAt}
                     onChange={handleInputChange}
-                    className="!text-white !border-white/20"
-                    labelProps={{
-                      className: "!text-gray-400",
-                    }}
                   />
                 </div>
                 <div className="mt-4">
                   <Select
+                    {...inputStyles}
                     label="Tournament Type"
                     name="type"
                     value={formData.type}
                     onChange={(value) => handleInputChange({ target: { name: 'type', value } })}
-                    className="!text-white !border-white/20"
-                    labelProps={{
-                      className: "!text-gray-400",
-                    }}
                   >
                     <Option value="SINGLE_ELIMINATION">Single Elimination</Option>
                     <Option value="DOUBLE_ELIMINATION">Double Elimination</Option>
@@ -341,50 +314,38 @@ const CreateTournament = () => {
               <AccordionBody className="px-8 pb-8 pt-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <Input
+                    {...inputStyles}
                     type="text"
                     label="City"
                     name="location.city"
                     value={formData.location.city}
                     onChange={handleInputChange}
-                    className="!text-white !border-white/20"
-                    labelProps={{
-                      className: "!text-gray-400",
-                    }}
                   />
                   <Input
+                    {...inputStyles}
                     type="text"
                     label="State"
                     name="location.state"
                     value={formData.location.state}
                     onChange={handleInputChange}
-                    className="!text-white !border-white/20"
-                    labelProps={{
-                      className: "!text-gray-400",
-                    }}
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
                   <Input
+                    {...inputStyles}
                     type="text"
                     label="Country"
                     name="location.country"
                     value={formData.location.country}
                     onChange={handleInputChange}
-                    className="!text-white !border-white/20"
-                    labelProps={{
-                      className: "!text-gray-400",
-                    }}
                   />
                   <Input
+                    {...inputStyles}
                     type="text"
                     label="Venue Address"
                     name="location.venueAddress"
                     value={formData.location.venueAddress}
                     onChange={handleInputChange}
-                    className="!text-white !border-white/20"
-                    labelProps={{
-                      className: "!text-gray-400",
-                    }}
                   />
                 </div>
               </AccordionBody>
@@ -411,27 +372,21 @@ const CreateTournament = () => {
               <AccordionBody className="px-8 pb-8 pt-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <Input
+                    {...inputStyles}
                     type="number"
                     label="Expected Attendees"
                     name="numAttendees"
                     value={formData.numAttendees}
                     onChange={handleInputChange}
-                    className="!text-white !border-white/20"
-                    labelProps={{
-                      className: "!text-gray-400",
-                    }}
                   />
                   <div className="flex items-center gap-4">
                     <ImageIcon className="h-5 w-5 text-purple-400" />
                     <Input
+                      {...inputStyles}
                       type="file"
                       label="Tournament Banner"
                       accept="image/*"
                       onChange={handleImageUpload}
-                      className="!text-white !border-white/20"
-                      labelProps={{
-                        className: "!text-gray-400",
-                      }}
                     />
                   </div>
                 </div>
@@ -440,7 +395,7 @@ const CreateTournament = () => {
 
             <Button
               type="submit"
-              className="w-full bg-red-500 hover:bg-red-600 text-white shadow-xl mt-8 py-4 text-lg font-medium"
+              className="w-full bg-red-500 hover:bg-red-600 text-white shadow-xl mt-8 py-4 text-lg font-medium transition-colors"
             >
               Create Tournament
             </Button>

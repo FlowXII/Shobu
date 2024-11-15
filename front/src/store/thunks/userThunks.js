@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { setUser, setError, clearUser } from '../slices/userSlice';
+import { clearUser } from '../slices/userSlice';
 import { setAuthenticated } from '../slices/authSlice';
 
 // Create axios instance with default config
@@ -15,6 +15,7 @@ const api = axios.create({
 
 // Replace makeAuthenticatedRequest with axios instance usage
 const makeAuthenticatedRequest = (url, options = {}, startggToken) => {
+  console.log('Making authenticated request to:', url);
   return api.request({
     url,
     ...options,
@@ -25,30 +26,43 @@ const makeAuthenticatedRequest = (url, options = {}, startggToken) => {
   });
 };
 
+export const loginUser = createAsyncThunk(
+  'user/login',
+  async (credentials, { rejectWithValue }) => {
+    try {
+      const response = await api.post('/auth/login', credentials);
+      
+      if (response.data.success) {
+        return response.data.user;
+      }
+      return rejectWithValue('Invalid credentials');
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.error || 'Invalid credentials');
+    }
+  }
+);
+
 export const fetchUserData = createAsyncThunk(
   'user/fetchUserData',
   async (_, { dispatch, rejectWithValue }) => {
-    console.log('🔍 Initiating user data fetch...');
     try {
-      console.log('📤 Making request to:', `${import.meta.env.VITE_API_BASE_URL}/auth/user`);
-      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/user`, {
-        withCredentials: true
-      });
-      console.log('📥 Received user data:', response.data);
+      const response = await api.get('/auth/user');
       
       if (response.data.user) {
-        dispatch(setUser(response.data.user));
         dispatch(setAuthenticated(true));
         return response.data.user;
-      } else {
-        dispatch(setUser(null));
-        dispatch(setAuthenticated(false));
-        return null;
       }
-    } catch (error) {
+      
       dispatch(setAuthenticated(false));
-      dispatch(setUser(null));
-      console.error('❌ User data fetch error:', error);
+      return rejectWithValue('No user data found');
+    } catch (error) {
+      // If the error is 401 (Unauthorized), it's not really an error - the user is just not logged in
+      if (error.response?.status === 401) {
+        dispatch(setAuthenticated(false));
+        return rejectWithValue('Not authenticated');
+      }
+      
+      dispatch(setAuthenticated(false));
       return rejectWithValue(error.response?.data?.error || 'Failed to fetch user data');
     }
   }
@@ -108,6 +122,22 @@ export const disconnectStartGG = createAsyncThunk(
     } catch (error) {
       console.error('Start.gg disconnect error:', error);
       return rejectWithValue('Failed to disconnect Start.gg');
+    }
+  }
+);
+
+export const registerUser = createAsyncThunk(
+  'user/register',
+  async (credentials, { rejectWithValue }) => {
+    try {
+      const response = await api.post('/auth/register', credentials);
+      
+      if (response.data.success) {
+        return response.data.user;
+      }
+      return rejectWithValue('Registration failed');
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.error || 'Registration failed');
     }
   }
 );

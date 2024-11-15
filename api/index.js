@@ -11,6 +11,7 @@ import stationReportingRoute from './routes/stationReportingRoute.js';
 import tournamentRoutes from './routes/tournamentRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import postRoutes from './routes/postRoutes.js';
+import eventRoutes from './routes/eventRoutes.js';
 dotenv.config();
 
 const app = express();
@@ -43,6 +44,9 @@ app.use('/api/auth', userRoutes);
 
 // Post routes
 app.use('/api', postRoutes);
+
+// Event routes
+app.use('/api', eventRoutes);
 
 // Export the app
 export default app;

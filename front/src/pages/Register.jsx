@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -8,13 +8,13 @@ import {
   Input,
   Button,
 } from "@material-tailwind/react";
-import axios from 'axios';
-import { setUser, setError } from '../store/slices/userSlice';
+import { registerUser } from '../store/thunks/userThunks';
 
 function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading } = useSelector((state) => state.user);
+  const { loading: { user: userLoading }, error: { user: userError } } = useSelector((state) => state.user);
+  const { isAuthenticated } = useSelector((state) => state.auth);
   
   const [formData, setFormData] = useState({
     username: '',
@@ -23,6 +23,12 @@ function Register() {
     confirmPassword: ''
   });
   const [formErrors, setFormErrors] = useState({});
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/profile');
+    }
+  }, [isAuthenticated, navigate]);
 
   const validateForm = () => {
     const errors = {};
@@ -51,18 +57,15 @@ function Register() {
     }
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/register`, {
+      await dispatch(registerUser({
         username: formData.username,
         email: formData.email,
         password: formData.password
-      });
-
-      if (response.data.success) {
-        dispatch(setUser(response.data.data));
-        navigate('/dashboard');
-      }
+      })).unwrap();
+      
+      // Navigation will happen automatically due to the useEffect
     } catch (error) {
-      dispatch(setError(error.response?.data?.error || 'Registration failed'));
+      console.error('Registration error:', error);
     }
   };
 
@@ -180,10 +183,10 @@ function Register() {
             <Button
               type="submit"
               className="mt-4 bg-red-500 hover:bg-red-600"
-              disabled={loading}
+              disabled={userLoading}
               fullWidth
             >
-              {loading ? 'Creating Account...' : 'Register'}
+              {userLoading ? 'Creating Account...' : 'Register'}
             </Button>
           </form>
 

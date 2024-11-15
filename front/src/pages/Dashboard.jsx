@@ -27,7 +27,8 @@ const CUSTOM_ANIMATION = {
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const { user, tournaments, loading, error, initialized } = useSelector(state => state.user);
+  const { user } = useSelector(state => state.user);
+  const { tournaments, loading, error } = useSelector(state => state.dashboard);
   const [localTournaments, setLocalTournaments] = useState(tournaments);
   const [showStartGGData, setShowStartGGData] = useState(false);
   const [open, setOpen] = useState(0);
@@ -44,16 +45,8 @@ const Dashboard = () => {
 
   const refreshDashboard = useCallback(async () => {
     if (!user?.startgg) return;
-    
-    try {
-      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/dashboard`, { 
-        withCredentials: true 
-      });
-      setLocalTournaments(response.data.tournaments);
-    } catch (error) {
-      console.error('Failed to refresh dashboard:', error);
-    }
-  }, [user?.startgg]);
+    dispatch(fetchDashboardData());
+  }, [dispatch, user?.startgg]);
 
   useEffect(() => {
     if (!user && !loading.user) {
@@ -86,7 +79,7 @@ const Dashboard = () => {
     );
   }
 
-  if (loading.user || loading.dashboard) {
+  if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
@@ -94,8 +87,8 @@ const Dashboard = () => {
     );
   }
 
-  if (error.user || error.dashboard) {
-    return <div className="text-center text-red-500">Error: {error.user || error.dashboard}</div>;
+  if (error) {
+    return <div className="text-center text-red-500">Error: {error}</div>;
   }
 
   return (
@@ -200,7 +193,9 @@ const Dashboard = () => {
                               />
                             ))
                           ) : (
-                            <Typography className="text-white text-center">No upcoming tournaments found.</Typography>
+                            <Typography className="text-white text-center">
+                              {loading ? "Loading tournaments..." : "No upcoming tournaments found."}
+                            </Typography>
                           )}
                         </div>
                       </div>

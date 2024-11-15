@@ -9,16 +9,27 @@ import {
   Button,
   Spinner,
   Dialog,
-  Alert
+  Alert,
+  Chip
 } from "@material-tailwind/react";
 import SetCardComponent from '../components/SetCardComponent';
 import Login from './StartGGLogin';
+import TournamentSuggestionCard from '../components/TournamentSuggestionCard';
+import { Bell, CheckCircle, Play, Clock, XCircle } from 'lucide-react';
 
 const REFRESH_INTERVAL = 30000;
 
 const StationCard = ({ number, isUsed }) => (
-  <Card className={`w-16 h-16 flex items-center justify-center ${isUsed ? 'bg-gray-700 border-2 border-dashed border-gray-500' : 'bg-gray-800'} shadow-lg transition-transform transform hover:scale-105`}>
-    <Typography variant="h6" color={isUsed ? "gray" : "white"} className="text-center">
+  <Card className={`
+    w-16 h-16 
+    flex items-center justify-center 
+    ${isUsed 
+      ? 'bg-gradient-to-br from-gray-800 to-gray-900 border-2 border-dashed border-gray-500' 
+      : 'bg-gradient-to-br from-gray-900 to-blue-900'
+    } 
+    shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl
+  `}>
+    <Typography variant="h6" color={isUsed ? "gray" : "white"} className="text-center font-bold">
       {number}
     </Typography>
   </Card>
@@ -42,6 +53,14 @@ function StationViewer() {
     show: false,
     message: '',
     type: 'success'
+  });
+  const { tournaments, loading: dashboardLoading } = useSelector(state => state.dashboard);
+  const [filters, setFilters] = useState({
+    showCalled: true,
+    showCompleted: true,
+    showActive: false,
+    showCreated: false,
+    hideTBD: true,
   });
 
   // Define URL based on submittedEventId
@@ -80,15 +99,22 @@ function StationViewer() {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
+        
         const data = await response.json();
         if (!data.data || !data.data.event || !data.data.event.sets || !data.data.event.sets.nodes) {
           throw new Error('Unexpected data structure from API');
         }
-        setTournamentData(data.data);
+
+        // Update only if data has changed
+        setTournamentData(prevData => {
+          if (JSON.stringify(prevData) !== JSON.stringify(data.data)) {
+            return data.data;
+          }
+          return prevData;
+        });
       } catch (error) {
         if (!isMounted) return;
         console.error('Error fetching tournaments:', error.message);
-        setTournamentData(null);
         setNotification({
           show: true,
           message: `Error fetching tournaments: ${error.message}`,
@@ -217,9 +243,24 @@ function StationViewer() {
     }));
 
   // Updated to include finished matches in the filter
-  const filteredSets = showOnlyCalled
-    ? relevantSets.filter(set => [2, 3, 6].includes(set.state)) // Ongoing (2), Completed (3), and Called (6)
-    : relevantSets;
+  const filteredSets = relevantSets.filter(set => {
+    // First check if both slots are TBD
+    const isBothTBD = set.slots.every(slot => 
+      !slot.entrant?.name || slot.entrant?.name === 'TBD' || slot.entrantName === 'TBD'
+    );
+    
+    if (filters.hideTBD && isBothTBD) {
+      return false;
+    }
+
+    // Then check state filters
+    return (
+      (filters.showCalled && set.state === 6) ||    // Called
+      (filters.showCompleted && set.state === 3) ||  // Completed
+      (filters.showActive && set.state === 2) ||     // Active
+      (filters.showCreated && set.state === 1)       // Created
+    );
+  });
 
   const toggleFilter = () => {
     setShowOnlyCalled(!showOnlyCalled);
@@ -444,76 +485,207 @@ function StationViewer() {
     );
   };
 
+  // New component for tournament suggestions
+  const TournamentSuggestions = () => {
+    if (dashboardLoading) {
+      return (
+        <div className="flex justify-center items-center py-4">
+          <Spinner className="h-8 w-8" color="red" />
+        </div>
+      );
+    }
+
+    if (!tournaments || tournaments.length === 0) {
+      return (
+        <Card className="bg-gray-800/50 p-4 mb-6">
+          <Typography variant="h6" className="text-gray-400 text-center">
+            No recent tournaments found
+          </Typography>
+          <Typography variant="small" className="text-gray-500 text-center">
+            Enter an event ID manually below
+          </Typography>
+        </Card>
+      );
+    }
+
+    return (
+      <div className="mb-6">
+        <Typography variant="h6" className="text-white mb-4">
+          Your Recent Tournaments
+        </Typography>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {tournaments.map(tournament => (
+            <TournamentSuggestionCard
+              key={tournament.id}
+              tournament={tournament}
+              onClick={(eventId) => {
+                setEventId(eventId);
+                setSubmittedEventId(eventId);
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  // Add this component definition before the main return statement
+  const EventIdForm = () => (
+    <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-6">
+      <div className="w-full max-w-md">
+        <Input
+          type="text"
+          label="Enter Event ID"
+          value={eventId}
+          onChange={(e) => setEventId(e.target.value)}
+          className="text-white bg-gray-800"
+          labelProps={{
+            className: "text-gray-400"
+          }}
+          containerProps={{
+            className: "min-w-[200px]"
+          }}
+        />
+      </div>
+      <Button 
+        type="submit" 
+        className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-lg transition-all duration-300"
+      >
+        Load Tournament
+      </Button>
+      <div className="bg-gray-800 p-4 rounded-lg max-w-md">
+        <Typography variant="small" className="text-gray-400 text-center">
+          <span className="text-red-400 font-semibold">Note:</span> This feature is for TOs and testing only.<br />
+          Find the event ID in the start.gg admin URL:<br />
+          <code className="bg-gray-900 px-2 py-1 rounded text-xs">
+            start.gg/admin/tournament/.../1140299/...
+          </code>
+        </Typography>
+      </div>
+    </form>
+  );
+
+  const FilterSection = () => {
+    return (
+      <Card className="bg-gradient-to-br from-gray-800 to-gray-900 p-4 rounded-lg border border-white/20">
+        <Typography variant="h6" color="white" className="mb-3">
+          Filters
+        </Typography>
+        <div className="flex flex-wrap gap-2">
+          <Chip
+            value="Called"
+            icon={<Bell className="h-3 w-3" />}
+            className={`cursor-pointer ${
+              filters.showCalled 
+                ? 'bg-orange-500 text-white' 
+                : 'bg-gray-700 text-gray-300'
+            }`}
+            onClick={() => setFilters(prev => ({ ...prev, showCalled: !prev.showCalled }))}
+          />
+          <Chip
+            value="Completed"
+            icon={<CheckCircle className="h-3 w-3" />}
+            className={`cursor-pointer ${
+              filters.showCompleted 
+                ? 'bg-purple-500 text-white' 
+                : 'bg-gray-700 text-gray-300'
+            }`}
+            onClick={() => setFilters(prev => ({ ...prev, showCompleted: !prev.showCompleted }))}
+          />
+          <Chip
+            value="Active"
+            icon={<Play className="h-3 w-3" />}
+            className={`cursor-pointer ${
+              filters.showActive 
+                ? 'bg-green-500 text-white' 
+                : 'bg-gray-700 text-gray-300'
+            }`}
+            onClick={() => setFilters(prev => ({ ...prev, showActive: !prev.showActive }))}
+          />
+          <Chip
+            value="Created"
+            icon={<Clock className="h-3 w-3" />}
+            className={`cursor-pointer ${
+              filters.showCreated 
+                ? 'bg-gray-500 text-white' 
+                : 'bg-gray-700 text-gray-300'
+            }`}
+            onClick={() => setFilters(prev => ({ ...prev, showCreated: !prev.showCreated }))}
+          />
+          <Chip
+            value="Hide TBD vs TBD"
+            icon={<XCircle className="h-3 w-3" />}
+            className={`cursor-pointer ${
+              filters.hideTBD 
+                ? 'bg-red-500 text-white' 
+                : 'bg-gray-700 text-gray-300'
+            }`}
+            onClick={() => setFilters(prev => ({ ...prev, hideTBD: !prev.hideTBD }))}
+          />
+        </div>
+      </Card>
+    );
+  };
+
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Card className="mb-4 shadow-xl">
+      <Card className="mb-6 bg-gradient-to-br from-gray-900 to-gray-800 shadow-xl border border-gray-700">
         <CardBody>
-          <Typography variant="h5" color="blue-gray" className="mb-2">
-            Welcome, {user.startgg?.player?.gamerTag || user.username}!
+          <Typography variant="h4" className="text-white mb-2 font-bold">
+            Welcome, {user.startgg?.player?.gamerTag || user.username}
           </Typography>
-          <Typography color="gray">
-            You are logged in and can access the Station Viewer. Click on a set to report the result.
+          <Typography className="text-gray-400">
+            Manage your tournament stations and report match results here.
           </Typography>
         </CardBody>
       </Card>
 
-      <div className="fixed top-4 right-4 z-50">
-        <Alert
-          open={notification.show}
-          onClose={() => setNotification(prev => ({ ...prev, show: false }))}
-          animate={{
-            mount: { y: 0 },
-            unmount: { y: -100 },
-          }}
-          className={`${
-            notification.type === 'success' 
-              ? 'bg-green-500' 
-              : 'bg-red-500'
-          } text-white shadow-lg`}
-        >
-          {notification.message}
-        </Alert>
+      <div className="flex gap-4 mb-6 relative z-50">
+        {submittedEventId && (
+          <>
+            <Button
+              onClick={() => navigate(`/bracket/${submittedEventId}`)}
+              className="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl relative z-50"
+              size="lg"
+            >
+              View Bracket
+            </Button>
+            <Button
+              onClick={() => {
+                setSubmittedEventId(null);
+                setEventId('');
+              }}
+              className="flex-1 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl relative z-50"
+              size="lg"
+            >
+              Return to Tournament Selection
+            </Button>
+          </>
+        )}
       </div>
 
       <Card className="w-full p-6 rounded-lg bg-gray-950/50 border border-white border-opacity-20 mb-6 shadow-lg">
         <CardBody>
           {!submittedEventId ? (
-            <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-4">
-              <Input
-                type="text"
-                label="Enter Event ID"
-                value={eventId}
-                onChange={(e) => setEventId(e.target.value)}
-                className="text-white"
-                labelProps={{
-                  className: "text-red-500 peer-focus:text-white peer-focus:border-red-500"
-                }}
-                containerProps={{
-                  className: "min-w-[200px]"
-                }}
-              />
-              <Button type="submit" className="bg-red-500 hover:bg-red-600 text-white shadow-md">
-                Submit
-              </Button>
-              <Typography variant="small" className="text-gray-400 text-center mt-2">
-                Warning: This feature is meant for TOs and testing purposes only.<br />
-                The event ID can be found in the URL of the admin event page on start.gg<br />
-                (e.g., https://www.start.gg/admin/tournament/.../1140299/...)<br />
-                In this case, the event ID would be 1140299.
+            <>
+              {tournaments.length > 0 && <TournamentSuggestions />}
+              <Typography variant="h6" className="text-white mb-4">
+                Or Enter Event ID Manually
               </Typography>
-            </form>
+              <EventIdForm />
+            </>
           ) : (
             <div className="flex flex-col h-full">
               <div className="flex justify-between items-start mb-4">
                 <Typography variant="h4" color="white" className="text-center">
                   {/* Current Matches */}
                 </Typography>
-                <div className="flex flex-col items-end space-y-2">
-                  <Card className="bg-gradient-to-r from-gray-800 to-gray-950 p-2 rounded-lg border border-white border-opacity-20 shadow-md">
+                <div className="flex flex-col items-end space-y-4">
+                  <Card className="bg-gradient-to-br from-gray-800 to-gray-900 p-2 rounded-lg border border-white/20 shadow-md">
                     <Typography variant="h6" color="white" className="text-center mb-2">
                       Available Stations
                     </Typography>
@@ -525,12 +697,7 @@ function StationViewer() {
                       ))}
                     </div>
                   </Card>
-                  <Button
-                    onClick={toggleFilter}
-                    className="bg-gradient-to-r from-gray-700 to-gray-900 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-                  >
-                    {showOnlyCalled ? "Show All Sets" : "Show Only Called and Completed Sets"}
-                  </Button>
+                  <FilterSection />
                 </div>
               </div>
               {fetchLoading ? (
@@ -538,7 +705,7 @@ function StationViewer() {
                   <Spinner className="h-12 w-12" color="red" />
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 relative z-10">
                   {filteredSets.map(set => (
                     <div key={set.id} onClick={() => handleSetClick(set)} className="cursor-pointer">
                       <SetCardComponent
@@ -557,7 +724,7 @@ function StationViewer() {
               <Dialog
                 open={selectedSet !== null}
                 handler={handleCloseModal}
-                className="bg-gray-900 text-white max-w-[600px] shadow-lg"
+                className="bg-gray-900 text-white max-w-[600px] shadow-lg z-[9999]"
               >
                 {selectedSet && (
                   <div className="p-6">
@@ -647,12 +814,6 @@ function StationViewer() {
           )}
         </CardBody>
       </Card>
-      <Button
-        onClick={() => navigate(`/bracket/${submittedEventId}`, { state: { tournamentData } })}
-        className="mb-4 bg-blue-500 hover:bg-blue-600"
-      >
-        View Bracket
-      </Button>
     </div>
   );
 }

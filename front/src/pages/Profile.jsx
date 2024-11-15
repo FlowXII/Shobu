@@ -19,6 +19,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { logoutUser, disconnectStartGG } from '../store/thunks/userThunks';
+import LoadingIndicator from '../components/LoadingIndicator';
 
 const CUSTOM_ANIMATION = {
   mount: { scale: 1 },
@@ -28,14 +29,31 @@ const CUSTOM_ANIMATION = {
 const Profile = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
+  const loading = useSelector((state) => state.user.loading.user);
+  const initialized = useSelector((state) => state.user.initialized);
   const [open, setOpen] = useState(1);
-  const isStartGGConnected = user?.startgg?.accessToken;
-  const startggProfile = user?.startgg?.profile;
-  const startggPlayer = user?.startgg?.player;
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
+
+  if (!initialized || loading) {
+    return <LoadingIndicator />;
+  }
+
+  if (!user) {
+    return (
+      <div className="flex flex-col items-center justify-center p-8">
+        <Typography className="text-gray-400">
+          Please log in to view your profile
+        </Typography>
+      </div>
+    );
+  }
+
+  const isStartGGConnected = user?.startgg?.accessToken;
+  const startggProfile = user?.startgg?.profile;
+  const startggPlayer = user?.startgg?.player;
 
   return (
     <div className="flex flex-col items-center justify-start p-8 overflow-x-hidden">

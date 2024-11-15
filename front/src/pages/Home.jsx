@@ -172,6 +172,18 @@ function Home() {
                                 </Typography>
                             </CardBody>
                         </Card>
+                        {/* Streamer of the Month */}
+                        <Card className="bg-gray-800 border border-white/10">
+                            <CardBody className="flex flex-col items-center text-center">
+                                <Tv className="w-12 h-12 text-purple-500 mb-4" />
+                                <Typography variant="h5" className="mb-2 text-white">
+                                    Streamer of the Month
+                                </Typography>
+                                <Typography color="gray" className="font-normal text-white">
+                                    Check out our featured content creator of the Month !
+                                </Typography>
+                            </CardBody>
+                        </Card>
                     </div>
                 </div>
             </div>
