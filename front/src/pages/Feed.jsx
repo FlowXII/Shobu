@@ -120,9 +120,10 @@ const Feed = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start p-4 overflow-x-hidden">
-      {/* Create Post Card */}
-      <Card className="w-full max-w-[48rem] bg-gray-900 text-white shadow-xl border border-white border-opacity-20 rounded-lg overflow-hidden mb-6">
+    <div className="flex flex-col items-center justify-start p-8 overflow-x-hidden">
+
+      {/* Create Post Card - Refined styling */}
+      <Card className="w-full max-w-[48rem] bg-gray-900 text-white border border-blue-500/10 rounded-lg overflow-hidden mb-6">
         <CardBody>
           <form onSubmit={handleSubmit}>
             {/* User Info and Text Input Area */}
@@ -133,7 +134,7 @@ const Feed = () => {
                   variant="circular"
                   alt={username}
                   src={profilePicture}
-                  className="border-2 border-white/20"
+                  className="border-2 border-blue-500/20"
                 />
                 <Typography className="text-xs font-medium text-gray-400 mt-1">
                   {username}
@@ -145,7 +146,7 @@ const Feed = () => {
                   placeholder={`What's on your mind ?`}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="min-h-[100px] !border-0 focus:border-transparent text-white bg-transparent"
+                  className="min-h-[100px] border border-none p-4 focus:border-transparent text-white bg-transparent focus:ring-1 focus:ring-blue-500/20 rounded-lg"
                   labelProps={{
                     className: "hidden",
                   }}
@@ -190,63 +191,33 @@ const Feed = () => {
               </div>
             )}
 
-            {/* Action Buttons */}
-            <div className="flex items-center justify-between border-t border-white/10 pt-4">
+            {/* Action Buttons - Restored and improved colors */}
+            <div className="flex items-center justify-between border-t border-blue-500/10 pt-4">
               <div className="flex items-center gap-2">
-                {/* Image Upload */}
-                <label className="cursor-pointer p-2 rounded-full hover:bg-white/10 transition-colors">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    className="hidden"
-                    onChange={handleFileSelect}
-                  />
-                  <Image className="h-5 w-5 text-blue-400" />
+                <label className="cursor-pointer p-2 rounded-lg hover:bg-blue-500/10 transition-colors">
+                  <input type="file" accept="image/*" multiple className="hidden" onChange={handleFileSelect} />
+                  <Image className="h-5 w-5 text-blue-500" />
                 </label>
 
-                {/* Video Upload */}
-                <label className="cursor-pointer p-2 rounded-full hover:bg-white/10 transition-colors">
-                  <input
-                    type="file"
-                    accept="video/*"
-                    multiple
-                    className="hidden"
-                    onChange={handleFileSelect}
-                  />
-                  <Video className="h-5 w-5 text-green-400" />
+                <label className="cursor-pointer p-2 rounded-lg hover:bg-blue-500/10 transition-colors">
+                  <input type="file" accept="video/*" multiple className="hidden" onChange={handleFileSelect} />
+                  <Video className="h-5 w-5 text-blue-500" />
                 </label>
 
-                {/* Link */}
-                <button
-                  type="button"
-                  className="p-2 rounded-full hover:bg-white/10 transition-colors"
-                >
-                  <Link className="h-5 w-5 text-purple-400" />
+                <button type="button" className="p-2 rounded-lg hover:bg-blue-500/10 transition-colors">
+                  <Link className="h-5 w-5 text-blue-500" />
                 </button>
 
-                {/* Emoji */}
-                <button
-                  type="button"
-                  className="p-2 rounded-full hover:bg-white/10 transition-colors"
-                >
-                  <Smile className="h-5 w-5 text-yellow-400" />
+                <button type="button" className="p-2 rounded-lg hover:bg-blue-500/10 transition-colors">
+                  <Smile className="h-5 w-5 text-blue-500" />
                 </button>
 
-                {/* Location */}
-                <button
-                  type="button"
-                  className="p-2 rounded-full hover:bg-white/10 transition-colors"
-                >
-                  <MapPin className="h-5 w-5 text-red-400" />
+                <button type="button" className="p-2 rounded-lg hover:bg-blue-500/10 transition-colors">
+                  <MapPin className="h-5 w-5 text-blue-500" />
                 </button>
 
-                {/* Schedule */}
-                <button
-                  type="button"
-                  className="p-2 rounded-full hover:bg-white/10 transition-colors"
-                >
-                  <Calendar className="h-5 w-5 text-orange-400" />
+                <button type="button" className="p-2 rounded-lg hover:bg-blue-500/10 transition-colors">
+                  <Calendar className="h-5 w-5 text-blue-500" />
                 </button>
               </div>
 
@@ -254,7 +225,7 @@ const Feed = () => {
               <Button
                 type="submit"
                 disabled={!message.trim() && selectedFiles.length === 0}
-                className="bg-red-500 hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-blue-500 hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed px-6"
               >
                 {isSubmitting ? 'Posting...' : 'Post'}
               </Button>
@@ -263,8 +234,8 @@ const Feed = () => {
         </CardBody>
       </Card>
 
-      {/* Feed Content */}
-      <div className="w-full max-w-[48rem] space-y-4">
+      {/* Feed Content - Refined container */}
+      <div className="w-full max-w-[48rem] space-y-4 bg-gray-900 border border-blue-500/10 rounded-lg p-4">
         {isLoading ? (
           <Typography className="text-center text-gray-400">Loading posts...</Typography>
         ) : posts.length > 0 ? (
@@ -275,7 +246,7 @@ const Feed = () => {
             {hasMore && (
               <Button
                 onClick={() => setPage(prev => prev + 1)}
-                className="w-full bg-gray-800 hover:bg-gray-700"
+                className="w-full bg-gray-800 hover:bg-gray-700 border border-blue-500/10"
               >
                 Load More
               </Button>

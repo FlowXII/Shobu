@@ -46,7 +46,7 @@ app.use('/api/auth', userRoutes);
 app.use('/api', postRoutes);
 
 // Event routes
-app.use('/api', eventRoutes);
+app.use('/api/events', eventRoutes);
 
 // Export the app
 export default app;

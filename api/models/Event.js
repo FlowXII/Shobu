@@ -7,9 +7,22 @@ const eventSchema = new mongoose.Schema({
   startAt: Date,
   state: Number,
   numEntrants: Number,
-  videogame: {
-    id: String
+  maxEntrants: Number,
+  gameId: { type: mongoose.Schema.Types.ObjectId, ref: 'Game' },
+  gameName: String,
+  entryFee: {
+    amount: Number,
+    currency: { type: String, default: 'USD' }
   },
+  format: {
+    type: String,
+    enum: ['SINGLE_ELIMINATION', 'DOUBLE_ELIMINATION', 'ROUND_ROBIN'],
+    default: 'DOUBLE_ELIMINATION'
+  },
+  description: String,
+  rules: String,
+  registrationClosesAt: Date,
+  participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   sets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Set' }],
   phases: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Phase' }],
   createdAt: { type: Date, default: Date.now },

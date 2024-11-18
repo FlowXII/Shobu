@@ -668,6 +668,26 @@ function StationViewer() {
         )}
       </div>
 
+      {submittedEventId && (
+        <div className="mb-6 flex items-center gap-2 bg-gray-800/50 p-3 rounded-lg border border-white/10">
+          <Typography variant="h6" color="white">
+            Event Dashboard
+          </Typography>
+          <Chip
+            value={`ID: ${submittedEventId}`}
+            className="bg-gray-700/50 text-white font-mono"
+            size="sm"
+          />
+          {tournamentData?.event?.name && (
+            <Chip
+              value={tournamentData.event.name}
+              className="bg-gray-700/50 text-white"
+              size="sm"
+            />
+          )}
+        </div>
+      )}
+
       <Card className="w-full p-6 rounded-lg bg-gray-950/50 border border-white border-opacity-20 mb-6 shadow-lg">
         <CardBody>
           {!submittedEventId ? (

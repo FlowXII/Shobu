@@ -10,8 +10,8 @@ const PostCard = ({ post }) => {
   const username = post.userId?.username || "Anonymous";
 
   return (
-    <Card className="w-full bg-gray-900 text-white shadow-xl border border-white border-opacity-20 rounded-lg overflow-hidden">
-      <CardBody className="divide-y divide-white/10">
+    <Card className="w-full bg-gray-800/50 text-white border border-blue-500/10 rounded-lg overflow-hidden">
+      <CardBody className="divide-y divide-blue-500/10">
         <div className="flex gap-4 pb-4">
           <div className="flex flex-col items-center">
             <Avatar
@@ -19,7 +19,7 @@ const PostCard = ({ post }) => {
               variant="circular"
               src={profilePicture}
               alt={username}
-              className="border-2 border-white/20"
+              className="border-2 border-blue-500/20"
             />
             <Typography className="text-xs font-medium text-gray-400 mt-1">
               {username || ""}
@@ -29,21 +29,21 @@ const PostCard = ({ post }) => {
             <Typography className="text-xs text-gray-400">
               {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true }) || ""}
             </Typography>
-            <Typography className="font-normal">
+            <Typography className="font-normal bg-gray-800 p-4 rounded-xl border border-blue-500/10">
               {post.content || ""}
             </Typography>
           </div>
         </div>
         <div className="flex justify-between pt-4">
-          <Button variant="text" className="flex items-center gap-2 text-gray-400 hover:text-red-500">
+          <Button variant="text" className="flex items-center gap-2 text-gray-400 hover:text-blue-500 hover:bg-blue-500/10 transition-colors">
             <Heart className="h-5 w-5" />
             <span className="text-xs">0</span>
           </Button>
-          <Button variant="text" className="flex items-center gap-2 text-gray-400 hover:text-blue-500">
+          <Button variant="text" className="flex items-center gap-2 text-gray-400 hover:text-blue-500 hover:bg-blue-500/10 transition-colors">
             <Share className="h-5 w-5" />
             <span className="text-xs">0</span>
           </Button>
-          <Button variant="text" className="flex items-center gap-2 text-gray-400 hover:text-green-500">
+          <Button variant="text" className="flex items-center gap-2 text-gray-400 hover:text-blue-500 hover:bg-blue-500/10 transition-colors">
             <Repeat className="h-5 w-5" />
             <span className="text-xs">0</span>
           </Button>

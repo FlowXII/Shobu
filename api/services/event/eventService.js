@@ -12,27 +12,70 @@ const validateEventData = (data) => {
     errors.push('Tournament ID is required');
   }
 
+  if (!data.gameName) {
+    errors.push('Game name is required');
+  }
+
+  if (data.maxEntrants && (isNaN(data.maxEntrants) || data.maxEntrants < 1)) {
+    errors.push('Maximum entrants must be a positive number');
+  }
+
+  if (data.entryFee && (
+    isNaN(data.entryFee.amount) || 
+    data.entryFee.amount < 0
+  )) {
+    errors.push('Entry fee must be a non-negative number');
+  }
+
+  if (data.startAt) {
+    const startDate = new Date(data.startAt);
+    if (isNaN(startDate.getTime())) {
+      errors.push('Invalid start date');
+    }
+  }
+
   return errors;
 };
 
 export const createEvent = async (eventData) => {
+  logger.info('Event service: creating event', {
+    eventName: eventData.name,
+    tournamentId: eventData.tournamentId
+  });
+
   try {
+    logger.debug('Validating event data');
     const validationErrors = validateEventData(eventData);
     if (validationErrors.length > 0) {
+      logger.warn('Event validation failed', { errors: validationErrors });
       throw new Error(`Validation failed: ${validationErrors.join(', ')}`);
     }
 
+    logger.debug('Creating new event instance');
     const event = new Event({
       name: eventData.name,
       tournamentId: eventData.tournamentId,
       slug: eventData.slug,
       startAt: eventData.startAt,
-      state: eventData.state || 1, // Default to created state
-      numEntrants: eventData.numEntrants || 0,
-      videogame: eventData.videogame
+      state: eventData.state || 1,
+      numEntrants: 0,
+      maxEntrants: eventData.maxEntrants,
+      gameName: eventData.gameName,
+      gameId: eventData.gameId,
+      format: eventData.format,
+      description: eventData.description,
+      rules: eventData.rules,
+      registrationClosesAt: eventData.registrationClosesAt
     });
 
+    logger.debug('Saving event to database');
     const savedEvent = await event.save();
+    
+    logger.info('Event created successfully', {
+      eventId: savedEvent._id,
+      tournamentId: savedEvent.tournamentId
+    });
+
     return savedEvent;
   } catch (error) {
     logger.error('Database error while creating event', {

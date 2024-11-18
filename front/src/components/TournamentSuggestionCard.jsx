@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
 import { Card, CardBody, Typography, Chip, List, ListItem } from "@material-tailwind/react";
-import { Users, Calendar, Trophy, Clock, CheckCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { Users, Calendar, ChevronDown, ChevronUp } from "lucide-react";
 
 const TournamentSuggestionCard = ({ tournament, onClick }) => {
   const [expanded, setExpanded] = useState(false);
   const startDate = new Date(tournament.startAt * 1000).toLocaleDateString();
   
-  // Get Smash Ultimate events only (videogameId: 1386)
-  const smashEvents = tournament.events.filter(event => 
-    event.videogame?.id === 1386 && event.userParticipating
-  );
-
-  const hasActiveEvents = smashEvents.some(event => 
+  // Simplified active events check
+  const hasActiveEvents = tournament.events.some(event => 
     event.state === "ACTIVE" || event.state === "CREATED"
   );
 
@@ -27,6 +23,7 @@ const TournamentSuggestionCard = ({ tournament, onClick }) => {
       `}
     >
       <CardBody className="p-4">
+        {/* Tournament Image */}
         {tournament.images?.[0] && (
           <div className="w-full h-24 mb-3 rounded-lg overflow-hidden">
             <img 
@@ -37,6 +34,7 @@ const TournamentSuggestionCard = ({ tournament, onClick }) => {
           </div>
         )}
 
+        {/* Tournament Info */}
         <Typography variant="h6" className="text-white mb-2 line-clamp-2">
           {tournament.name}
         </Typography>
@@ -61,7 +59,7 @@ const TournamentSuggestionCard = ({ tournament, onClick }) => {
           onClick={() => setExpanded(!expanded)}
         >
           <Typography variant="small" className="text-white font-semibold">
-            Your Events
+            Your Events ({tournament.events.length})
           </Typography>
           {expanded ? 
             <ChevronUp className="h-4 w-4 text-gray-400" /> : 
@@ -71,7 +69,7 @@ const TournamentSuggestionCard = ({ tournament, onClick }) => {
 
         {expanded && (
           <List className="p-0">
-            {smashEvents.map((event) => (
+            {tournament.events.map((event) => (
               <ListItem
                 key={event.id}
                 onClick={() => onClick(event.id)}
@@ -85,16 +83,16 @@ const TournamentSuggestionCard = ({ tournament, onClick }) => {
                     <Chip
                       size="sm"
                       value={`ID: ${event.id}`}
-                      className="bg-gray-700/50 text-white"
+                      className="bg-gray-700/50 text-white font-mono"
                     />
                     <Chip
                       size="sm"
                       value={event.state}
                       className={`${
                         event.state === "COMPLETED" 
-                          ? "bg-green-500/20 text-green-300" 
+                          ? "bg-purple-500/20 text-purple-300" 
                           : event.state === "ACTIVE"
-                          ? "bg-red-500/20 text-red-300"
+                          ? "bg-green-500/20 text-green-300"
                           : "bg-gray-500/20 text-gray-300"
                       }`}
                     />

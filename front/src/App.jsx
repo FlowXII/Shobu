@@ -28,6 +28,7 @@ import DebugBar from './components/DebugBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserData } from './store/thunks/userThunks';
 import LoadingIndicator from './components/LoadingIndicator';
+import OrganizerDashboard from './pages/OrganizerDashboard';
 
 // Create a layout component to handle the sidebar and main content
 const Layout = ({ children }) => {
@@ -83,8 +84,9 @@ function App() {
                                     <Route path="/spaces" element={<Spaces />} />
                                     <Route path="/messages" element={<Messages />} />
                                     <Route path="/streams" element={<Streams />} />
-                                    <Route path="/tournaments/:slug/events/:eventSlug" element={<EventDetails />} />
-                                    <Route path="/tournaments/:slug/events/:eventSlug/register" element={<EventRegistration />} />
+                                    <Route path="/tournaments/:slug/events/:eventId" element={<EventDetails />} />
+                                    <Route path="/tournaments/:slug/events/:eventId/register" element={<EventRegistration />} />
+                                    <Route path="/organizer" element={<OrganizerDashboard />} />
                                 </Routes>
                             </div>
                         </Layout>
