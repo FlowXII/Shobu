@@ -8,27 +8,11 @@ import {
 } from "@material-tailwind/react";
 import { Users, Calendar, Gamepad2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { formatDate, getEventStateLabel } from '../utils/eventUtils';
 
 const EventCard = ({ event, tournamentSlug }) => {
   const navigate = useNavigate();
   
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleString();
-  };
-
-  const getEventStateLabel = (state) => {
-    const states = {
-      1: 'Created',
-      2: 'Active',
-      3: 'Completed',
-      4: 'Ready',
-      5: 'Canceled',
-      6: 'Called',
-      7: 'Completed'
-    };
-    return states[state] || 'Unknown';
-  };
-
   return (
     <Card className="bg-gray-900 text-white shadow-lg border border-gray-800">
       <CardBody>
@@ -59,14 +43,14 @@ const EventCard = ({ event, tournamentSlug }) => {
             <Button
               color="blue"
               size="sm"
-              onClick={() => navigate(`/tournaments/${tournamentSlug}/events/${event.slug}`)}
+              onClick={() => navigate(`/tournaments/${tournamentSlug}/events/${event._id}`)}
             >
               View Brackets
             </Button>
             <Button
               color="green"
               size="sm"
-              onClick={() => navigate(`/tournaments/${tournamentSlug}/events/${event.slug}/register`)}
+              onClick={() => navigate(`/tournaments/${tournamentSlug}/events/${event._id}/register`)}
             >
               Register
             </Button>

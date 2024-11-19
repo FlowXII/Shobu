@@ -20,7 +20,10 @@ const TournamentsList = () => {
         }
 
         const data = await response.json();
-        setTournaments(data.data);
+        
+        // Ensure each tournament has an _id
+        const validTournaments = data.data.filter(tournament => tournament._id);
+        setTournaments(validTournaments);
       } catch (error) {
         console.error('Error fetching tournaments:', error);
         toast.error('Failed to load tournaments');
@@ -40,7 +43,11 @@ const TournamentsList = () => {
     <div className="space-y-6">
       {tournaments.length > 0 ? (
         tournaments.map((tournament) => (
-          <TournamentCardComponent key={tournament._id} tournament={tournament} />
+          <TournamentCardComponent 
+            key={tournament._id} 
+            tournament={tournament}
+            tournamentId={tournament._id} // Explicitly pass the ID
+          />
         ))
       ) : (
         <Typography className="text-center text-gray-300">

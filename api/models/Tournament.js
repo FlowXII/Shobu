@@ -15,11 +15,28 @@ const tournamentSchema = new mongoose.Schema({
     venueAddress: String
   },
   numAttendees: Number,
+  attendees: [{
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    status: { type: String, enum: ['REGISTERED', 'CHECKED_IN', 'CANCELLED'], default: 'REGISTERED' },
+    registeredAt: { type: Date, default: Date.now },
+    checkedInAt: Date,
+    cancelledAt: Date
+  }],
+  events: [{
+    eventId: { type: mongoose.Schema.Types.ObjectId, ref: 'Event', required: true },
+    startAt: Date,
+    endAt: Date,
+    venue: String,
+    status: { type: String, enum: ['SCHEDULED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'], default: 'SCHEDULED' }
+  }],
   images: [{
     url: String,
     type: String
   }],
-  events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
+  status: { type: String, enum: ['DRAFT', 'PUBLISHED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'], default: 'DRAFT' },
+  registrationStartAt: Date,
+  registrationEndAt: Date,
+  maxAttendees: Number,
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
@@ -28,5 +45,22 @@ tournamentSchema.pre('save', function(next) {
   this.updatedAt = new Date();
   next();
 });
+
+tournamentSchema.index({ slug: 1 });
+tournamentSchema.index({ organizerId: 1 });
+tournamentSchema.index({ 'attendees.userId': 1 });
+tournamentSchema.index({ status: 1, startAt: 1 });
+
+tournamentSchema.methods.isRegistrationOpen = function() {
+  const now = new Date();
+  return this.registrationStartAt <= now && 
+         (!this.registrationEndAt || this.registrationEndAt >= now) &&
+         (!this.maxAttendees || this.attendees.length < this.maxAttendees);
+};
+
+tournamentSchema.methods.canUserRegister = function(userId) {
+  return this.isRegistrationOpen() && 
+         !this.attendees.some(a => a.userId.toString() === userId.toString());
+};
 
 export default mongoose.model('Tournament', tournamentSchema); 

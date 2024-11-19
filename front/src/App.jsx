@@ -14,7 +14,6 @@ import ViewTournament from './pages/ViewTournament';
 import Profile from './pages/Profile';
 import { Provider } from 'react-redux';
 import store from './store';
-import BracketViewer from './pages/BracketViewer';
 import Tournaments from './pages/Tournaments';
 import Feed from './pages/Feed';
 import StatisticsViewer from './pages/StatisticsViewer';
@@ -29,6 +28,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserData } from './store/thunks/userThunks';
 import LoadingIndicator from './components/LoadingIndicator';
 import OrganizerDashboard from './pages/OrganizerDashboard';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {
+  EventDetailsTO,
+  EventParticipantsTO,
+  EventBracketsTO,
+  EventSettingsTO,
+  TournamentDetailsTO,
+  TournamentEventsTO,
+  TournamentOverviewTO,
+  TournamentParticipantsTO,
+  TournamentSettingsTO
+} from './components/organiser';
 
 // Create a layout component to handle the sidebar and main content
 const Layout = ({ children }) => {
@@ -59,41 +71,52 @@ function App() {
     }
 
     return (
-        <Provider store={store}>
-            <SidebarProvider>
-                <Router>
-                    <div className="relative">
-                        {process.env.NODE_ENV === 'development' && <DebugBar />}
-                        <Layout>
-                            <div className="p-4 max-w-full h-full">
-                                <Routes>
-                                    <Route path="/" element={<Home />} />
-                                    <Route path="/startgg-login" element={<StartGGLogin />} />
-                                    <Route path="/login" element={<Login />} />
-                                    <Route path="/register" element={<Register />} />
-                                    <Route path="/tournaments/create" element={<CreateTournament />} />
-                                    <Route path="/upcoming" element={<UpcomingTournaments />} />
-                                    <Route path="/station-viewer" element={<StationViewer />} />
-                                    <Route path="/dashboard" element={<Dashboard />} />
-                                    <Route path="/profile" element={<Profile />} />
-                                    <Route path="/bracket/:eventId" element={<BracketViewer />} />
-                                    <Route path="/tournaments/:slug" element={<TournamentDetails />} />
-                                    <Route path="/tournaments" element={<Tournaments />} />
-                                    <Route path="/feed" element={<Feed />} />
-                                    <Route path="/statistics" element={<StatisticsViewer />} />
-                                    <Route path="/spaces" element={<Spaces />} />
-                                    <Route path="/messages" element={<Messages />} />
-                                    <Route path="/streams" element={<Streams />} />
-                                    <Route path="/tournaments/:slug/events/:eventId" element={<EventDetails />} />
-                                    <Route path="/tournaments/:slug/events/:eventId/register" element={<EventRegistration />} />
-                                    <Route path="/organizer" element={<OrganizerDashboard />} />
-                                </Routes>
-                            </div>
-                        </Layout>
-                    </div>
-                </Router>
-            </SidebarProvider>
-        </Provider>
+        <SidebarProvider>
+            <Router>
+                <div className="relative">
+                    {process.env.NODE_ENV === 'development' && <DebugBar />}
+                    <Layout>
+                        <div className="p-4 max-w-full h-full">
+                            <Routes>
+                                <Route path="/" element={<Home />} />
+                                <Route path="/startgg-login" element={<StartGGLogin />} />
+                                <Route path="/login" element={<Login />} />
+                                <Route path="/register" element={<Register />} />
+                                <Route path="/tournaments/create" element={<CreateTournament />} />
+                                <Route path="/upcoming" element={<UpcomingTournaments />} />
+                                <Route path="/station-viewer" element={<StationViewer />} />
+                                <Route path="/dashboard" element={<Dashboard />} />
+                                <Route path="/profile" element={<Profile />} />
+                                <Route path="/tournaments/:tournamentId/to" element={<TournamentDetailsTO />} />
+                                <Route path="/tournaments/:tournamentId/view" element={<TournamentDetails />} />
+                                <Route path="/tournaments/:tournamentId/events/:eventId/to" element={<EventDetailsTO />} />
+                                <Route path="/tournaments/:tournamentId/events/:eventId/register" element={<EventRegistration />} />
+                                <Route path="/tournaments/:tournamentId/events/:eventId/to" element={<EventDetailsTO />} />
+                                <Route path="/tournaments" element={<Tournaments />} />
+                                <Route path="/feed" element={<Feed />} />
+                                <Route path="/statistics" element={<StatisticsViewer />} />
+                                <Route path="/spaces" element={<Spaces />} />
+                                <Route path="/messages" element={<Messages />} />
+                                <Route path="/streams" element={<Streams />} />
+                                <Route path="/organizer" element={<OrganizerDashboard />} />
+                            </Routes>
+                        </div>
+                    </Layout>
+                </div>
+            </Router>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
+        </SidebarProvider>
     );
 }
 

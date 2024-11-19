@@ -33,6 +33,11 @@ const CreateTournament = () => {
       country: '',
       venueAddress: ''
     },
+    registrationStartAt: '',
+    registrationEndAt: '',
+    maxAttendees: '',
+    status: 'DRAFT',
+    events: [],
     numAttendees: 0,
     images: []
   });
@@ -92,8 +97,35 @@ const CreateTournament = () => {
     
     if (!formData.name.trim()) errors.push('Tournament name is required');
     if (!formData.startAt) errors.push('Start date is required');
+    
+    // Validate dates
     if (formData.endAt && new Date(formData.endAt) < new Date(formData.startAt)) {
       errors.push('End date cannot be before start date');
+    }
+
+    // Validate registration period
+    if (formData.registrationStartAt && formData.registrationEndAt) {
+      const regStart = new Date(formData.registrationStartAt);
+      const regEnd = new Date(formData.registrationEndAt);
+      const tournamentStart = new Date(formData.startAt);
+
+      if (regEnd < regStart) {
+        errors.push('Registration end date cannot be before registration start date');
+      }
+      if (regEnd > tournamentStart) {
+        errors.push('Registration must end before tournament starts');
+      }
+    }
+
+    // Validate attendees
+    if (formData.maxAttendees && formData.maxAttendees < 2) {
+      errors.push('Maximum attendees must be at least 2');
+    }
+
+    // Validate location if any field is filled
+    const locationFields = Object.values(formData.location).filter(Boolean);
+    if (locationFields.length > 0 && locationFields.length < 4) {
+      errors.push('Please complete all location fields');
     }
     
     return errors;
@@ -277,7 +309,25 @@ const CreateTournament = () => {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div className="mt-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                  <Input
+                    {...inputStyles}
+                    type="datetime-local"
+                    label="Registration Start"
+                    name="registrationStartAt"
+                    value={formData.registrationStartAt}
+                    onChange={handleInputChange}
+                  />
+                  <Input
+                    {...inputStyles}
+                    type="datetime-local"
+                    label="Registration End"
+                    name="registrationEndAt"
+                    value={formData.registrationEndAt}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <Select
                     {...inputStyles}
                     label="Tournament Type"
@@ -288,6 +338,16 @@ const CreateTournament = () => {
                     <Option value="SINGLE_ELIMINATION">Single Elimination</Option>
                     <Option value="DOUBLE_ELIMINATION">Double Elimination</Option>
                     <Option value="ROUND_ROBIN">Round Robin</Option>
+                  </Select>
+                  <Select
+                    {...inputStyles}
+                    label="Status"
+                    name="status"
+                    value={formData.status}
+                    onChange={(value) => handleInputChange({ target: { name: 'status', value } })}
+                  >
+                    <Option value="DRAFT">Draft</Option>
+                    <Option value="PUBLISHED">Published</Option>
                   </Select>
                 </div>
               </AccordionBody>
@@ -379,6 +439,16 @@ const CreateTournament = () => {
                     value={formData.numAttendees}
                     onChange={handleInputChange}
                   />
+                  <Input
+                    {...inputStyles}
+                    type="number"
+                    label="Maximum Attendees"
+                    name="maxAttendees"
+                    value={formData.maxAttendees}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="mt-8">
                   <div className="flex items-center gap-4">
                     <ImageIcon className="h-5 w-5 text-purple-400" />
                     <Input

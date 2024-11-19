@@ -21,13 +21,13 @@ import {
 import { Settings, Trash2, Calendar, MapPin, Users, Trophy } from 'lucide-react';
 import { toast } from 'react-toastify';
 import LoadingIndicator from '../components/LoadingIndicator';
-import TournamentOverview from '../components/tournament/TournamentOverview';
-import TournamentEvents from '../components/tournament/TournamentEvents';
-import TournamentParticipants from '../components/tournament/TournamentParticipants';
-import TournamentSettings from '../components/tournament/TournamentSettings';
+import TournamentOverviewTO from '../components/organiser/TournamentOverviewTO';
+import TournamentEventsTO from '../components/organiser/TournamentEventsTO';
+import TournamentParticipantsTO from '../components/organiser/TournamentParticipantsTO';
+import TournamentSettingsTO from '../components/organiser/TournamentSettingsTO';
 
 const TournamentDetails = () => {
-  const { slug } = useParams();
+  const { tournamentId } = useParams();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
   const [tournament, setTournament] = useState(null);
@@ -38,13 +38,17 @@ const TournamentDetails = () => {
   const [formData, setFormData] = useState({});
 
   useEffect(() => {
+    if (!tournamentId) {
+      navigate('/tournaments');
+      return;
+    }
     fetchTournament();
-  }, [slug]);
+  }, [tournamentId, navigate]);
 
   const fetchTournament = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/tournaments/${slug}`,
+        `${import.meta.env.VITE_API_BASE_URL}/tournaments/${tournamentId}`,
         { credentials: 'include' }
       );
       if (!response.ok) throw new Error('Failed to fetch tournament');
@@ -53,6 +57,7 @@ const TournamentDetails = () => {
       setFormData(data.data);
     } catch (error) {
       toast.error('Failed to load tournament');
+      navigate('/tournaments');
     } finally {
       setLoading(false);
     }
@@ -62,7 +67,7 @@ const TournamentDetails = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/tournaments/${slug}`,
+        `${import.meta.env.VITE_API_BASE_URL}/tournaments/${tournamentId}`,
         {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -83,7 +88,7 @@ const TournamentDetails = () => {
   const handleDelete = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/tournaments/${slug}`,
+        `${import.meta.env.VITE_API_BASE_URL}/tournaments/${tournamentId}`,
         {
           method: 'DELETE',
           credentials: 'include',
@@ -98,6 +103,16 @@ const TournamentDetails = () => {
   };
 
   if (loading) return <LoadingIndicator />;
+
+  if (!tournament) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Typography variant="h4" className="text-red-500">
+          Tournament not found
+        </Typography>
+      </div>
+    );
+  }
 
   const isOrganizer = tournament?.organizerId === user?._id;
 
@@ -161,21 +176,21 @@ const TournamentDetails = () => {
             </TabsHeader>
             <TabsBody>
               <TabPanel value="overview">
-                <TournamentOverview tournament={tournament} />
+                <TournamentOverviewTO tournament={tournament} />
               </TabPanel>
               <TabPanel value="events">
-                <TournamentEvents 
+                <TournamentEventsTO 
                   tournament={tournament} 
                   isOrganizer={isOrganizer}
                   onUpdate={() => fetchTournament()} 
                 />
               </TabPanel>
               <TabPanel value="participants">
-                <TournamentParticipants tournament={tournament} />
+                <TournamentParticipantsTO tournament={tournament} />
               </TabPanel>
               {isOrganizer && (
                 <TabPanel value="settings">
-                  <TournamentSettings 
+                  <TournamentSettingsTO 
                     tournament={tournament}
                     onUpdate={handleUpdate}
                     formData={formData}

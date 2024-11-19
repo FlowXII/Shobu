@@ -1,6 +1,14 @@
 import Tournament from '../models/Tournament.js';
 import { createTournament } from '../services/tournament/tournamentService.js';
 import logger from '../utils/logger.js';
+import { 
+  registerForTournament, 
+  updateTournament, 
+  checkInAttendee,
+  cancelRegistration
+} from '../services/tournament/tournamentService.js';
+import { validateTournamentData } from '../validators/tournamentValidator.js';
+import mongoose from 'mongoose';
 
 export const createTournamentController = async (req, res) => {
   try {
@@ -31,9 +39,16 @@ export const createTournamentController = async (req, res) => {
 
 export const getTournamentController = async (req, res) => {
   try {
-    const { slug } = req.params;
+    const { id } = req.params;
     
-    const tournament = await Tournament.findOne({ slug }).populate('events');
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid tournament ID format'
+      });
+    }
+    
+    const tournament = await Tournament.findById(id).populate('events');
     
     if (!tournament) {
       return res.status(404).json({
@@ -49,7 +64,7 @@ export const getTournamentController = async (req, res) => {
   } catch (error) {
     logger.error('Failed to fetch tournament', { 
       error: error.message,
-      slug: req.params.slug,
+      id: req.params.id,
       stack: error.stack 
     });
     res.status(500).json({
@@ -156,5 +171,114 @@ export const deleteTournamentController = async (req, res) => {
   } catch (error) {
     logger.error('Failed to delete tournament', { error: error.message, slug: req.params.slug });
     res.status(400).json({ success: false, error: error.message });
+  }
+}; 
+
+export const registerForTournamentController = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const tournament = await Tournament.findOne({ slug });
+    
+    if (!tournament) {
+      return res.status(404).json({ 
+        success: false, 
+        error: 'Tournament not found' 
+      });
+    }
+
+    const updatedTournament = await registerForTournament(tournament._id, req.user._id);
+    
+    logger.info('User registered for tournament', {
+      userId: req.user._id,
+      tournamentId: tournament._id
+    });
+
+    res.status(200).json({
+      success: true,
+      data: updatedTournament
+    });
+  } catch (error) {
+    logger.error('Failed to register for tournament', {
+      error: error.message,
+      userId: req.user._id,
+      slug: req.params.slug
+    });
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
+  }
+};
+
+export const checkInAttendeeController = async (req, res) => {
+  try {
+    const { slug, userId } = req.params;
+    const tournament = await Tournament.findOne({ slug });
+    
+    if (!tournament) {
+      return res.status(404).json({ 
+        success: false, 
+        error: 'Tournament not found' 
+      });
+    }
+
+    const updatedTournament = await checkInAttendee(tournament._id, userId);
+    
+    logger.info('Attendee checked in', {
+      userId,
+      tournamentId: tournament._id,
+      checkedInBy: req.user._id
+    });
+
+    res.status(200).json({
+      success: true,
+      data: updatedTournament
+    });
+  } catch (error) {
+    logger.error('Failed to check in attendee', {
+      error: error.message,
+      userId: req.params.userId,
+      slug: req.params.slug
+    });
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
+  }
+};
+
+export const cancelRegistrationController = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const tournament = await Tournament.findOne({ slug });
+    
+    if (!tournament) {
+      return res.status(404).json({ 
+        success: false, 
+        error: 'Tournament not found' 
+      });
+    }
+
+    const updatedTournament = await cancelRegistration(tournament._id, req.user._id);
+    
+    logger.info('Registration cancelled', {
+      userId: req.user._id,
+      tournamentId: tournament._id
+    });
+
+    res.status(200).json({
+      success: true,
+      data: updatedTournament
+    });
+  } catch (error) {
+    logger.error('Failed to cancel registration', {
+      error: error.message,
+      userId: req.user._id,
+      slug: req.params.slug
+    });
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
   }
 }; 

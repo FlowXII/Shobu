@@ -39,7 +39,4 @@ router.get('/tournaments/:tournamentId/events', getTournamentEventsController);
 // Register for an event
 router.post('/events/:eventId/register', authenticate, registerForEventController);
 
-// Add this new route for getting a specific event
-router.get('/tournaments/:tournamentId/events/:eventId', getEventController);
-
 export default router; 

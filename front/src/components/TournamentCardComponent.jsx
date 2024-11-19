@@ -8,10 +8,20 @@ import {
   Chip,
 } from "@material-tailwind/react";
 import { MapPin, Users } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
 
-const TournamentCardComponent = ({ tournament, boxArt }) => {
+const TournamentCardComponent = ({ tournament, tournamentId }) => {
+  const navigate = useNavigate();
+  
+  const handleClick = () => {
+    navigate(`/tournaments/${tournamentId}`);
+  };
+
   return (
-    <Card className="w-full max-w-[48rem] bg-gradient-to-br from-gray-800 to-gray-950 text-white shadow-xl border border-white border-opacity-20 rounded-lg overflow-hidden">
+    <Card 
+      className="cursor-pointer bg-gray-900 text-white hover:bg-gray-800 transition-colors"
+      onClick={handleClick}
+    >
       <CardHeader floated={false} className="relative h-56 m-0">
         {tournament.images && tournament.images.length > 0 ? (
           <img
@@ -58,8 +68,8 @@ const TournamentCardComponent = ({ tournament, boxArt }) => {
               <Card key={index} className="mb-4 bg-gray-800 overflow-hidden">
                 <CardBody className="p-0">
                   <div className="flex items-center">
-                    {boxArt && (
-                      <img src={boxArt} alt={event.name} className="w-20 h-20 md:w-24 md:h-24 object-cover" />
+                    {tournament.boxArt && (
+                      <img src={tournament.boxArt} alt={event.name} className="w-20 h-20 md:w-24 md:h-24 object-cover" />
                     )}
                     <div className="flex-grow p-3 md:p-4">
                       <Typography variant="h6" color="white" className="text-sm md:text-base">

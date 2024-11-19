@@ -1,14 +1,16 @@
 import React from 'react';
 import { Card, CardBody, Typography, Chip } from "@material-tailwind/react";
 import { Calendar, MapPin, Users } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-const TournamentCard = ({ tournament, onClick }) => {
+const TournamentCard = ({ tournament }) => {
+  const navigate = useNavigate();
   const startDate = new Date(tournament.startAt * 1000).toLocaleDateString();
   
   return (
     <Card 
-      className="bg-gradient-to-br from-gray-800 to-gray-900 cursor-pointer hover:from-gray-700 hover:to-gray-800 transition-all duration-300 border border-gray-700 hover:border-gray-600"
-      onClick={onClick}
+      className="mb-4 cursor-pointer bg-gray-900 text-white hover:bg-gray-800 transition-colors"
+      onClick={() => navigate(`/tournaments/${tournament._id}`)}
     >
       <CardBody className="p-4">
         {tournament.images?.[0] && (

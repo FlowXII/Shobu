@@ -11,8 +11,9 @@ const eventSchema = new mongoose.Schema({
   gameId: { type: mongoose.Schema.Types.ObjectId, ref: 'Game' },
   gameName: String,
   entryFee: {
-    amount: Number,
-    currency: { type: String, default: 'USD' }
+    type: Number,
+    min: 0,
+    default: 0
   },
   format: {
     type: String,
@@ -22,11 +23,27 @@ const eventSchema = new mongoose.Schema({
   description: String,
   rules: String,
   registrationClosesAt: Date,
-  participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  participants: [{
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    displayName: String,
+    seed: Number,
+    registeredAt: { type: Date, default: Date.now },
+    checkedIn: { type: Boolean, default: false },
+    _id: false
+  }],
   sets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Set' }],
   phases: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Phase' }],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
+
+eventSchema.pre('save', function(next) {
+  this.entryFee = Math.max(0, Number(this.entryFee) || 0);
+  next();
+});
+
+eventSchema.index({ tournamentId: 1 });
+eventSchema.index({ 'participants.userId': 1 });
+eventSchema.index({ startAt: 1 });
 
 export default mongoose.model('Event', eventSchema); 

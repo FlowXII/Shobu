@@ -141,7 +141,7 @@ const OrganizerDashboard = () => {
               <Card 
                 key={tournament._id}
                 className="bg-gray-900/50 hover:bg-gray-800 transition-all cursor-pointer border border-white/5 hover:border-white/10"
-                onClick={() => navigate(`/tournaments/${tournament.slug}`)}
+                onClick={() => navigate(`/tournaments/${tournament._id}/to`)}
               >
                 <CardBody>
                   <div className="flex items-start justify-between">
