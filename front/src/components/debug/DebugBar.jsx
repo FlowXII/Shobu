@@ -7,6 +7,7 @@ import {
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
+import { isStartGGConnected } from '../utils/startgg';
 
 const CUSTOM_ANIMATION = {
   mount: { scale: 1 },
@@ -25,7 +26,16 @@ const DEBUG_SECTIONS = [
     title: 'User State',
     color: 'green',
     getData: (state) => ({
-      user: state.user.user,
+      user: {
+        ...state.user.user,
+        hasStartGG: !!state.user.user?.startgg,
+        startggDetails: state.user.user?.startgg ? {
+          connected: true,
+          gamerTag: state.user.user.startgg.gamerTag,
+          userId: state.user.user.startgg.userId,
+          slug: state.user.user.startgg.slug,
+        } : null
+      },
       loading: state.user.loading,
       error: state.user.error,
       initialized: state.user.initialized
@@ -50,6 +60,23 @@ const DEBUG_SECTIONS = [
       auth: state.auth.loading,
       user: state.user.loading,
       dashboard: state.dashboard.loading
+    })
+  },
+  {
+    id: 5,
+    title: 'StartGG Integration',
+    color: 'purple',
+    getData: (state) => ({
+      isConnected: isStartGGConnected(state.user.user),
+      status: isStartGGConnected(state.user.user) ? {
+        connected: true,
+        gamerTag: state.user.user.startgg.gamerTag,
+        userId: state.user.user.startgg.userId,
+        lastUpdated: state.user.user.startgg.expiresAt
+      } : {
+        connected: false,
+        reason: 'Not connected or authenticated with Start.gg'
+      }
     })
   }
 ];

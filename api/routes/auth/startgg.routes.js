@@ -15,8 +15,8 @@ const logRequest = (req, res, next) => {
 
 router.use(logRequest);
 
-router.get('/auth/startgg', verifyToken, startGGAuth);
-router.get('/auth/startgg/callback', verifyToken, startGGCallback);
+router.get('/', verifyToken, startGGAuth);
+router.get('/callback', verifyToken, startGGCallback);
 
 router.get('/auth/user', verifyToken, async (req, res) => {
   console.log('👤 Fetching user data for ID:', req.user.userId);
@@ -45,7 +45,7 @@ router.get('/auth/user', verifyToken, async (req, res) => {
   }
 });
 
-router.post('/auth/startgg/disconnect', verifyToken, async (req, res) => {
+router.post('/disconnect', verifyToken, async (req, res) => {
   try {
     await disconnectStartGG(req.user.userId);
     res.json({ success: true });
@@ -55,7 +55,7 @@ router.post('/auth/startgg/disconnect', verifyToken, async (req, res) => {
   }
 });
 
-router.get('/auth/startgg/status', verifyToken, async (req, res) => {
+router.get('/status', verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
     if (!user) {
@@ -64,7 +64,8 @@ router.get('/auth/startgg/status', verifyToken, async (req, res) => {
     
     res.json({
       connected: !!user.startgg?.connected,
-      gamerTag: user.startgg?.gamerTag
+      gamerTag: user.startgg?.gamerTag,
+      startgg: user.startgg
     });
   } catch (error) {
     console.error('Error checking Start.gg status:', error);

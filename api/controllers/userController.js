@@ -170,4 +170,32 @@ export const logout = async (req, res) => {
       error: 'Error during logout'
     });
   }
+};
+
+export const searchUsers = async (req, res) => {
+  try {
+    const { q } = req.query;
+    const currentUserId = req.user._id;
+
+    logger.info(`Searching users with query: "${q}" by user: ${currentUserId}`);
+
+    if (!q || q.length < 2) {
+      logger.info('Search query too short, returning empty results');
+      return res.json({ users: [] });
+    }
+
+    const users = await User.find({
+      _id: { $ne: currentUserId },
+      username: { $regex: q, $options: 'i' }
+    })
+    .select('username _id')
+    .limit(10)
+    .lean();
+
+    logger.info(`Found ${users.length} users matching query "${q}"`);
+    res.json({ users });
+  } catch (error) {
+    logger.error('Search users error:', error);
+    res.status(500).json({ error: 'Failed to search users' });
+  }
 }; 

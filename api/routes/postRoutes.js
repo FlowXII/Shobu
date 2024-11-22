@@ -4,7 +4,7 @@ import { authenticate } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.post('/posts', authenticate, createPost);
-router.get('/posts/feed', authenticate, getFeedPosts);
+router.post('/', authenticate, createPost);
+router.get('/feed', authenticate, getFeedPosts);
 
 export default router; 
