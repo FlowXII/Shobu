@@ -7,7 +7,7 @@ import {
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
-import { isStartGGConnected } from '../utils/startgg';
+import { isStartGGConnected } from '../../utils/startgg';
 
 const CUSTOM_ANIMATION = {
   mount: { scale: 1 },

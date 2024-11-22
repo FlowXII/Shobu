@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Button } from "@material-tailwind/react";
-import { logoutUser } from '../store/thunks/userThunks';
+import { logoutUser } from '../../store/thunks/userThunks';
 
 function LogoutButton({ className }) {
   const navigate = useNavigate();

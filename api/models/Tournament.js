@@ -20,7 +20,10 @@ const tournamentSchema = new mongoose.Schema({
     status: { type: String, enum: ['REGISTERED', 'CHECKED_IN', 'CANCELLED'], default: 'REGISTERED' },
     registeredAt: { type: Date, default: Date.now },
     checkedInAt: Date,
-    cancelledAt: Date
+    cancelledAt: Date,
+    placement: Number,
+    matchesPlayed: { type: Number, default: 0 },
+    matchesWon: { type: Number, default: 0 }
   }],
   events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
   images: [{

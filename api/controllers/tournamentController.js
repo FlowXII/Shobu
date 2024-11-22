@@ -5,7 +5,8 @@ import {
   registerForTournament, 
   updateTournament, 
   checkInAttendee,
-  cancelRegistration
+  cancelRegistration,
+  updateTournamentResults
 } from '../services/tournament/tournamentService.js';
 import { validateTournamentData } from '../validators/tournamentValidator.js';
 import mongoose from 'mongoose';
@@ -91,31 +92,6 @@ export const getAllTournamentsController = async (req, res) => {
   } catch (error) {
     logger.error('Failed to fetch tournaments', { 
       error: error.message,
-      stack: error.stack 
-    });
-    res.status(500).json({
-      success: false,
-      error: 'Failed to fetch tournaments'
-    });
-  }
-}; 
-
-export const getOrganizerTournamentsController = async (req, res) => {
-  try {
-    const tournaments = await Tournament.find({ 
-      organizerId: req.user._id 
-    })
-    .populate('events')
-    .sort({ createdAt: -1 });
-    
-    res.status(200).json({
-      success: true,
-      data: tournaments
-    });
-  } catch (error) {
-    logger.error('Failed to fetch organizer tournaments', { 
-      error: error.message,
-      userId: req.user._id,
       stack: error.stack 
     });
     res.status(500).json({
@@ -283,6 +259,75 @@ export const cancelRegistrationController = async (req, res) => {
     res.status(400).json({
       success: false,
       error: error.message
+    });
+  }
+}; 
+
+export const completeTournamentController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { results } = req.body;
+
+    if (!Array.isArray(results)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Results must be an array'
+      });
+    }
+
+    const updatedTournament = await updateTournamentResults(id, results);
+    
+    res.status(200).json({
+      success: true,
+      data: updatedTournament
+    });
+  } catch (error) {
+    logger.error('Failed to complete tournament', {
+      error: error.message,
+      id: req.params.id,
+      stack: error.stack
+    });
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
+  }
+}; 
+
+export const getUserTournamentsController = async (req, res) => {
+  try {
+    const tournaments = await Tournament.find({
+      $or: [
+        { organizerId: req.user._id },
+        { 'attendees.userId': req.user._id }
+      ]
+    })
+    .populate('events')
+    .sort({ createdAt: -1 });
+    
+    // Categorize tournaments
+    const organizing = tournaments.filter(t => t.organizerId.toString() === req.user._id.toString());
+    const participating = tournaments.filter(t => 
+      t.organizerId.toString() !== req.user._id.toString() && 
+      t.attendees.some(a => a.userId.toString() === req.user._id.toString())
+    );
+
+    res.status(200).json({
+      success: true,
+      data: {
+        organizing,
+        participating
+      }
+    });
+  } catch (error) {
+    logger.error('Failed to fetch user tournaments', { 
+      error: error.message,
+      userId: req.user._id,
+      stack: error.stack 
+    });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch tournaments'
     });
   }
 }; 

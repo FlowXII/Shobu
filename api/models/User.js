@@ -12,6 +12,22 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
   role: { type: String, default: 'user' },
+  bio: { type: String, default: '' },
+  avatar: { type: String, default: 'https://via.placeholder.com/150' },
+  banner: { type: String, default: 'https://via.placeholder.com/1500x500' },
+  location: {
+    city: String,
+    country: String
+  },
+  socialLinks: {
+    twitter: String,
+    discord: String,
+    twitch: String
+  },
+  preferences: {
+    displayEmail: { type: Boolean, default: false },
+    theme: { type: String, default: 'dark' }
+  },
   startgg: {
     connected: { type: Boolean, default: false },
     accessToken: String,
@@ -43,7 +59,19 @@ const userSchema = new mongoose.Schema({
       gamerTag: String,
       prefix: String
     }
-  }
+  },
+  statsCache: {
+    tournamentsOrganized: Number,
+    tournamentsParticipated: Number,
+    totalMatches: Number,
+    totalWins: Number,
+    lastUpdated: Date,
+  },
+  recentTournaments: [{
+    tournamentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Tournament' },
+    placement: Number,
+    date: Date
+  }]
 }, { timestamps: true });
 
 // Hash password before saving

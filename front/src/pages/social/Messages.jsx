@@ -9,9 +9,9 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { MessageSquare, User, MoreVertical, Send } from "lucide-react"; 
-import { useSocket } from '../hooks/useSocket';
+import { useSocket } from '../../hooks/useSocket';
 import axios from 'axios';
-import NewConversation from '../components/social/NewConversation';
+import NewConversation from '../../components/social/NewConversation';
 import { useNavigate } from 'react-router-dom';
 
 const api = axios.create({

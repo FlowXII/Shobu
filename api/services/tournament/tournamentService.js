@@ -1,5 +1,7 @@
 import Tournament from '../../models/Tournament.js';
 import logger from '../../utils/logger.js';
+import User from '../../models/User.js';
+import mongoose from 'mongoose';
 
 const validateTournamentData = (data) => {
   const errors = [];
@@ -174,6 +176,7 @@ export const registerForTournament = async (tournamentId, userId) => {
     registeredAt: new Date()
   });
 
+  await updateUserTournamentStats(userId);
   return await tournament.save();
 };
 
@@ -195,6 +198,7 @@ export const checkInAttendee = async (tournamentId, userId) => {
   attendee.status = 'CHECKED_IN';
   attendee.checkedInAt = new Date();
 
+  await updateUserTournamentStats(userId);
   return await tournament.save();
 };
 
@@ -216,5 +220,108 @@ export const cancelRegistration = async (tournamentId, userId) => {
   attendee.status = 'CANCELLED';
   attendee.cancelledAt = new Date();
 
+  await updateUserTournamentStats(userId);
   return await tournament.save();
+};
+
+const updateUserTournamentStats = async (userId) => {
+  // Add debouncing to avoid multiple updates in quick succession
+  if (isUpdateInProgress(userId)) {
+    return;
+  }
+
+  const [organizerCount, participantCount, recentTournaments] = await Promise.all([
+    Tournament.countDocuments({ organizerId: userId }),
+    Tournament.countDocuments({ 'attendees.userId': userId }),
+    Tournament.find({ 
+      'attendees.userId': userId,
+      status: { $in: ['COMPLETED', 'IN_PROGRESS'] }
+    })
+    .sort({ startAt: -1 })
+    .limit(5)
+    .select('_id name startAt attendees')
+  ]);
+
+  // Calculate placements from recent tournaments
+  const recentResults = recentTournaments.map(tournament => {
+    const attendee = tournament.attendees.find(a => 
+      a.userId.toString() === userId.toString()
+    );
+    return {
+      tournamentId: tournament._id,
+      placement: attendee?.placement || null,
+      date: tournament.startAt
+    };
+  }).filter(result => result.placement !== null);
+
+  // Calculate total matches and wins from all tournaments
+  const [totalMatches, totalWins] = await Tournament.aggregate([
+    { $match: { 'attendees.userId': mongoose.Types.ObjectId(userId) } },
+    { $unwind: '$attendees' },
+    { $match: { 'attendees.userId': mongoose.Types.ObjectId(userId) } },
+    {
+      $group: {
+        _id: null,
+        totalMatches: { $sum: '$attendees.matchesPlayed' },
+        totalWins: { $sum: '$attendees.matchesWon' }
+      }
+    }
+  ]).then(result => result[0] ? [result[0].totalMatches, result[0].totalWins] : [0, 0]);
+
+  // Use atomic operations for updates
+  await User.findByIdAndUpdate(userId, {
+    $set: {
+      'statsCache.tournamentsOrganized': organizerCount,
+      'statsCache.tournamentsParticipated': participantCount,
+      'statsCache.lastUpdated': new Date(),
+      'statsCache.totalMatches': totalMatches,
+      'statsCache.totalWins': totalWins,
+      'statsCache.recentResults': recentResults
+    }
+  }, { 
+    new: true,
+    // Only update if cache is older than 5 minutes
+    condition: { 
+      $or: [
+        { 'statsCache.lastUpdated': { $exists: false } },
+        { 'statsCache.lastUpdated': { $lt: new Date(Date.now() - 5 * 60 * 1000) } }
+      ]
+    }
+  });
+};
+
+export const updateTournamentResults = async (tournamentId, results) => {
+  const tournament = await Tournament.findById(tournamentId);
+  if (!tournament) {
+    throw new Error('Tournament not found');
+  }
+
+  // Validate results format
+  if (!Array.isArray(results) || !results.every(r => r.userId && r.placement)) {
+    throw new Error('Invalid results format');
+  }
+
+  // Update placements for each attendee
+  for (const result of results) {
+    const attendee = tournament.attendees.find(
+      a => a.userId.toString() === result.userId.toString()
+    );
+    if (attendee) {
+      attendee.placement = result.placement;
+      attendee.matchesPlayed = result.matchesPlayed || 0;
+      attendee.matchesWon = result.matchesWon || 0;
+    }
+  }
+
+  // Update tournament status
+  tournament.status = 'COMPLETED';
+  await tournament.save();
+
+  // Update stats for all participants
+  const updatePromises = tournament.attendees.map(attendee => 
+    updateUserTournamentStats(attendee.userId)
+  );
+  await Promise.all(updatePromises);
+
+  return tournament;
 }; 

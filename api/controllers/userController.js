@@ -1,158 +1,111 @@
-import User from '../models/User.js';
-import jwt from 'jsonwebtoken';
+import { 
+  registerUser, 
+  loginUser, 
+  getCurrentUserData, 
+  searchUsersService,
+  updateUserProfile,
+  getUserProfile
+} from '../services/user/userService.js';
 import logger from '../utils/logger.js';
 
 export const register = async (req, res) => {
   try {
-    logger.info('Starting user registration');
+    const { token, user } = await registerUser(req.body);
     
-    const { username, email, password } = req.body;
-
-    // Check if user already exists
-    const existingUser = await User.findOne({ 
-      $or: [{ email }, { username }] 
-    });
-    
-    if (existingUser) {
-      logger.warn('Registration failed - user exists', { email, username });
-      return res.status(400).json({ 
-        success: false, 
-        error: 'User already exists' 
-      });
-    }
-
-    // Create new user
-    const user = new User({
-      username,
-      email,
-      password
-    });
-
-    await user.save();
-    logger.info('User registered successfully', { userId: user._id });
-
-    // Create token
-    const token = jwt.sign(
-      { userId: user._id }, 
-      process.env.JWT_SECRET,
-      { expiresIn: '24h' }
-    );
-
     res.cookie('auth_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+      maxAge: 24 * 60 * 60 * 1000
     });
 
     res.status(201).json({
       success: true,
-      data: {
-        userId: user._id,
-        username: user.username,
-        email: user.email,
-        role: user.role
-      }
+      data: user
     });
   } catch (error) {
-    logger.error('Registration error', { 
-      error: error.message,
-      stack: error.stack 
-    });
-    res.status(500).json({ 
+    logger.error('Registration error', { error });
+    res.status(400).json({ 
       success: false, 
-      error: 'Error registering user' 
+      error: error.message 
     });
   }
 };
 
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const { token, user } = await loginUser(req.body);
     
-    if (!user || !await user.comparePassword(password)) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-
-    // Generate JWT token
-    const token = jwt.sign(
-      { userId: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: '24h' }
-    );
-
-    // Set token in HTTP-only cookie
     res.cookie('jwt', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+      maxAge: 24 * 60 * 60 * 1000
     });
 
     res.json({
       success: true,
       message: 'Login successful',
-      user: {
-        id: user._id,
-        email: user.email,
-        username: user.username
-      }
+      user
     });
   } catch (error) {
-    res.status(500).json({ error: 'Login failed' });
+    res.status(401).json({ 
+      success: false, 
+      error: error.message 
+    });
   }
 };
 
-export const getCurrentUser = async (req, res) => {
+export const getProfile = async (req, res) => {
   try {
-    // req.userId is set by authenticateToken middleware
-    const user = await User.findById(req.userId).select('-password');
-    
-    if (!user) {
-      return res.status(404).json({ 
-        success: false, 
-        error: 'User not found' 
-      });
-    }
-
-    res.json({
-      success: true,
-      data: {
-        userId: user._id,
-        username: user.username,
-        email: user.email,
-        role: user.role
-      }
-    });
+    const { username } = req.params;
+    const result = await getUserProfile(req.userId, username);
+    res.json(result);
   } catch (error) {
-    logger.error('Get current user error', { 
-      error: error.message,
-      stack: error.stack 
+    res.status(404).json({ 
+      success: false, 
+      error: error.message 
     });
+  }
+};
+
+export const searchUsers = async (req, res) => {
+  try {
+    const users = await searchUsersService(req.query.q, req.user._id);
+    res.json({ users });
+  } catch (error) {
+    logger.error('Search users error:', error);
     res.status(500).json({ 
       success: false, 
-      error: 'Error fetching user data' 
+      error: 'Failed to search users' 
+    });
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+    const user = await updateUserProfile(req.userId, req.body);
+    res.json({
+      success: true,
+      data: user
+    });
+  } catch (error) {
+    logger.error('Update profile error', { error });
+    res.status(500).json({
+      success: false,
+      error: 'Error updating profile'
     });
   }
 };
 
 export const logout = async (req, res) => {
   try {
-    logger.info('User logging out', { userId: req.userId });
-    
-    // Clear the auth cookie
-    res.clearCookie('auth_token', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax'
-    });
-
-    // Clear the JWT cookie if you're using it
-    res.clearCookie('jwt', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax'
+    ['auth_token', 'jwt'].forEach(cookie => {
+      res.clearCookie(cookie, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax'
+      });
     });
 
     res.status(200).json({
@@ -160,42 +113,10 @@ export const logout = async (req, res) => {
       message: 'Successfully logged out'
     });
   } catch (error) {
-    logger.error('Logout error', {
-      error: error.message,
-      stack: error.stack,
-      userId: req.userId
-    });
+    logger.error('Logout error', { error });
     res.status(500).json({
       success: false,
       error: 'Error during logout'
     });
-  }
-};
-
-export const searchUsers = async (req, res) => {
-  try {
-    const { q } = req.query;
-    const currentUserId = req.user._id;
-
-    logger.info(`Searching users with query: "${q}" by user: ${currentUserId}`);
-
-    if (!q || q.length < 2) {
-      logger.info('Search query too short, returning empty results');
-      return res.json({ users: [] });
-    }
-
-    const users = await User.find({
-      _id: { $ne: currentUserId },
-      username: { $regex: q, $options: 'i' }
-    })
-    .select('username _id')
-    .limit(10)
-    .lean();
-
-    logger.info(`Found ${users.length} users matching query "${q}"`);
-    res.json({ users });
-  } catch (error) {
-    logger.error('Search users error:', error);
-    res.status(500).json({ error: 'Failed to search users' });
   }
 }; 

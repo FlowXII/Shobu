@@ -13,6 +13,12 @@ import {
   AccordionBody,
   Chip,
   Progress,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Input,
+  Textarea,
 } from "@material-tailwind/react";
 import {
   User,
@@ -27,55 +33,204 @@ import {
   Calendar,
   Award,
   Star,
+  Twitter,
+  Twitch,
+  Settings,
 } from "lucide-react";
 import { logoutUser, disconnectStartGG } from '../../store/thunks/userThunks';
 import LoadingIndicator from '../../components/layout/LoadingIndicator';
-
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  withCredentials: true,
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  }
-});
+import { useProfile } from '../../hooks/useProfile';
 
 const CUSTOM_ANIMATION = {
   mount: { scale: 1 },
   unmount: { scale: 0.9 },
 };
 
+const TournamentCard = ({ tournament, type, userId }) => (
+  <div className="flex items-center justify-between p-3 bg-gray-900/50 rounded-lg hover:bg-gray-900/70 transition-colors cursor-pointer">
+    <div>
+      <Typography className="text-gray-200">{tournament.name}</Typography>
+      <div className="flex items-center gap-2 text-sm text-gray-400">
+        <Calendar className="w-4 h-4" />
+        {new Date(tournament.startAt).toLocaleDateString()}
+      </div>
+    </div>
+    <div className="flex items-center gap-2">
+      {type === 'participating' && tournament.attendees?.find(a => 
+        a.userId === userId && a.placement
+      )?.placement && (
+        <Chip 
+          size="sm" 
+          value={`#${tournament.attendees.find(a => 
+            a.userId === userId
+          ).placement}`}
+          className="bg-purple-500/20 text-purple-400 border border-purple-500/20"
+        />
+      )}
+      <Chip 
+        size="sm" 
+        value={tournament.status} 
+        className={`${
+          tournament.status === 'COMPLETED' 
+            ? 'bg-green-500/20 text-green-400 border border-green-500/20'
+            : tournament.status === 'IN_PROGRESS'
+            ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/20'
+            : 'bg-blue-500/20 text-blue-400 border border-blue-500/20'
+        }`}
+      />
+    </div>
+  </div>
+);
+
+const TournamentHistory = ({ tournaments, loading, userId }) => {
+  if (loading) {
+    return <LoadingIndicator />;
+  }
+
+  const organizing = tournaments?.organizing || [];
+  const participating = tournaments?.participating || [];
+  const hasNoTournaments = organizing.length === 0 && participating.length === 0;
+
+  if (hasNoTournaments) {
+    return (
+      <div className="text-center py-8">
+        <Typography className="text-gray-400">
+          No tournament history yet
+        </Typography>
+      </div>
+    );
+  }
+
+  const sortByDate = (a, b) => new Date(b.startAt) - new Date(a.startAt);
+
+  return (
+    <div className="space-y-8">
+      {organizing.length > 0 && (
+        <div>
+          <div className="flex items-center gap-2 mb-4">
+            <Trophy className="w-5 h-5 text-blue-400" />
+            <Typography variant="h6" className="text-gray-300">
+              Organizing ({organizing.length})
+            </Typography>
+          </div>
+          <div className="space-y-3">
+            {organizing.sort(sortByDate).map(tournament => (
+              <TournamentCard 
+                key={tournament._id}
+                tournament={tournament}
+                type="organizing"
+                userId={userId}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {participating.length > 0 && (
+        <div>
+          <div className="flex items-center gap-2 mb-4">
+            <Medal className="w-5 h-5 text-purple-400" />
+            <Typography variant="h6" className="text-gray-300">
+              Participating ({participating.length})
+            </Typography>
+          </div>
+          <div className="space-y-3">
+            {participating.sort(sortByDate).map(tournament => (
+              <TournamentCard 
+                key={tournament._id}
+                tournament={tournament}
+                type="participating"
+                userId={userId}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Profile = () => {
   const dispatch = useDispatch();
   const { username } = useParams();
-  const currentUser = useSelector(state => state.user.user);
-  const [profileData, setProfileData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [open, setOpen] = useState(1);
+  const { loading, error, profileData, updateProfile } = useProfile(username);
+  const [open, setOpen] = useState(0);
+  const [activeTab, setActiveTab] = useState('about');
+  const [editForm, setEditForm] = useState({
+    bio: '',
+    avatar: '',
+    banner: '',
+    location: {
+      city: '',
+      country: ''
+    },
+    socialLinks: {
+      twitter: '',
+      discord: '',
+      twitch: ''
+    }
+  });
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
+  // Initialize edit form when profile data loads
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        if (username) {
-          // Fetch other user's profile
-          const response = await api.get(`/users/profile/${username}`);
-          setProfileData(response.data.user);
-        } else {
-          // Use current user's profile
-          setProfileData(currentUser);
+    if (profileData) {
+      setEditForm({
+        bio: profileData.bio || '',
+        avatar: profileData.avatar || '',
+        banner: profileData.banner || '',
+        location: {
+          city: profileData.location?.city || '',
+          country: profileData.location?.country || ''
+        },
+        socialLinks: {
+          twitter: profileData.socialLinks?.twitter || '',
+          discord: profileData.socialLinks?.discord || '',
+          twitch: profileData.socialLinks?.twitch || ''
         }
-      } catch (error) {
-        console.error('Error fetching profile:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProfile();
-  }, [username, currentUser]);
+      });
+    }
+  }, [profileData]);
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
+  };
+
+  const handleEditClick = () => {
+    setIsEditDialogOpen(true);
+  };
+
+  const handleEditClose = () => {
+    setIsEditDialogOpen(false);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    const updatedProfile = await updateProfile(editForm);
+    if (updatedProfile) {
+      setIsEditDialogOpen(false);
+    }
+  };
+
+  const handleInputChange = (e, section, field) => {
+    if (section) {
+      setEditForm(prev => ({
+        ...prev,
+        [section]: {
+          ...prev[section],
+          [field]: e.target.value
+        }
+      }));
+    } else {
+      setEditForm(prev => ({
+        ...prev,
+        [e.target.name]: e.target.value
+      }));
+    }
+  };
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
   };
 
   if (loading) {
@@ -96,39 +251,26 @@ const Profile = () => {
   const startggProfile = profileData?.startgg?.profile;
   const startggPlayer = profileData?.startgg?.player;
 
-  // Placeholder stats
-  const stats = [
-    { label: 'Tournaments', value: '24', icon: Trophy, color: 'text-red-400' },
-    { label: 'Matches', value: '168', icon: Target, color: 'text-blue-400' },
-    { label: 'Win Rate', value: '67%', icon: Award, color: 'text-green-400' },
-    { label: 'Ranking', value: '#42', icon: Medal, color: 'text-yellow-400' },
-  ];
-
-  // Placeholder achievements
-  const achievements = [
-    { name: 'Tournament Victor', description: 'Won first place in a major tournament', icon: Trophy, date: '2024-02-15' },
-    { name: 'Streak Master', description: '10 wins in a row', icon: Star, date: '2024-01-20' },
-    { name: 'Community Leader', description: 'Created 5 successful tournaments', icon: Users, date: '2024-01-10' },
-  ];
-
   return (
     <div className="flex flex-col items-center justify-start p-8 overflow-x-hidden">
-      {/* Hero Section */}
-      <Card className="w-full max-w-[72rem] bg-gradient-to-br from-gray-800 to-gray-900 text-white shadow-xl border border-white/10 rounded-xl overflow-hidden mb-8">
-        <CardBody className="p-0">
-          {/* Banner */}
-          <div className="relative h-48 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
-            <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" />
-          </div>
+      {/* Banner Image */}
+      <div className="w-full max-w-[72rem] h-48 md:h-64 relative overflow-hidden rounded-t-xl">
+        <img
+          src={profileData?.banner || 'https://via.placeholder.com/1500x500'}
+          alt="Profile Banner"
+          className="w-full h-full object-cover"
+        />
+      </div>
 
-          {/* Profile Info */}
-          <div className="px-8 pb-8 -mt-16 relative">
+      {/* Profile Info Card */}
+      <Card className="w-full max-w-[72rem] bg-gray-800/50 border border-white/10 -mt-8">
+        <CardBody>
+          <div className="px-8 pb-8 relative">
             <div className="flex flex-col md:flex-row items-center md:items-end gap-6">
               <Avatar
-                src={profileData?.avatar || 'https://via.placeholder.com/150'}
-                alt={profileData?.username}
-                size="xxl"
-                className="w-32 h-32 border-4 border-gray-900 shadow-xl rounded-xl"
+                src={profileData?.avatar || "https://via.placeholder.com/150"}
+                alt="profile-picture"
+                className="w-32 h-32 border-4 border-gray-900 shadow-xl rounded-xl -mt-16"
               />
               <div className="flex-grow text-center md:text-left">
                 <Typography variant="h3" className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
@@ -139,42 +281,19 @@ const Profile = () => {
                   <Chip size="sm" value="Tournament Organizer" className="bg-purple-500/20 text-purple-400 border border-purple-500/20" />
                 </div>
               </div>
-              {isStartGGConnected && (
+              {!username && (
                 <Button
                   size="sm"
                   className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
-                  onClick={() => window.open(startggProfile?.url, '_blank')}
+                  onClick={() => setIsEditing(true)}
                 >
-                  View Start.gg Profile
+                  Edit Profile
                 </Button>
               )}
             </div>
           </div>
         </CardBody>
       </Card>
-
-      {/* Stats Grid */}
-      <div className="w-full max-w-[72rem] grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        {stats.map((stat, index) => (
-          <Card key={index} className="bg-gray-800/50 border border-white/10">
-            <CardBody className="p-4">
-              <div className="flex items-center gap-4">
-                <div className="p-2 rounded-lg bg-gray-900/50">
-                  <stat.icon className={`w-6 h-6 ${stat.color}`} />
-                </div>
-                <div>
-                  <Typography variant="h4" className="font-bold text-white">
-                    {stat.value}
-                  </Typography>
-                  <Typography className="text-gray-400 text-sm">
-                    {stat.label}
-                  </Typography>
-                </div>
-              </div>
-            </CardBody>
-          </Card>
-        ))}
-      </div>
 
       {/* Main Content Grid */}
       <div className="w-full max-w-[72rem] grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -183,61 +302,266 @@ const Profile = () => {
           {/* About Section */}
           <Card className="bg-gray-800/50 border border-white/10">
             <CardBody>
-              <Typography variant="h5" className="mb-4 text-white flex items-center gap-2">
-                <User className="w-5 h-5 text-blue-400" />
-                About
-              </Typography>
-              <Typography className="text-gray-300">
-                {profileData?.bio || "Professional gamer and tournament organizer. Passionate about competitive gaming and community building."}
-              </Typography>
-              
-              {/* Progress Bars */}
-              <div className="mt-6 space-y-4">
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <Typography className="text-sm text-gray-400">Tournament Experience</Typography>
-                    <Typography className="text-sm text-gray-400">Level 8</Typography>
+              {/* Tab Navigation */}
+              <div className="flex items-center gap-4 mb-6 border-b border-white/10">
+                <button
+                  type="button"
+                  onClick={() => handleTabChange('about')}
+                  className={`pb-2 px-1 ${activeTab === 'about' 
+                    ? 'text-blue-400 border-b-2 border-blue-400' 
+                    : 'text-gray-400'}`}
+                >
+                  <div className="flex items-center gap-2">
+                    <User className="w-5 h-5" />
+                    About
                   </div>
-                  <Progress value={80} size="sm" className="bg-gray-700" color="blue" />
-                </div>
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <Typography className="text-sm text-gray-400">Organization Skills</Typography>
-                    <Typography className="text-sm text-gray-400">Level 6</Typography>
-                  </div>
-                  <Progress value={60} size="sm" className="bg-gray-700" color="purple" />
-                </div>
+                </button>
+                {!username && (
+                  <button
+                    type="button"
+                    onClick={() => handleTabChange('edit')}
+                    className={`pb-2 px-1 ${activeTab === 'edit' 
+                      ? 'text-blue-400 border-b-2 border-blue-400' 
+                      : 'text-gray-400'}`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Settings className="w-5 h-5" />
+                      Edit Profile
+                    </div>
+                  </button>
+                )}
               </div>
+
+              {/* About Tab Content */}
+              {activeTab === 'about' && (
+                <>
+                  <Typography className="text-gray-300">
+                    {profileData?.bio || "No bio yet"}
+                  </Typography>
+                  
+                  {profileData?.location?.city && profileData?.location?.country && (
+                    <div className="flex items-center gap-2 mt-4">
+                      <MapPin className="w-5 h-5 text-gray-400" />
+                      <Typography className="text-gray-300">
+                        {`${profileData.location.city}, ${profileData.location.country}`}
+                      </Typography>
+                    </div>
+                  )}
+
+                  {(profileData?.socialLinks?.twitter || 
+                    profileData?.socialLinks?.discord || 
+                    profileData?.socialLinks?.twitch) && (
+                    <div className="flex gap-4 mt-4">
+                      {profileData.socialLinks.twitter && (
+                        <a href={`https://twitter.com/${profileData.socialLinks.twitter}`} 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           className="text-gray-400 hover:text-blue-400">
+                          <Twitter className="w-5 h-5" />
+                        </a>
+                      )}
+                      {profileData.socialLinks.discord && (
+                        <Typography className="text-gray-400">
+                          Discord: {profileData.socialLinks.discord}
+                        </Typography>
+                      )}
+                      {profileData.socialLinks.twitch && (
+                        <a href={`https://twitch.tv/${profileData.socialLinks.twitch}`} 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           className="text-gray-400 hover:text-purple-400">
+                          <Twitch className="w-5 h-5" />
+                        </a>
+                      )}
+                    </div>
+                  )}
+                </>
+              )}
+
+              {/* Edit Tab Content */}
+              {activeTab === 'edit' && !username && (
+                <form onSubmit={handleEditSubmit} className="space-y-6">
+                  <div>
+                    <Typography variant="small" className="mb-2 text-gray-200">Bio</Typography>
+                    <Textarea
+                      name="bio"
+                      value={editForm.bio}
+                      onChange={(e) => handleInputChange(e)}
+                      className="!border-white/20 focus:!border-white/40 text-gray-200"
+                      variant="outlined"
+                    />
+                  </div>
+
+                  <div>
+                    <Typography variant="small" className="mb-2 text-gray-200">Avatar URL</Typography>
+                    <Input
+                      name="avatar"
+                      value={editForm.avatar}
+                      onChange={(e) => handleInputChange(e)}
+                      className="!border-white/20 focus:!border-white/40 text-gray-200"
+                      variant="outlined"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Typography variant="small" className="mb-2 text-gray-200">City</Typography>
+                      <Input
+                        value={editForm.location.city}
+                        onChange={(e) => handleInputChange(e, 'location', 'city')}
+                        className="!border-white/20 focus:!border-white/40 text-gray-200"
+                        variant="outlined"
+                      />
+                    </div>
+                    <div>
+                      <Typography variant="small" className="mb-2 text-gray-200">Country</Typography>
+                      <Input
+                        value={editForm.location.country}
+                        onChange={(e) => handleInputChange(e, 'location', 'country')}
+                        className="!border-white/20 focus:!border-white/40 text-gray-200"
+                        variant="outlined"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <Typography variant="small" className="text-gray-200">Social Links</Typography>
+                    <Input
+                      label="Twitter"
+                      value={editForm.socialLinks.twitter}
+                      onChange={(e) => handleInputChange(e, 'socialLinks', 'twitter')}
+                      className="!border-white/20 focus:!border-white/40 text-gray-200"
+                      variant="outlined"
+                    />
+                    <Input
+                      label="Discord"
+                      value={editForm.socialLinks.discord}
+                      onChange={(e) => handleInputChange(e, 'socialLinks', 'discord')}
+                      className="!border-white/20 focus:!border-white/40 text-gray-200"
+                      variant="outlined"
+                    />
+                    <Input
+                      label="Twitch"
+                      value={editForm.socialLinks.twitch}
+                      onChange={(e) => handleInputChange(e, 'socialLinks', 'twitch')}
+                      className="!border-white/20 focus:!border-white/40 text-gray-200"
+                      variant="outlined"
+                    />
+                  </div>
+
+                  <div>
+                    <Typography variant="small" className="mb-2 text-gray-200">Banner URL</Typography>
+                    <Input
+                      name="banner"
+                      value={editForm.banner}
+                      onChange={(e) => handleInputChange(e)}
+                      className="!border-white/20 focus:!border-white/40 text-gray-200"
+                      variant="outlined"
+                    />
+                  </div>
+
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+                  >
+                    Save Changes
+                  </Button>
+                </form>
+              )}
             </CardBody>
           </Card>
 
-          {/* Achievements Section */}
+          {/* Tournament History Section */}
           <Card className="bg-gray-800/50 border border-white/10">
             <CardBody>
-              <Typography variant="h5" className="mb-4 text-white flex items-center gap-2">
-                <Medal className="w-5 h-5 text-yellow-400" />
-                Recent Achievements
-              </Typography>
-              <div className="space-y-4">
-                {achievements.map((achievement, index) => (
-                  <div key={index} className="flex items-start gap-4 p-4 bg-gray-900/50 rounded-lg">
-                    <div className="p-2 rounded-lg bg-gray-800">
-                      <achievement.icon className="w-6 h-6 text-yellow-400" />
+              <div className="flex items-center justify-between mb-6">
+                <Typography variant="h5" className="text-white">
+                  Tournament History
+                </Typography>
+                <div className="flex items-center gap-2">
+                  <Chip
+                    size="sm"
+                    value={`${profileData?.tournaments?.organizing?.length || 0} Organized`}
+                    className="bg-blue-500/20 text-blue-400"
+                  />
+                  <Chip
+                    size="sm"
+                    value={`${profileData?.tournaments?.participating?.length || 0} Participated`}
+                    className="bg-purple-500/20 text-purple-400"
+                  />
+                </div>
+              </div>
+              <TournamentHistory 
+                tournaments={profileData?.tournaments}
+                loading={loading}
+                userId={profileData?._id}
+              />
+            </CardBody>
+          </Card>
+
+          {/* Tournament Stats Section */}
+          <Card className="bg-gray-800/50 border border-white/10 mt-8">
+            <CardBody>
+              <Typography variant="h5" className="mb-4 text-white">Tournament Statistics</Typography>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Stats Overview */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-3 bg-gray-900/50 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <Trophy className="w-5 h-5 text-blue-400" />
+                      <Typography className="text-gray-300">Tournaments Organized</Typography>
                     </div>
-                    <div>
-                      <Typography className="font-semibold text-white">
-                        {achievement.name}
-                      </Typography>
-                      <Typography className="text-sm text-gray-400">
-                        {achievement.description}
-                      </Typography>
-                      <Typography className="text-xs text-gray-500 mt-1">
-                        <Calendar className="w-4 h-4 inline mr-1" />
-                        {new Date(achievement.date).toLocaleDateString()}
-                      </Typography>
-                    </div>
+                    <Typography className="text-blue-400 font-bold">
+                      {profileData?.statsCache?.tournamentsOrganized || 0}
+                    </Typography>
                   </div>
-                ))}
+
+                  <div className="flex items-center justify-between p-3 bg-gray-900/50 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <Medal className="w-5 h-5 text-purple-400" />
+                      <Typography className="text-gray-300">Tournaments Participated</Typography>
+                    </div>
+                    <Typography className="text-purple-400 font-bold">
+                      {profileData?.statsCache?.tournamentsParticipated || 0}
+                    </Typography>
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-gray-900/50 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <Target className="w-5 h-5 text-green-400" />
+                      <Typography className="text-gray-300">Win Rate</Typography>
+                    </div>
+                    <Typography className="text-green-400 font-bold">
+                      {profileData?.statsCache?.totalMatches 
+                        ? Math.round((profileData.statsCache.totalWins / profileData.statsCache.totalMatches) * 100)
+                        : 0}%
+                    </Typography>
+                  </div>
+                </div>
+
+                {/* Recent Results */}
+                <div className="space-y-4">
+                  <Typography variant="h6" className="text-gray-300">Recent Results</Typography>
+                  {profileData?.statsCache?.recentResults?.length > 0 ? (
+                    profileData.statsCache.recentResults.map((result, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-gray-900/50 rounded-lg">
+                        <Typography className="text-gray-300">
+                          {new Date(result.date).toLocaleDateString()}
+                        </Typography>
+                        <Chip 
+                          size="sm" 
+                          value={`#${result.placement}`}
+                          className="bg-blue-500/20 text-blue-400 border border-blue-500/20"
+                        />
+                      </div>
+                    ))
+                  ) : (
+                    <Typography className="text-gray-400">
+                      No recent tournament results
+                    </Typography>
+                  )}
+                </div>
               </div>
             </CardBody>
           </Card>

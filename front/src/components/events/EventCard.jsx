@@ -8,7 +8,7 @@ import {
 } from "@material-tailwind/react";
 import { Users, Calendar, Gamepad2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { formatDate, getEventStateLabel } from '../utils/eventUtils';
+import { formatDate, getEventStateLabel } from '../../utils/eventUtils';
 
 const EventCard = ({ event, tournamentSlug }) => {
   const navigate = useNavigate();

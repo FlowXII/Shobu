@@ -17,8 +17,8 @@ import {
   X,
 } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchUserData } from '../store/thunks/userThunks';
-import PostCard from '../components/PostCard';
+import { fetchUserData } from '../../store/thunks/userThunks';
+import PostCard from '../../components/social/PostCard';
 import axios from 'axios';
 
 const api = axios.create({

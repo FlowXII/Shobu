@@ -32,7 +32,7 @@ export const fetchUserData = createAsyncThunk(
   'user/fetchUserData',
   async (_, { dispatch, rejectWithValue }) => {
     try {
-      const response = await api.get('/users/current');
+      const response = await api.get('/users/profile');
       if (response.data.success) {
         dispatch(setAuthenticated(true));
         return response.data.data;
