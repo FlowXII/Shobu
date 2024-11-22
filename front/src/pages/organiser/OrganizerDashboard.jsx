@@ -26,7 +26,7 @@ import {
   Award
 } from 'lucide-react';
 import { toast } from 'react-toastify';
-import LoadingIndicator from '../components/LoadingIndicator';
+import LoadingIndicator from '../../components/layout/LoadingIndicator';
 
 const OrganizerDashboard = () => {
   const navigate = useNavigate();

@@ -48,7 +48,11 @@ export const getTournamentController = async (req, res) => {
       });
     }
     
-    const tournament = await Tournament.findById(id).populate('events');
+    const tournament = await Tournament.findById(id)
+      .populate({
+        path: 'events',
+        model: 'Event'
+      });
     
     if (!tournament) {
       return res.status(404).json({
@@ -123,8 +127,8 @@ export const getOrganizerTournamentsController = async (req, res) => {
 
 export const updateTournamentController = async (req, res) => {
   try {
-    const { slug } = req.params;
-    const tournament = await Tournament.findOne({ slug });
+    const { id } = req.params;
+    const tournament = await Tournament.findById(id);
     
     if (!tournament) {
       return res.status(404).json({ success: false, error: 'Tournament not found' });
@@ -145,7 +149,7 @@ export const updateTournamentController = async (req, res) => {
   } catch (error) {
     logger.error('Failed to update tournament', { 
       error: error.message, 
-      slug: req.params.slug,
+      id: req.params.id,
       stack: error.stack 
     });
     res.status(400).json({ success: false, error: error.message });
@@ -154,8 +158,8 @@ export const updateTournamentController = async (req, res) => {
 
 export const deleteTournamentController = async (req, res) => {
   try {
-    const { slug } = req.params;
-    const tournament = await Tournament.findOne({ slug });
+    const { id } = req.params;
+    const tournament = await Tournament.findById(id);
     
     if (!tournament) {
       return res.status(404).json({ success: false, error: 'Tournament not found' });
@@ -166,18 +170,18 @@ export const deleteTournamentController = async (req, res) => {
       return res.status(403).json({ success: false, error: 'Unauthorized' });
     }
 
-    await Tournament.findOneAndDelete({ slug });
+    await Tournament.findByIdAndDelete(id);
     res.status(200).json({ success: true, message: 'Tournament deleted successfully' });
   } catch (error) {
-    logger.error('Failed to delete tournament', { error: error.message, slug: req.params.slug });
+    logger.error('Failed to delete tournament', { error: error.message, id: req.params.id });
     res.status(400).json({ success: false, error: error.message });
   }
 }; 
 
 export const registerForTournamentController = async (req, res) => {
   try {
-    const { slug } = req.params;
-    const tournament = await Tournament.findOne({ slug });
+    const { id } = req.params;
+    const tournament = await Tournament.findById(id);
     
     if (!tournament) {
       return res.status(404).json({ 
@@ -201,7 +205,7 @@ export const registerForTournamentController = async (req, res) => {
     logger.error('Failed to register for tournament', {
       error: error.message,
       userId: req.user._id,
-      slug: req.params.slug
+      id: req.params.id
     });
     res.status(400).json({
       success: false,
@@ -212,8 +216,8 @@ export const registerForTournamentController = async (req, res) => {
 
 export const checkInAttendeeController = async (req, res) => {
   try {
-    const { slug, userId } = req.params;
-    const tournament = await Tournament.findOne({ slug });
+    const { id, userId } = req.params;
+    const tournament = await Tournament.findById(id);
     
     if (!tournament) {
       return res.status(404).json({ 
@@ -238,7 +242,7 @@ export const checkInAttendeeController = async (req, res) => {
     logger.error('Failed to check in attendee', {
       error: error.message,
       userId: req.params.userId,
-      slug: req.params.slug
+      id: req.params.id
     });
     res.status(400).json({
       success: false,
@@ -249,8 +253,8 @@ export const checkInAttendeeController = async (req, res) => {
 
 export const cancelRegistrationController = async (req, res) => {
   try {
-    const { slug } = req.params;
-    const tournament = await Tournament.findOne({ slug });
+    const { id } = req.params;
+    const tournament = await Tournament.findById(id);
     
     if (!tournament) {
       return res.status(404).json({ 
@@ -274,7 +278,7 @@ export const cancelRegistrationController = async (req, res) => {
     logger.error('Failed to cancel registration', {
       error: error.message,
       userId: req.user._id,
-      slug: req.params.slug
+      id: req.params.id
     });
     res.status(400).json({
       success: false,

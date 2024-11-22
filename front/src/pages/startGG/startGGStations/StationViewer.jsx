@@ -12,9 +12,9 @@ import {
   Alert,
   Chip
 } from "@material-tailwind/react";
-import SetCardComponent from '../components/SetCardComponent';
-import Login from './StartGGLogin';
-import TournamentSuggestionCard from '../components/TournamentSuggestionCard';
+import SetCardComponent from '../../../components/startgg/startGGstations/SetCardComponent';
+import Login from '../startGGOauth/StartGGLogin';
+import TournamentSuggestionCard from '../../../components/startgg/startGGtournaments/TournamentSuggestionCard';
 import { Bell, CheckCircle, Play, Clock, XCircle } from 'lucide-react';
 
 const REFRESH_INTERVAL = 30000;

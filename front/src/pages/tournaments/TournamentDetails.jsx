@@ -20,11 +20,11 @@ import {
 } from "@material-tailwind/react";
 import { Settings, Trash2, Calendar, MapPin, Users, Trophy } from 'lucide-react';
 import { toast } from 'react-toastify';
-import LoadingIndicator from '../components/LoadingIndicator';
-import TournamentOverviewTO from '../components/organiser/TournamentOverviewTO';
-import TournamentEventsTO from '../components/organiser/TournamentEventsTO';
-import TournamentParticipantsTO from '../components/organiser/TournamentParticipantsTO';
-import TournamentSettingsTO from '../components/organiser/TournamentSettingsTO';
+import LoadingIndicator from '../../components/layout/LoadingIndicator';
+import TournamentOverviewTO from '../organiser/TournamentOverviewTO';
+import TournamentEventsTO from '../../components/organiser/TournamentEventsTO';
+import TournamentParticipantsTO from '../../components/organiser/TournamentParticipantsTO';
+import TournamentSettingsTO from '../../components/organiser/TournamentSettingsTO';
 
 const TournamentDetails = () => {
   const { tournamentId } = useParams();

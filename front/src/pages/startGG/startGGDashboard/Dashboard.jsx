@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchDashboardData, fetchUserData } from '../store/thunks/userThunks';
+import { fetchDashboardData, fetchUserData } from '../../../store/thunks/userThunks';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 import {
@@ -14,11 +14,11 @@ import {
   AccordionBody,
 } from "@material-tailwind/react";
 import { MapPin, Globe, User, Trophy, ChevronDown } from "lucide-react";
-import LatestTournamentsCardComponent from '../components/LatestTournamentsCardComponent';
-import SetWatcherComponent from '../components/SetWatcherComponent';
-import DashboardRefresher from '../components/DashboardRefresher';
-import LogoutButton from '../components/LogoutButton';
-import TournamentsList from '../components/TournamentsList';
+import LatestTournamentsCardComponent from '../../../components/startgg/startGGdashboard/LatestTournamentsCardComponent';
+import SetWatcherComponent from '../../../components/startgg/startGGstations/SetWatcherComponent';
+import DashboardRefresher from '../../../components/startgg/startGGdashboard/DashboardRefresher';
+import LogoutButton from '../../../components/auth/LogoutButton';
+import TournamentsList from '../../../components/startgg/startGGtournaments/TournamentsList';
 
 const CUSTOM_ANIMATION = {
   mount: { scale: 1 },

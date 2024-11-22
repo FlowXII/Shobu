@@ -38,15 +38,9 @@ const TournamentEventsTO = ({ tournament, isOrganizer, onUpdate }) => {
     event.preventDefault();
     try {
       const eventPayload = {
-        name: eventData.name,
-        game: eventData.game,
-        startAt: eventData.startAt,
-        maxEntrants: Number(eventData.maxEntrants),
-        entryFee: Number(eventData.entryFee),
-        format: eventData.format.toUpperCase().replace(' ', '_'),
-        description: eventData.description,
-        rules: eventData.rules,
-        tournamentId: tournament._id
+        ...eventData,
+        tournamentId: tournament._id,
+        format: eventData.format.toUpperCase().replace(' ', '_')
       };
 
       console.log('Sending event payload:', eventPayload);
@@ -66,31 +60,24 @@ const TournamentEventsTO = ({ tournament, isOrganizer, onUpdate }) => {
         throw new Error(errorData.error || 'Failed to create event');
       }
       
-      const { data: newEvent } = await response.json();
-      console.log('Received new event data:', newEvent);
+      const data = await response.json();
+      console.log('Received new event data:', data);
       
-      if (!newEvent || !newEvent._id) {
+      if (!data.data || !data.data._id) {
         throw new Error('Invalid event data received');
       }
 
       toast.success('Event created successfully');
       setOpen(false);
       
-      // Update the tournament data before navigating
       if (onUpdate) {
         await onUpdate();
       }
 
-      // Ensure we have all required data before navigating
-      if (tournament?.slug && newEvent?._id) {
-        navigate(`/tournaments/${tournament.slug}/events/${newEvent._id}/to`);
-      } else {
-        console.error('Missing navigation data:', { tournament, newEvent });
-        throw new Error('Missing data for navigation');
-      }
+      navigate(`/tournaments/${tournament._id}/events/${data.data._id}/to`);
     } catch (error) {
       console.error('Create event error:', error);
-      toast.error(error.message || 'Failed to create event');
+      toast.error(error.message);
     }
   };
 
@@ -131,12 +118,15 @@ const TournamentEventsTO = ({ tournament, isOrganizer, onUpdate }) => {
   };
 
   const handleEventClick = (event) => {
-    console.log('Event clicked:', {
-      eventId: event._id,
-      tournamentSlug: tournament.slug
+    if (!event?._id || !tournament?._id) {
+      console.error('Missing event or tournament ID:', { event, tournament });
+      return;
+    }
+    console.log('Navigating to event:', {
+      tournamentId: tournament._id,
+      eventId: event._id
     });
-    
-    navigate(`/tournaments/${tournament.slug}/events/${event._id}/to`);
+    navigate(`/tournaments/${tournament._id}/events/${event._id}/to`);
   };
 
   const createEventDialog = (
@@ -333,7 +323,14 @@ const TournamentEventsTO = ({ tournament, isOrganizer, onUpdate }) => {
                   <ChevronRight 
                     className="text-gray-400" 
                     size={20} 
-                    onClick={() => navigate(`/tournaments/${tournament.slug}/events/${event._id}/to`)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (!event?._id || !tournament?._id) {
+                        console.error('Missing event or tournament ID:', { event, tournament });
+                        return;
+                      }
+                      navigate(`/tournaments/${tournament._id}/events/${event._id}/to`);
+                    }}
                   />
                 </div>
               </div>

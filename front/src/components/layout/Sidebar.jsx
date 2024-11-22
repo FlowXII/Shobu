@@ -18,7 +18,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
-import { useSidebar } from '../contexts/SidebarContext';
+import { useSidebar } from '../../contexts/SidebarContext';
 import { useSelector } from 'react-redux';
 
 const Sidebar = () => {

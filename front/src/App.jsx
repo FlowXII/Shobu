@@ -1,33 +1,33 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { SidebarProvider, useSidebar } from './contexts/SidebarContext';
-import Sidebar from './components/Sidebar';
+import Sidebar from './components/layout/Sidebar';
 import Home from './pages/Home';
-import StartGGLogin from './pages/StartGGLogin';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import CreateTournament from './pages/CreateTournament';
-import UpcomingTournaments from './pages/UpcomingTournaments';
-import StationViewer from './pages/StationViewer';
-import Dashboard from './pages/Dashboard';
-import ViewTournament from './pages/ViewTournament';
-import Profile from './pages/Profile';
+import StartGGLogin from './pages/startGG/startGGOauth/StartGGLogin';
+import Login from './pages/user/Login';
+import Register from './pages/user/Register';
+import CreateTournament from './pages/organiser/CreateTournament';
+import UpcomingTournaments from './pages/startGG/startGGTournaments/UpcomingTournaments';
+import StationViewer from './pages/startGG/startGGStations/StationViewer';
+import Dashboard from './pages/startGG/startGGDashboard/Dashboard';
+import ViewTournament from './pages/tournaments/ViewTournament';
+import Profile from './pages/user/Profile';
 import { Provider } from 'react-redux';
 import store from './store';
-import Tournaments from './pages/Tournaments';
-import Feed from './pages/Feed';
-import StatisticsViewer from './pages/StatisticsViewer';
-import Spaces from './pages/Spaces';
-import Messages from './pages/Messages';
-import Streams from './pages/Streams';
-import TournamentDetails from './pages/TournamentDetails';
-import EventDetails from './pages/EventDetails';
-import EventRegistration from './pages/EventRegistration';
-import DebugBar from './components/DebugBar';
+import Tournaments from './pages/tournaments/Tournaments';
+import Feed from './pages/social/Feed';
+import StatisticsViewer from './pages/stats/StatisticsViewer';
+import Spaces from './pages/social/Spaces';
+import Messages from './pages/social/Messages';
+import Streams from './pages/social/Streams';
+import TournamentDetails from './pages/tournaments/TournamentDetails';
+import EventDetails from './pages/events/EventDetails';
+import EventRegistration from './pages/events/EventRegistration';
+import DebugBar from './components/debug/DebugBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserData } from './store/thunks/userThunks';
-import LoadingIndicator from './components/LoadingIndicator';
-import OrganizerDashboard from './pages/OrganizerDashboard';
+import LoadingIndicator from './components/layout/LoadingIndicator';
+import OrganizerDashboard from './pages/organiser/OrganizerDashboard';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
@@ -88,10 +88,10 @@ function App() {
                                 <Route path="/dashboard" element={<Dashboard />} />
                                 <Route path="/profile" element={<Profile />} />
                                 <Route path="/tournaments/:tournamentId/to" element={<TournamentDetailsTO />} />
-                                <Route path="/tournaments/:tournamentId/view" element={<TournamentDetails />} />
+                                <Route path="/tournaments/:id" element={<ViewTournament />} />
                                 <Route path="/tournaments/:tournamentId/events/:eventId/to" element={<EventDetailsTO />} />
+                                <Route path="/tournaments/:tournamentId/events/:eventId/view" element={<EventDetails />} />
                                 <Route path="/tournaments/:tournamentId/events/:eventId/register" element={<EventRegistration />} />
-                                <Route path="/tournaments/:tournamentId/events/:eventId/to" element={<EventDetailsTO />} />
                                 <Route path="/tournaments" element={<Tournaments />} />
                                 <Route path="/feed" element={<Feed />} />
                                 <Route path="/statistics" element={<StatisticsViewer />} />

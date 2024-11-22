@@ -1,4 +1,4 @@
-export { default as TournamentOverviewTO } from './TournamentOverviewTO';
+export { default as TournamentOverviewTO } from '../../pages/organiser/TournamentOverviewTO';
 export { default as TournamentEventsTO } from './TournamentEventsTO';
 export { default as TournamentParticipantsTO } from './TournamentParticipantsTO';
 export { default as TournamentSettingsTO } from './TournamentSettingsTO';

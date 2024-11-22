@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Typography } from "@material-tailwind/react";
 import { toast } from 'react-toastify';
-import LoadingIndicator from './LoadingIndicator';
+import LoadingIndicator from '../../layout/LoadingIndicator';
 import TournamentCardComponent from './TournamentCardComponent';
 
 const TournamentsList = () => {

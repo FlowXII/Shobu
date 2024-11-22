@@ -4,7 +4,7 @@ import { createEvent, getEventById, registerParticipant } from '../services/even
 import logger from '../utils/logger.js';
 import mongoose from 'mongoose';
 
-export const createEventController = async (req, res) => {
+const createEventController = async (req, res) => {
   logger.info('Create event controller started', {
     tournamentId: req.params.tournamentId,
     body: req.body
@@ -36,14 +36,14 @@ export const createEventController = async (req, res) => {
       { $push: { events: event._id } }
     );
 
-    logger.debug('Event created successfully', {
-      event: event.toObject(),
-      tournamentId: tournament._id
-    });
+    logger.debug('Event created successfully', { event });
+
+    // Convert to plain object if it's a mongoose document
+    const eventObject = event.toObject ? event.toObject() : event;
 
     res.status(201).json({ 
       success: true, 
-      data: event.toObject() 
+      data: eventObject
     });
   } catch (error) {
     logger.error('Failed to create event', { 
@@ -59,7 +59,7 @@ export const createEventController = async (req, res) => {
   }
 };
 
-export const getEventController = async (req, res) => {
+const getEventController = async (req, res) => {
   try {
     const { eventId } = req.params;
     
@@ -109,7 +109,7 @@ export const getEventController = async (req, res) => {
   }
 };
 
-export const getTournamentEventsController = async (req, res) => {
+const getTournamentEventsController = async (req, res) => {
   try {
     const { tournamentId } = req.params;
     
@@ -140,7 +140,7 @@ export const getTournamentEventsController = async (req, res) => {
   }
 };
 
-export const registerForEventController = async (req, res) => {
+const registerForEventController = async (req, res) => {
   try {
     const { eventId } = req.params;
     const user = req.user;
@@ -181,4 +181,146 @@ export const registerForEventController = async (req, res) => {
       error: error.message
     });
   }
+};
+
+const updateEventController = async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    
+    logger.info('Updating event', { 
+      eventId,
+      updateData: req.body
+    });
+
+    if (!mongoose.Types.ObjectId.isValid(eventId)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid event ID format'
+      });
+    }
+
+    const event = await Event.findById(eventId);
+    if (!event) {
+      logger.warn('Event not found for update', { eventId });
+      return res.status(404).json({
+        success: false,
+        error: 'Event not found'
+      });
+    }
+
+    // Create update object only with provided fields
+    const updateData = {};
+    
+    if (req.body.participants !== undefined) {
+      updateData.participants = req.body.participants;
+    }
+    if (req.body.name !== undefined) {
+      updateData.name = req.body.name;
+    }
+    if (req.body.description !== undefined) {
+      updateData.description = req.body.description;
+    }
+    if (req.body.format !== undefined) {
+      updateData.format = req.body.format;
+    }
+    if (req.body.maxEntrants !== undefined) {
+      updateData.maxEntrants = Number(req.body.maxEntrants);
+    }
+    if (req.body.startAt !== undefined) {
+      updateData.startAt = req.body.startAt;
+    }
+    if (req.body.entryFee !== undefined) {
+      updateData.entryFee = Number(req.body.entryFee);
+    }
+    if (req.body.rules !== undefined) {
+      updateData.rules = req.body.rules;
+    }
+
+    // Update event fields
+    const updatedEvent = await Event.findByIdAndUpdate(
+      eventId,
+      { $set: updateData },
+      { new: true, runValidators: true }
+    ).populate('tournamentId', 'name slug');
+
+    logger.info('Event updated successfully', { 
+      eventId,
+      updatedEvent: updatedEvent._id 
+    });
+
+    res.status(200).json({
+      success: true,
+      data: updatedEvent
+    });
+  } catch (error) {
+    logger.error('Failed to update event', { 
+      error: error.message,
+      eventId: req.params.eventId,
+      stack: error.stack 
+    });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to update event'
+    });
+  }
+};
+
+const deleteEventController = async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    
+    logger.info('Deleting event', { eventId });
+
+    if (!mongoose.Types.ObjectId.isValid(eventId)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid event ID format'
+      });
+    }
+
+    const event = await Event.findById(eventId);
+    if (!event) {
+      logger.warn('Event not found for deletion', { eventId });
+      return res.status(404).json({
+        success: false,
+        error: 'Event not found'
+      });
+    }
+
+    // Remove event reference from tournament
+    await Tournament.findByIdAndUpdate(
+      event.tournamentId,
+      { $pull: { events: eventId } }
+    );
+
+    // Delete the event
+    await Event.findByIdAndDelete(eventId);
+
+    logger.info('Event deleted successfully', { eventId });
+
+    res.status(200).json({
+      success: true,
+      message: 'Event deleted successfully'
+    });
+  } catch (error) {
+    logger.error('Failed to delete event', { 
+      error: error.message,
+      eventId: req.params.eventId,
+      stack: error.stack 
+    });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to delete event'
+    });
+  }
+};
+
+// Export the controllers
+export {
+  createEventController,
+  getEventController,
+  getTournamentEventsController,
+  registerForEventController,
+  updateEventController,
+  deleteEventController
 }; 

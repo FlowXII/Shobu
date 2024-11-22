@@ -8,7 +8,7 @@ import {
   Input,
   Button,
 } from "@material-tailwind/react";
-import { registerUser } from '../store/thunks/userThunks';
+import { registerUser } from '../../store/thunks/userThunks';
 
 function Register() {
   const dispatch = useDispatch();

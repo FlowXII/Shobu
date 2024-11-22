@@ -26,13 +26,11 @@ import {
   Plus
 } from 'lucide-react';
 import { toast } from 'react-toastify';
-import LoadingIndicator from '../LoadingIndicator';
-import {
-  TournamentOverviewTO,
-  TournamentEventsTO,
-  TournamentParticipantsTO,
-  TournamentSettingsTO
-} from '.';
+import LoadingIndicator from '../layout/LoadingIndicator';
+import TournamentOverviewTO from '../../pages/organiser/TournamentOverviewTO';
+import TournamentEventsTO from './TournamentEventsTO';
+import TournamentParticipantsTO from './TournamentParticipantsTO';
+import TournamentSettingsTO from './TournamentSettingsTO';
 
 const TournamentDetailsTO = () => {
   const { tournamentId } = useParams();
@@ -138,7 +136,7 @@ const TournamentDetailsTO = () => {
                 color="blue"
                 size="sm"
                 className="flex items-center gap-2 normal-case"
-                onClick={() => navigate(`/tournaments/${tournament.slug}`)}
+                onClick={() => navigate(`/tournaments/${tournament._id}/view`)}
               >
                 <Eye size={14} />
                 View Public Page

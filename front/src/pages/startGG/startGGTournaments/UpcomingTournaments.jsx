@@ -2,12 +2,12 @@ import React from 'react';
 import { Card, CardBody, Typography, Button } from '@material-tailwind/react';
 import { Trophy, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import TournamentCardComponent from '../components/TournamentCardComponent';
-import TournamentFilterForm from '../components/TournamentFilterForm';
-import LoadingIndicator from '../components/LoadingIndicator';
-import ErrorMessage from '../components/common/ErrorMessage';
-import useTournamentData from '../hooks/useTournamentData';
-import GameOptionsComponent from '../components/GameOptionsComponent';
+import TournamentCard from '../../../components/startgg/startGGtournaments/TournamentCard';
+import TournamentFilterForm from '../../../components/startgg/startGGtournaments/TournamentFilterForm';
+import LoadingIndicator from '../../../components/layout/LoadingIndicator';
+import ErrorMessage from '../../../components/common/ErrorMessage';
+import useTournamentData from '../../../hooks/useTournamentData';
+import GameOptionsComponent from '../../../components/common/GameOptionsComponent';
 
 function UpcomingTournaments() {
   const navigate = useNavigate();
@@ -90,7 +90,7 @@ function UpcomingTournaments() {
         <div className="w-full max-w-[48rem]">
           {data.tournaments && data.tournaments.nodes ? (
             data.tournaments.nodes.map((tournament) => (
-              <TournamentCardComponent key={tournament.id} tournament={tournament} boxArt={boxArt} />
+              <TournamentCard key={tournament.id} tournament={tournament} boxArt={boxArt} />
             ))
           ) : (
             <Typography className="text-red-500">No tournaments found or unexpected data structure.</Typography>

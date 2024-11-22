@@ -8,7 +8,7 @@ import {
   Typography,
   Input
 } from "@material-tailwind/react";
-import { loginUser } from '../store/thunks/userThunks';
+import { loginUser } from '../../store/thunks/userThunks';
 
 function Login() {
   const navigate = useNavigate();

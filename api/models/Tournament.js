@@ -22,13 +22,7 @@ const tournamentSchema = new mongoose.Schema({
     checkedInAt: Date,
     cancelledAt: Date
   }],
-  events: [{
-    eventId: { type: mongoose.Schema.Types.ObjectId, ref: 'Event', required: true },
-    startAt: Date,
-    endAt: Date,
-    venue: String,
-    status: { type: String, enum: ['SCHEDULED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'], default: 'SCHEDULED' }
-  }],
+  events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
   images: [{
     url: String,
     type: String

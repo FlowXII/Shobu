@@ -8,7 +8,7 @@ import {
   Chip,
 } from "@material-tailwind/react";
 import { MapPin, Users } from "lucide-react";
-import GameOptionsComponent from './GameOptionsComponent';
+import GameOptionsComponent from '../../common/GameOptionsComponent';
 
 const LatestTournamentsCardComponent = ({ tournament }) => {
   const gameOptions = useMemo(() => GameOptionsComponent(), []);

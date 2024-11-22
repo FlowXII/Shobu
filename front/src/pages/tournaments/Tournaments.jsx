@@ -10,7 +10,7 @@ import {
 } from "@material-tailwind/react";
 import { Trophy, MapPin, Users, Calendar } from 'lucide-react';
 import { toast } from 'react-toastify';
-import LoadingIndicator from '../components/LoadingIndicator';
+import LoadingIndicator from '../../components/layout/LoadingIndicator';
 
 const TournamentCard = ({ tournament }) => {
   const navigate = useNavigate();
@@ -80,7 +80,7 @@ const TournamentCard = ({ tournament }) => {
           size="lg"
           color="red"
           className="mt-4 w-full text-sm md:text-base"
-          onClick={() => navigate(`/tournaments/${tournament.slug}`)}
+          onClick={() => navigate(`/tournaments/${tournament._id}`)}
         >
           View Tournament
         </Button>

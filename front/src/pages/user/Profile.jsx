@@ -26,8 +26,8 @@ import {
   Award,
   Star,
 } from "lucide-react";
-import { logoutUser, disconnectStartGG } from '../store/thunks/userThunks';
-import LoadingIndicator from '../components/LoadingIndicator';
+import { logoutUser, disconnectStartGG } from '../../store/thunks/userThunks';
+import LoadingIndicator from '../../components/layout/LoadingIndicator';
 
 const CUSTOM_ANIMATION = {
   mount: { scale: 1 },

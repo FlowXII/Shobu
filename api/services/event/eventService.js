@@ -69,7 +69,6 @@ export const createEvent = async (eventData) => {
     // Populate the tournament reference before returning
     const populatedEvent = await Event.findById(savedEvent._id)
       .populate('tournamentId', 'name slug')
-      .lean()  // Convert to plain object
       .exec();
 
     logger.debug('Created event with data:', populatedEvent);

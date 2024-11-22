@@ -34,11 +34,28 @@ import {
 import { toast } from 'react-toastify';
   
 const EventDetailsTO = () => {
-  const { eventId, slug } = useParams();
+  const { tournamentId, eventId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState("settings");
   const { event, loading, refreshEvent } = useEvent(eventId);
+
+  useEffect(() => {
+    if (!loading && !event) {
+      console.error('Event not found:', { eventId, tournamentId });
+      navigate(`/tournaments/${tournamentId}/to`);
+      return;
+    }
+
+    if (event && event.tournamentId !== tournamentId) {
+      console.error('Event belongs to different tournament:', {
+        eventId,
+        eventTournamentId: event.tournamentId,
+        currentTournamentId: tournamentId
+      });
+      navigate(`/tournaments/${event.tournamentId}/events/${eventId}/to`);
+    }
+  }, [event, loading, tournamentId, eventId]);
 
   // Debug loading and event state
   useEffect(() => {
@@ -80,7 +97,7 @@ const EventDetailsTO = () => {
 
       if (!response.ok) throw new Error('Failed to delete event');
       toast.success('Event deleted successfully');
-      navigate(`/tournaments/${event?.tournamentContext?.slug}/to`);
+      navigate(`/tournaments/${event?.tournamentContext?._id}/to`);
     } catch (error) {
       toast.error(error.message);
     }
@@ -120,10 +137,10 @@ const EventDetailsTO = () => {
           color="blue"
           size="sm"
           className="flex items-center gap-2 normal-case"
-          onClick={() => navigate(`/tournaments/${event?.tournamentContext?.slug}/to`)}
+          onClick={() => navigate(`/tournaments/${tournamentId}/view`)}
         >
-          <ChevronRight size={16} className="rotate-180" />
-          Back to Tournament
+          <Eye size={14} />
+          View Public Page
         </Button>
       </div>
 
@@ -148,7 +165,7 @@ const EventDetailsTO = () => {
                 color="blue"
                 size="sm"
                 className="flex items-center gap-2 normal-case"
-                onClick={() => navigate(`/tournaments/${slug}/events/${eventId}/view`)}
+                onClick={() => navigate(`/tournaments/${tournamentId}/events/${eventId}/view`)}
               >
                 <Eye size={14} />
                 View Public Page
@@ -270,7 +287,13 @@ const EventDetailsTO = () => {
                 />
               </TabPanel>
               <TabPanel value="participants" className="p-0">
-                <EventParticipantsTO event={event} />
+                <EventParticipantsTO 
+                  event={event} 
+                  onUpdate={() => {
+                    console.log('Triggering refresh');
+                    refreshEvent();
+                  }} 
+                />
               </TabPanel>
               <TabPanel value="brackets" className="p-0">
                 <EventBracketsTO event={event} />

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Typography, Card, CardBody } from '@material-tailwind/react';
 import { Trophy, Users, Presentation, Tv, Bell } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { subscribeUserToPush } from '../notificationService';
+import { subscribeUserToPush } from '../utils/notificationService';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 

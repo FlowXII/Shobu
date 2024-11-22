@@ -2,6 +2,15 @@ import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 
+const formatToBracketType = {
+  'Single Elimination': 'Single Elimination',
+  'Double Elimination': 'Double Elimination',
+  'Round Robin': 'Round Robin',
+  'SINGLE_ELIMINATION': 'Single Elimination',
+  'DOUBLE_ELIMINATION': 'Double Elimination',
+  'ROUND_ROBIN': 'Round Robin'
+};
+
 export const useEvent = (eventId) => {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,11 +22,6 @@ export const useEvent = (eventId) => {
       setLoading(false);
       return;
     }
-    
-    console.log('useEvent hook fetching:', {
-      eventId,
-      url: `${import.meta.env.VITE_API_BASE_URL}/events/${eventId}`
-    });
     
     try {
       const response = await fetch(
@@ -47,21 +51,26 @@ export const useEvent = (eventId) => {
         throw new Error('No event data received');
       }
 
-      const formatToBracketType = {
-        'SINGLE_ELIMINATION': 'Single Elimination',
-        'DOUBLE_ELIMINATION': 'Double Elimination',
-        'ROUND_ROBIN': 'Round Robin'
-      };
+      console.log('Raw event data:', eventData);
+
+      if (!eventData.tournamentId || !eventData.tournamentId._id) {
+        console.error('Missing tournament ID in event data');
+        throw new Error('Invalid event data: missing tournament reference');
+      }
 
       setEvent({
         ...eventData,
+        tournamentId: eventData.tournamentId._id,
         tournament: eventData.tournamentId,
         tournamentContext: {
-          name: eventData.tournamentId?.name || 'Tournament',
-          slug: eventData.tournamentId?.slug
+          _id: eventData.tournamentId._id,
+          name: eventData.tournamentId.name
         },
-        bracketType: formatToBracketType[eventData.format] || 'Double Elimination'
+        format: eventData.format || 'DOUBLE_ELIMINATION',
+        bracketType: formatToBracketType[eventData.format] || formatToBracketType['DOUBLE_ELIMINATION']
       });
+
+      console.log('Setting event state:', eventData);
 
       setCanRegister(
         currentUser && 

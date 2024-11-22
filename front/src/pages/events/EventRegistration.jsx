@@ -8,8 +8,8 @@ import {
   Input,
 } from "@material-tailwind/react";
 import { toast } from 'react-toastify';
-import LoadingIndicator from '../components/LoadingIndicator';
-import { useEvent } from '../hooks/useEvent';
+import LoadingIndicator from '../../components/layout/LoadingIndicator';
+import { useEvent } from '../../hooks/useEvent';
 
 const EventRegistration = () => {
   const { tournamentId, eventId } = useParams();

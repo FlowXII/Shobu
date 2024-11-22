@@ -4,7 +4,9 @@ import {
   createEventController, 
   getEventController,
   getTournamentEventsController,
-  registerForEventController
+  registerForEventController,
+  updateEventController,
+  deleteEventController
 } from '../controllers/eventController.js';
 import { authenticate } from '../middleware/auth.js';
 import { isOrganizer } from '../middleware/isOrganizer.js';
@@ -23,20 +25,12 @@ router.use((req, res, next) => {
   next();
 });
 
-// Create new event for a tournament (organizer only)
-router.post('/tournaments/:tournamentId/events', 
-  authenticate, 
-  isOrganizer, 
-  createEventController
-);
-
-// Get specific event
+// Event routes
+router.post('/tournaments/:tournamentId/events', authenticate, isOrganizer, createEventController);
 router.get('/events/:eventId', getEventController);
-
-// Get all events for a tournament
 router.get('/tournaments/:tournamentId/events', getTournamentEventsController);
-
-// Register for an event
 router.post('/events/:eventId/register', authenticate, registerForEventController);
+router.put('/events/:eventId', authenticate, isOrganizer, updateEventController);
+router.delete('/events/:eventId', authenticate, isOrganizer, deleteEventController);
 
 export default router; 

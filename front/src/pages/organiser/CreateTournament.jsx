@@ -15,7 +15,7 @@ import {
 } from "@material-tailwind/react";
 import { Trophy, MapPin, Calendar, Users, Image as ImageIcon, ChevronDown } from 'lucide-react';
 import { toast } from 'react-toastify';
-import Breadcrumbs from '../components/Breadcrumbs';
+import Breadcrumbs from '../../components/layout/Breadcrumbs';
 
 const CreateTournament = () => {
   const navigate = useNavigate();
@@ -156,7 +156,7 @@ const CreateTournament = () => {
         const data = await response.json();
         console.log('Tournament created successfully:', data);
         toast.success('Tournament created successfully!');
-        navigate(`/tournaments/${data.slug}`);
+        navigate(`/tournaments/${data.data._id}/to`);
       } else {
         const errorData = await response.json();
         console.error('Server error creating tournament:', errorData);

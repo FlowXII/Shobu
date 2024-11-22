@@ -1,7 +1,7 @@
-import SSBUBoxArt from "../assets/img/SSBUBoxArt.jpg";
-import SF6BoxArt from "../assets/img/SF6BoxArt.jpg";
-import Tekken8BoxArt from "../assets/img/Tekken8BoxArt.jpg";
-import DBFZBoxArt from "../assets/img/DBFZBoxArt.jpg";
+import SSBUBoxArt from "../../assets/img/SSBUBoxArt.jpg";
+import SF6BoxArt from "../../assets/img/SF6BoxArt.jpg";
+import Tekken8BoxArt from "../../assets/img/Tekken8BoxArt.jpg";
+import DBFZBoxArt from "../../assets/img/DBFZBoxArt.jpg";
 
 const GameOptionsComponent = () => {
   return [

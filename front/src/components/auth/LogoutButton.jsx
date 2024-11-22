@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Button } from "@material-tailwind/react";
-import { clearUser } from '../store/slices/userSlice';
+import { clearUser } from '../../store/slices/userSlice';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000/api';
 

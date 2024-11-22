@@ -13,7 +13,7 @@ import {
   Button,
   Chip
 } from "@material-tailwind/react";
-import { useEvent } from '../hooks/useEvent';
+import { useEvent } from '../../hooks/useEvent';
 import { useSelector } from 'react-redux';
 
 const EventDetails = () => {
