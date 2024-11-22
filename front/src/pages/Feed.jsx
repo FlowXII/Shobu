@@ -19,10 +19,21 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchUserData } from '../store/thunks/userThunks';
 import PostCard from '../components/PostCard';
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  withCredentials: true,
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  }
+});
 
 const Feed = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [message, setMessage] = useState('');
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,19 +42,16 @@ const Feed = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
+  useEffect(() => {
+    console.log('Auth State:', { isAuthenticated, user });
+  }, [isAuthenticated, user]);
+
   const fetchPosts = async () => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/posts/feed?page=${page}`,
-        {
-          credentials: 'include'
-        }
-      );
-      const data = await response.json();
-      
+      const response = await api.get(`/posts/feed?page=${page}`);
       setPosts(prevPosts => {
         const newPosts = [...prevPosts];
-        data.posts.forEach(post => {
+        response.data.posts.forEach(post => {
           if (!newPosts.find(p => p._id === post._id)) {
             newPosts.push(post);
           }
@@ -51,7 +59,7 @@ const Feed = () => {
         return newPosts;
       });
       
-      setHasMore(page < data.pagination.total);
+      setHasMore(page < response.data.pagination.total);
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -64,8 +72,20 @@ const Feed = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    fetchPosts();
-  }, [page]);
+    if (isAuthenticated) {
+      fetchPosts();
+    }
+  }, [page, isAuthenticated]);
+
+  if (!isAuthenticated) {
+    return (
+      <div className="flex justify-center items-center min-h-[200px]">
+        <Typography className="text-gray-400">
+          Please log in to view the feed
+        </Typography>
+      </div>
+    );
+  }
 
   if (!user) {
     return (

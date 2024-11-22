@@ -99,6 +99,7 @@ function App() {
                                 <Route path="/messages" element={<Messages />} />
                                 <Route path="/streams" element={<Streams />} />
                                 <Route path="/organizer" element={<OrganizerDashboard />} />
+                                <Route path="/profile/:username" element={<Profile />} />
                             </Routes>
                         </div>
                     </Layout>

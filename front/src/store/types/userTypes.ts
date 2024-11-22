@@ -1,4 +1,26 @@
-// Types based on the data structure from dashboardDataProcessing.js
+export interface StartGGData {
+  accessToken: string;
+  connected: boolean;
+  expiresAt: string;
+  gamerTag: string;
+  player: {
+    id: string;
+    gamerTag: string;
+    prefix: string;
+  };
+  profile: {
+    location?: {
+      city?: string;
+      state?: string;
+      country?: string;
+    };
+    bio?: string | null;
+    genderPronoun?: string;
+    images: Array<any>;
+  };
+  userId: string;
+}
+
 export interface User {
   username: string;
   email: string;
@@ -12,35 +34,19 @@ export interface User {
     };
     avatar?: string;
   };
-  startgg?: {
-    accessToken: string;
-  };
+  startgg?: StartGGData;
   createdAt: string;
   updatedAt: string;
 }
 
-export interface LoadingState {
-  user: boolean;
-  dashboard: boolean;
-  disconnect: boolean;
-}
-
-export interface ErrorState {
-  user: string | null;
-  dashboard: string | null;
-  disconnect: string | null;
-}
-
 export interface UserState {
   user: User | null;
-  loading: LoadingState;
-  error: ErrorState;
+  loading: {
+    user: boolean;
+  };
+  error: {
+    user: string | null;
+  };
   initialized: boolean;
-}
-
-export interface AuthState {
-  isAuthenticated: boolean;
-  loading: boolean;
-  error: string | null;
 }
 

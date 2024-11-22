@@ -1,15 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchUserData, disconnectStartGG, loginUser, registerUser } from '../thunks/userThunks';
+import { fetchUserData, loginUser, registerUser, disconnectStartGG } from '../thunks/userThunks';
 
 const initialState = {
   user: null,
   loading: {
-    user: false,
-    disconnect: false
+    user: false
   },
   error: {
-    user: null,
-    disconnect: null
+    user: null
   },
   initialized: false
 };
@@ -58,18 +56,6 @@ const userSlice = createSlice({
         state.initialized = true;
         state.user = null;
       })
-      .addCase(disconnectStartGG.pending, (state) => {
-        state.loading.disconnect = true;
-        state.error.disconnect = null;
-      })
-      .addCase(disconnectStartGG.fulfilled, (state) => {
-        state.loading.disconnect = false;
-        state.error.disconnect = null;
-      })
-      .addCase(disconnectStartGG.rejected, (state, action) => {
-        state.loading.disconnect = false;
-        state.error.disconnect = action.payload;
-      })
       .addCase(registerUser.pending, (state) => {
         state.loading.user = true;
         state.error.user = null;
@@ -84,6 +70,11 @@ const userSlice = createSlice({
         state.loading.user = false;
         state.error.user = action.payload;
         state.initialized = true;
+      })
+      .addCase(disconnectStartGG.fulfilled, (state) => {
+        if (state.user) {
+          state.user.startgg = undefined;
+        }
       });
   }
 });

@@ -10,15 +10,18 @@ import pushNotificationsRoute from './routes/pushNotificationsRoute.js';
 import stationReportingRoute from './routes/stationReportingRoute.js';
 import tournamentRoutes from './routes/tournamentRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 import postRoutes from './routes/postRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
+import messageRoutes from './routes/messageRoutes.js';
+import conversationRoutes from './routes/conversationRoutes.js';
 dotenv.config();
 
 const app = express();
 
 // Set up CORS
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173', // Your Vite frontend URL
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -27,26 +30,25 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-// API routes
+// Core API routes
 app.use('/api/tournaments', upcomingTournamentsRoute);
-app.use('/api', stationViewerRoute);
-app.use('/api', startggAuthRoutes);
-app.use('/api', dashboardRoute);
+app.use('/api/stations', stationViewerRoute);
+app.use('/api/dashboard', dashboardRoute);
 app.use('/api/notifications', pushNotificationsRoute);
-// API reporting routes
-app.use('/api', stationReportingRoute);
+app.use('/api/stations/reporting', stationReportingRoute);
+app.use('/api/tournaments', tournamentRoutes);
+app.use('/api/posts', postRoutes);
+app.use('/api/events', eventRoutes);
 
-// Tournament routes
-app.use('/api/tournaments', tournamentRoutes); 
+// Auth routes
+app.use('/api/auth', authRoutes);
+app.use('/api/auth/startgg', startggAuthRoutes);
 
-// User routes
-app.use('/api/auth', userRoutes);
+// User routes (non-auth)
+app.use('/api/users', userRoutes);
 
-// Post routes
-app.use('/api', postRoutes);
+// Messaging routes
+app.use('/api/messages', messageRoutes);
+app.use('/api/conversations', conversationRoutes);
 
-// Event routes
-app.use('/api', eventRoutes);
-
-// Export the app
 export default app;

@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import {
   Card,
   CardBody,
@@ -29,6 +31,15 @@ import {
 import { logoutUser, disconnectStartGG } from '../store/thunks/userThunks';
 import LoadingIndicator from '../components/LoadingIndicator';
 
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  withCredentials: true,
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  }
+});
+
 const CUSTOM_ANIMATION = {
   mount: { scale: 1 },
   unmount: { scale: 0.9 },
@@ -36,32 +47,54 @@ const CUSTOM_ANIMATION = {
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user);
-  const loading = useSelector((state) => state.user.loading.user);
-  const initialized = useSelector((state) => state.user.initialized);
+  const { username } = useParams();
+  const currentUser = useSelector(state => state.user.user);
+  const [profileData, setProfileData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(1);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        if (username) {
+          // Fetch other user's profile
+          const response = await api.get(`/users/profile/${username}`);
+          setProfileData(response.data.user);
+        } else {
+          // Use current user's profile
+          setProfileData(currentUser);
+        }
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [username, currentUser]);
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
 
-  if (!initialized || loading) {
+  if (loading) {
     return <LoadingIndicator />;
   }
 
-  if (!user) {
+  if (!profileData) {
     return (
       <div className="flex flex-col items-center justify-center p-8">
         <Typography className="text-gray-400">
-          Please log in to view your profile
+          User not found
         </Typography>
       </div>
     );
   }
 
-  const isStartGGConnected = user?.startgg?.accessToken;
-  const startggProfile = user?.startgg?.profile;
-  const startggPlayer = user?.startgg?.player;
+  const isStartGGConnected = profileData?.startgg?.connected;
+  const startggProfile = profileData?.startgg?.profile;
+  const startggPlayer = profileData?.startgg?.player;
 
   // Placeholder stats
   const stats = [
@@ -92,14 +125,14 @@ const Profile = () => {
           <div className="px-8 pb-8 -mt-16 relative">
             <div className="flex flex-col md:flex-row items-center md:items-end gap-6">
               <Avatar
-                src={user?.avatar || 'https://via.placeholder.com/150'}
-                alt={user?.username}
+                src={profileData?.avatar || 'https://via.placeholder.com/150'}
+                alt={profileData?.username}
                 size="xxl"
                 className="w-32 h-32 border-4 border-gray-900 shadow-xl rounded-xl"
               />
               <div className="flex-grow text-center md:text-left">
                 <Typography variant="h3" className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
-                  {user?.username}
+                  {profileData?.username}
                 </Typography>
                 <div className="flex flex-wrap gap-2 justify-center md:justify-start mt-2">
                   <Chip size="sm" value="Pro Player" className="bg-blue-500/20 text-blue-400 border border-blue-500/20" />
@@ -155,7 +188,7 @@ const Profile = () => {
                 About
               </Typography>
               <Typography className="text-gray-300">
-                {user?.bio || "Professional gamer and tournament organizer. Passionate about competitive gaming and community building."}
+                {profileData?.bio || "Professional gamer and tournament organizer. Passionate about competitive gaming and community building."}
               </Typography>
               
               {/* Progress Bars */}
@@ -219,12 +252,12 @@ const Profile = () => {
               <div className="space-y-4">
                 <div className="flex items-center gap-3 p-3 bg-gray-900/50 rounded-lg">
                   <Mail className="w-5 h-5 text-blue-400" />
-                  <Typography className="text-gray-300">{user?.email}</Typography>
+                  <Typography className="text-gray-300">{profileData?.email}</Typography>
                 </div>
                 <div className="flex items-center gap-3 p-3 bg-gray-900/50 rounded-lg">
                   <Calendar className="w-5 h-5 text-purple-400" />
                   <Typography className="text-gray-300">
-                    Joined {new Date(user?.createdAt).toLocaleDateString()}
+                    Joined {new Date(profileData?.createdAt).toLocaleDateString()}
                   </Typography>
                 </div>
               </div>
