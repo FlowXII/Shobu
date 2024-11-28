@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Typography, 
   Card, 
@@ -17,11 +17,13 @@ import {
 import { Plus, Edit2, Trash2, Users, Calendar, DollarSign, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useEventManagement } from '../../hooks/useEventManagement';
 
 const TournamentEventsTO = ({ tournament, isOrganizer, onUpdate }) => {
   const navigate = useNavigate();
-  const [open, setOpen] = React.useState(false);
-  const [eventData, setEventData] = React.useState({
+  const [open, setOpen] = useState(false);
+  const { loading, createEvent, deleteEvent } = useEventManagement(tournament._id);
+  const [eventData, setEventData] = useState({
     name: "",
     game: "",
     startAt: new Date().toISOString().split('T')[0],
@@ -37,47 +39,16 @@ const TournamentEventsTO = ({ tournament, isOrganizer, onUpdate }) => {
   const handleCreateEvent = async (event) => {
     event.preventDefault();
     try {
-      const eventPayload = {
-        ...eventData,
-        tournamentId: tournament._id,
-        format: eventData.format.toUpperCase().replace(' ', '_')
-      };
-
-      console.log('Sending event payload:', eventPayload);
-
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/tournaments/${tournament._id}/events`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify(eventPayload),
-        }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to create event');
-      }
-      
-      const data = await response.json();
-      console.log('Received new event data:', data);
-      
-      if (!data.data || !data.data._id) {
-        throw new Error('Invalid event data received');
-      }
-
-      toast.success('Event created successfully');
+      const newEvent = await createEvent(eventData);
       setOpen(false);
       
       if (onUpdate) {
         await onUpdate();
       }
 
-      navigate(`/tournaments/${tournament._id}/events/${data.data._id}/to`);
+      navigate(`/tournaments/${tournament._id}/events/${newEvent._id}/to`);
     } catch (error) {
       console.error('Create event error:', error);
-      toast.error(error.message);
     }
   };
 
@@ -85,19 +56,10 @@ const TournamentEventsTO = ({ tournament, isOrganizer, onUpdate }) => {
     if (!confirm('Are you sure you want to delete this event?')) return;
     
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/events/${eventId}`,
-        {
-          method: 'DELETE',
-          credentials: 'include',
-        }
-      );
-
-      if (!response.ok) throw new Error('Failed to delete event');
-      toast.success('Event deleted successfully');
-      onUpdate(); // Refresh the tournament data
+      await deleteEvent(eventId);
+      onUpdate();
     } catch (error) {
-      toast.error(error.message);
+      console.error('Delete event error:', error);
     }
   };
 

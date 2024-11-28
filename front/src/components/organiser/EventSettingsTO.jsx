@@ -12,6 +12,7 @@ import {
 import { Save, RotateCcw, Trash2 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
+import { updateEvent } from '../../loaders/eventLoader';
 
 const EventSettingsTO = ({ event, onUpdate, onDelete }) => {
   const [loading, setLoading] = useState(false);
@@ -54,26 +55,10 @@ const EventSettingsTO = ({ event, onUpdate, onDelete }) => {
     setLoading(true);
     
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/events/${event._id}`,
-        {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify(formData)
-        }
-      );
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to update event');
-      }
-      
-      const updatedEvent = await response.json();
-      onUpdate(updatedEvent.data);
+      const updatedEvent = await updateEvent(event.tournamentId, event._id, formData);
+      onUpdate(updatedEvent);
       toast.success('Event updated successfully');
     } catch (error) {
-      console.error('Update error:', error);
       toast.error(error.message);
     } finally {
       setLoading(false);

@@ -20,13 +20,12 @@ export const useProfile = (username) => {
     setError(null);
     
     try {
-      // Just fetch profile info for now
+      // Keep the username-based route for profile pages
       const response = await api.get(
-        username ? `/users/profile/${username}` : '/users/profile'
+        username ? `/users/profile/username/${username}` : '/users/profile'
       );
 
       const profile = response.data.data || response.data.user;
-
       setProfileData(profile);
       return profile;
     } catch (err) {

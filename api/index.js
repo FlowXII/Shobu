@@ -38,7 +38,7 @@ app.use('/api/notifications', pushNotificationsRoute);
 app.use('/api/stations/reporting', stationReportingRoute);
 app.use('/api/tournaments', tournamentRoutes);
 app.use('/api/posts', postRoutes);
-app.use('/api/events', eventRoutes);
+app.use('/api', eventRoutes);
 
 // Auth routes
 app.use('/api/auth', authRoutes);

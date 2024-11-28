@@ -58,10 +58,27 @@ export const login = async (req, res) => {
 
 export const getProfile = async (req, res) => {
   try {
-    const { username } = req.params;
-    const result = await getUserProfile(req.userId, username);
-    res.json(result);
+    const { userId, username } = req.params;
+
+    let result;
+    if (userId) {
+      result = await getUserProfile({ userId: userId });
+    } else if (username) {
+      result = await getUserProfile({ username: username });
+    } else {
+      throw new Error('No identifier provided');
+    }
+
+    res.json({
+      success: true,
+      data: result
+    });
   } catch (error) {
+    logger.error('Error fetching user profile', { 
+      error, 
+      userId: req.params.userId, 
+      username: req.params.username 
+    });
     res.status(404).json({ 
       success: false, 
       error: error.message 

@@ -13,6 +13,7 @@ import {
 } from "@material-tailwind/react";
 import { Trophy, Users, Brackets, Plus } from 'lucide-react';
 import { toast } from 'react-toastify';
+import { generateBrackets } from '../../loaders/eventLoader';
 
 const EventBracketsTO = ({ event }) => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -25,21 +26,7 @@ const EventBracketsTO = ({ event }) => {
     setLoading(true);
     
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/events/${event._id}/brackets/generate`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({
-            type: bracketType,
-            seeding
-          })
-        }
-      );
-
-      if (!response.ok) throw new Error('Failed to generate brackets');
-      
+      await generateBrackets(event.tournamentId, event._id, bracketType, seeding);
       toast.success('Brackets generated successfully');
       setOpenDialog(false);
     } catch (error) {

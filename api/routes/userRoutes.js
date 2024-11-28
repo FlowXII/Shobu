@@ -17,7 +17,8 @@ router.post('/login', login);
 router.post('/logout', authenticateToken, logout);
 
 // Profile routes
-router.get('/profile/:username?', authenticateToken, getProfile);
+router.get('/profile/id/:userId', authenticateToken, getProfile);
+router.get('/profile/username/:username?', authenticateToken, getProfile);
 router.patch('/profile', authenticateToken, updateProfile);
 
 // Search route

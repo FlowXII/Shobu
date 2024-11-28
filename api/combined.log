@@ -1106,3 +1106,831 @@
 {"level":"info","message":"Creating tournament","timestamp":"2024-11-22T10:46:13.845Z","userId":"67333ef9d85db661feea0bb6"}
 {"error":"E11000 duplicate key error collection: test.tournaments index: slug_1 dup key: { slug: \"martial-law-rescinded\" }","level":"error","message":"Database error while creating tournament","stack":"MongoServerError: E11000 duplicate key error collection: test.tournaments index: slug_1 dup key: { slug: \"martial-law-rescinded\" }\n    at InsertOneOperation.execute (C:\\Users\\Memed\\Desktop\\ActualCode\\Archades\\api\\node_modules\\mongodb\\lib\\operations\\insert.js:51:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async tryOperation (C:\\Users\\Memed\\Desktop\\ActualCode\\Archades\\api\\node_modules\\mongodb\\lib\\operations\\execute_operation.js:199:20)\n    at async executeOperation (C:\\Users\\Memed\\Desktop\\ActualCode\\Archades\\api\\node_modules\\mongodb\\lib\\operations\\execute_operation.js:69:16)\n    at async Collection.insertOne (C:\\Users\\Memed\\Desktop\\ActualCode\\Archades\\api\\node_modules\\mongodb\\lib\\collection.js:154:16)","timestamp":"2024-11-22T10:46:13.884Z","tournamentData":{"name":"Martial Law Rescinded","organizerId":"67333ef9d85db661feea0bb6","slug":"martial-law-rescinded"}}
 {"error":"Error creating tournament: E11000 duplicate key error collection: test.tournaments index: slug_1 dup key: { slug: \"martial-law-rescinded\" }","level":"error","message":"Failed to create tournament","stack":"Error: Error creating tournament: E11000 duplicate key error collection: test.tournaments index: slug_1 dup key: { slug: \"martial-law-rescinded\" }\n    at createTournament (file:///C:/Users/Memed/Desktop/ActualCode/Archades/api/services/tournament/tournamentService.js:128:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async createTournamentController (file:///C:/Users/Memed/Desktop/ActualCode/Archades/api/controllers/tournamentController.js:24:24)","timestamp":"2024-11-22T10:46:13.887Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"info","message":"Accessing user tournaments","timestamp":"2024-11-25T09:31:05.414Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"info","message":"Fetched tournaments:","timestamp":"2024-11-25T09:31:05.436Z","tournaments":[{"__v":0,"_id":"674060bcba6085595df5c135","attendees":[],"createdAt":"2024-11-22T10:45:16.034Z","description":"Benjamin had a change of heart","endAt":"2024-12-29T00:30:00.000Z","events":[],"images":[],"location":{"city":"Paris","country":"France","state":"Paris","venueAddress":"1 rue de rivoli"},"maxAttendees":128,"name":"Martial Law Rescinded","organizerId":"67333ef9d85db661feea0bb6","registrationEndAt":"2024-12-27T22:59:00.000Z","registrationStartAt":"2024-11-22T10:44:00.000Z","slug":"martial-law-rescinded","startAt":"2024-12-28T19:20:00.000Z","status":"DRAFT","type":"DOUBLE_ELIMINATION","updatedAt":"2024-11-22T10:45:16.038Z"},{"__v":0,"_id":"67405cdc27a59af739b19e1c","attendees":[],"createdAt":"2024-11-22T10:28:44.210Z","description":"The black whale is in SERIOUS TROUBLE ! What just happened?","endAt":"2024-11-28T21:27:00.000Z","events":[],"images":[],"location":{"city":"Paris","country":"France","state":"Paris","venueAddress":"1 rue de Rivoli"},"maxAttendees":128,"name":"Martial Law Declared !","organizerId":"67333ef9d85db661feea0bb6","registrationEndAt":"2024-11-27T11:00:00.000Z","registrationStartAt":"2024-11-22T10:28:00.000Z","slug":"martial-law-declared","startAt":"2024-11-28T10:27:00.000Z","status":"PUBLISHED","type":"DOUBLE_ELIMINATION","updatedAt":"2024-11-22T10:28:44.215Z"}]}
+{"level":"info","message":"Accessing user tournaments","timestamp":"2024-11-25T09:31:05.451Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"info","message":"Fetched tournaments:","timestamp":"2024-11-25T09:31:05.459Z","tournaments":[{"__v":0,"_id":"674060bcba6085595df5c135","attendees":[],"createdAt":"2024-11-22T10:45:16.034Z","description":"Benjamin had a change of heart","endAt":"2024-12-29T00:30:00.000Z","events":[],"images":[],"location":{"city":"Paris","country":"France","state":"Paris","venueAddress":"1 rue de rivoli"},"maxAttendees":128,"name":"Martial Law Rescinded","organizerId":"67333ef9d85db661feea0bb6","registrationEndAt":"2024-12-27T22:59:00.000Z","registrationStartAt":"2024-11-22T10:44:00.000Z","slug":"martial-law-rescinded","startAt":"2024-12-28T19:20:00.000Z","status":"DRAFT","type":"DOUBLE_ELIMINATION","updatedAt":"2024-11-22T10:45:16.038Z"},{"__v":0,"_id":"67405cdc27a59af739b19e1c","attendees":[],"createdAt":"2024-11-22T10:28:44.210Z","description":"The black whale is in SERIOUS TROUBLE ! What just happened?","endAt":"2024-11-28T21:27:00.000Z","events":[],"images":[],"location":{"city":"Paris","country":"France","state":"Paris","venueAddress":"1 rue de Rivoli"},"maxAttendees":128,"name":"Martial Law Declared !","organizerId":"67333ef9d85db661feea0bb6","registrationEndAt":"2024-11-27T11:00:00.000Z","registrationStartAt":"2024-11-22T10:28:00.000Z","slug":"martial-law-declared","startAt":"2024-11-28T10:27:00.000Z","status":"PUBLISHED","type":"DOUBLE_ELIMINATION","updatedAt":"2024-11-22T10:28:44.215Z"}]}
+{"level":"info","message":"Accessing user tournaments","timestamp":"2024-11-25T09:34:47.316Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"info","message":"Fetched tournaments:","timestamp":"2024-11-25T09:34:47.327Z","tournaments":[{"__v":0,"_id":"674060bcba6085595df5c135","attendees":[],"createdAt":"2024-11-22T10:45:16.034Z","description":"Benjamin had a change of heart","endAt":"2024-12-29T00:30:00.000Z","events":[],"images":[],"location":{"city":"Paris","country":"France","state":"Paris","venueAddress":"1 rue de rivoli"},"maxAttendees":128,"name":"Martial Law Rescinded","organizerId":"67333ef9d85db661feea0bb6","registrationEndAt":"2024-12-27T22:59:00.000Z","registrationStartAt":"2024-11-22T10:44:00.000Z","slug":"martial-law-rescinded","startAt":"2024-12-28T19:20:00.000Z","status":"DRAFT","type":"DOUBLE_ELIMINATION","updatedAt":"2024-11-22T10:45:16.038Z"},{"__v":0,"_id":"67405cdc27a59af739b19e1c","attendees":[],"createdAt":"2024-11-22T10:28:44.210Z","description":"The black whale is in SERIOUS TROUBLE ! What just happened?","endAt":"2024-11-28T21:27:00.000Z","events":[],"images":[],"location":{"city":"Paris","country":"France","state":"Paris","venueAddress":"1 rue de Rivoli"},"maxAttendees":128,"name":"Martial Law Declared !","organizerId":"67333ef9d85db661feea0bb6","registrationEndAt":"2024-11-27T11:00:00.000Z","registrationStartAt":"2024-11-22T10:28:00.000Z","slug":"martial-law-declared","startAt":"2024-11-28T10:27:00.000Z","status":"PUBLISHED","type":"DOUBLE_ELIMINATION","updatedAt":"2024-11-22T10:28:44.215Z"}]}
+{"level":"info","message":"Accessing user tournaments","timestamp":"2024-11-25T09:34:47.346Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"info","message":"Fetched tournaments:","timestamp":"2024-11-25T09:34:47.356Z","tournaments":[{"__v":0,"_id":"674060bcba6085595df5c135","attendees":[],"createdAt":"2024-11-22T10:45:16.034Z","description":"Benjamin had a change of heart","endAt":"2024-12-29T00:30:00.000Z","events":[],"images":[],"location":{"city":"Paris","country":"France","state":"Paris","venueAddress":"1 rue de rivoli"},"maxAttendees":128,"name":"Martial Law Rescinded","organizerId":"67333ef9d85db661feea0bb6","registrationEndAt":"2024-12-27T22:59:00.000Z","registrationStartAt":"2024-11-22T10:44:00.000Z","slug":"martial-law-rescinded","startAt":"2024-12-28T19:20:00.000Z","status":"DRAFT","type":"DOUBLE_ELIMINATION","updatedAt":"2024-11-22T10:45:16.038Z"},{"__v":0,"_id":"67405cdc27a59af739b19e1c","attendees":[],"createdAt":"2024-11-22T10:28:44.210Z","description":"The black whale is in SERIOUS TROUBLE ! What just happened?","endAt":"2024-11-28T21:27:00.000Z","events":[],"images":[],"location":{"city":"Paris","country":"France","state":"Paris","venueAddress":"1 rue de Rivoli"},"maxAttendees":128,"name":"Martial Law Declared !","organizerId":"67333ef9d85db661feea0bb6","registrationEndAt":"2024-11-27T11:00:00.000Z","registrationStartAt":"2024-11-22T10:28:00.000Z","slug":"martial-law-declared","startAt":"2024-11-28T10:27:00.000Z","status":"PUBLISHED","type":"DOUBLE_ELIMINATION","updatedAt":"2024-11-22T10:28:44.215Z"}]}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T09:58:13.319Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T09:58:13.347Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T09:58:38.307Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T09:58:38.327Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T09:58:51.315Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T09:58:51.344Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T09:59:06.307Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T09:59:06.326Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:00:47.310Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:00:47.330Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:00:51.305Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:00:51.324Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:01:00.304Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:01:00.324Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:01:14.127Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:01:14.147Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:01:20.309Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:01:20.329Z"}
+{"level":"info","message":"Accessing user tournaments","timestamp":"2024-11-25T10:01:21.962Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"info","message":"Fetched tournaments:","timestamp":"2024-11-25T10:01:21.974Z","tournaments":[{"__v":0,"_id":"674060bcba6085595df5c135","attendees":[],"createdAt":"2024-11-22T10:45:16.034Z","description":"Benjamin had a change of heart","endAt":"2024-12-29T00:30:00.000Z","events":[],"images":[],"location":{"city":"Paris","country":"France","state":"Paris","venueAddress":"1 rue de rivoli"},"maxAttendees":128,"name":"Martial Law Rescinded","organizerId":"67333ef9d85db661feea0bb6","registrationEndAt":"2024-12-27T22:59:00.000Z","registrationStartAt":"2024-11-22T10:44:00.000Z","slug":"martial-law-rescinded","startAt":"2024-12-28T19:20:00.000Z","status":"DRAFT","type":"DOUBLE_ELIMINATION","updatedAt":"2024-11-22T10:45:16.038Z"},{"__v":0,"_id":"67405cdc27a59af739b19e1c","attendees":[],"createdAt":"2024-11-22T10:28:44.210Z","description":"The black whale is in SERIOUS TROUBLE ! What just happened?","endAt":"2024-11-28T21:27:00.000Z","events":[],"images":[],"location":{"city":"Paris","country":"France","state":"Paris","venueAddress":"1 rue de Rivoli"},"maxAttendees":128,"name":"Martial Law Declared !","organizerId":"67333ef9d85db661feea0bb6","registrationEndAt":"2024-11-27T11:00:00.000Z","registrationStartAt":"2024-11-22T10:28:00.000Z","slug":"martial-law-declared","startAt":"2024-11-28T10:27:00.000Z","status":"PUBLISHED","type":"DOUBLE_ELIMINATION","updatedAt":"2024-11-22T10:28:44.215Z"}]}
+{"level":"info","message":"Accessing user tournaments","timestamp":"2024-11-25T10:01:21.987Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"info","message":"Fetched tournaments:","timestamp":"2024-11-25T10:01:21.994Z","tournaments":[{"__v":0,"_id":"674060bcba6085595df5c135","attendees":[],"createdAt":"2024-11-22T10:45:16.034Z","description":"Benjamin had a change of heart","endAt":"2024-12-29T00:30:00.000Z","events":[],"images":[],"location":{"city":"Paris","country":"France","state":"Paris","venueAddress":"1 rue de rivoli"},"maxAttendees":128,"name":"Martial Law Rescinded","organizerId":"67333ef9d85db661feea0bb6","registrationEndAt":"2024-12-27T22:59:00.000Z","registrationStartAt":"2024-11-22T10:44:00.000Z","slug":"martial-law-rescinded","startAt":"2024-12-28T19:20:00.000Z","status":"DRAFT","type":"DOUBLE_ELIMINATION","updatedAt":"2024-11-22T10:45:16.038Z"},{"__v":0,"_id":"67405cdc27a59af739b19e1c","attendees":[],"createdAt":"2024-11-22T10:28:44.210Z","description":"The black whale is in SERIOUS TROUBLE ! What just happened?","endAt":"2024-11-28T21:27:00.000Z","events":[],"images":[],"location":{"city":"Paris","country":"France","state":"Paris","venueAddress":"1 rue de Rivoli"},"maxAttendees":128,"name":"Martial Law Declared !","organizerId":"67333ef9d85db661feea0bb6","registrationEndAt":"2024-11-27T11:00:00.000Z","registrationStartAt":"2024-11-22T10:28:00.000Z","slug":"martial-law-declared","startAt":"2024-11-28T10:27:00.000Z","status":"PUBLISHED","type":"DOUBLE_ELIMINATION","updatedAt":"2024-11-22T10:28:44.215Z"}]}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:03:07.305Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:03:07.323Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:03:10.305Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:03:10.322Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:05:11.313Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:05:11.330Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:05:16.200Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:05:16.220Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:09:58.160Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:09:58.180Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:10:02.786Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:10:02.806Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:11:21.320Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:11:21.338Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:11:28.740Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T10:11:28.759Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T11:37:23.389Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T11:37:23.439Z"}
+{"error":"isUpdateInProgress is not defined","id":"674060bcba6085595df5c135","level":"error","message":"Failed to register for tournament","timestamp":"2024-11-25T11:37:40.158Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"info","message":"Accessing user tournaments","timestamp":"2024-11-25T11:37:57.033Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"info","message":"Fetched tournaments:","timestamp":"2024-11-25T11:37:57.043Z","tournaments":[{"__v":0,"_id":"674060bcba6085595df5c135","attendees":[],"createdAt":"2024-11-22T10:45:16.034Z","description":"Benjamin had a change of heart","endAt":"2024-12-29T00:30:00.000Z","events":[],"images":[],"location":{"city":"Paris","country":"France","state":"Paris","venueAddress":"1 rue de rivoli"},"maxAttendees":128,"name":"Martial Law Rescinded","organizerId":"67333ef9d85db661feea0bb6","registrationEndAt":"2024-12-27T22:59:00.000Z","registrationStartAt":"2024-11-22T10:44:00.000Z","slug":"martial-law-rescinded","startAt":"2024-12-28T19:20:00.000Z","status":"DRAFT","type":"DOUBLE_ELIMINATION","updatedAt":"2024-11-22T10:45:16.038Z"},{"__v":0,"_id":"67405cdc27a59af739b19e1c","attendees":[],"createdAt":"2024-11-22T10:28:44.210Z","description":"The black whale is in SERIOUS TROUBLE ! What just happened?","endAt":"2024-11-28T21:27:00.000Z","events":[],"images":[],"location":{"city":"Paris","country":"France","state":"Paris","venueAddress":"1 rue de Rivoli"},"maxAttendees":128,"name":"Martial Law Declared !","organizerId":"67333ef9d85db661feea0bb6","registrationEndAt":"2024-11-27T11:00:00.000Z","registrationStartAt":"2024-11-22T10:28:00.000Z","slug":"martial-law-declared","startAt":"2024-11-28T10:27:00.000Z","status":"PUBLISHED","type":"DOUBLE_ELIMINATION","updatedAt":"2024-11-22T10:28:44.215Z"}]}
+{"level":"info","message":"Accessing user tournaments","timestamp":"2024-11-25T11:37:57.057Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"info","message":"Fetched tournaments:","timestamp":"2024-11-25T11:37:57.065Z","tournaments":[{"__v":0,"_id":"674060bcba6085595df5c135","attendees":[],"createdAt":"2024-11-22T10:45:16.034Z","description":"Benjamin had a change of heart","endAt":"2024-12-29T00:30:00.000Z","events":[],"images":[],"location":{"city":"Paris","country":"France","state":"Paris","venueAddress":"1 rue de rivoli"},"maxAttendees":128,"name":"Martial Law Rescinded","organizerId":"67333ef9d85db661feea0bb6","registrationEndAt":"2024-12-27T22:59:00.000Z","registrationStartAt":"2024-11-22T10:44:00.000Z","slug":"martial-law-rescinded","startAt":"2024-12-28T19:20:00.000Z","status":"DRAFT","type":"DOUBLE_ELIMINATION","updatedAt":"2024-11-22T10:45:16.038Z"},{"__v":0,"_id":"67405cdc27a59af739b19e1c","attendees":[],"createdAt":"2024-11-22T10:28:44.210Z","description":"The black whale is in SERIOUS TROUBLE ! What just happened?","endAt":"2024-11-28T21:27:00.000Z","events":[],"images":[],"location":{"city":"Paris","country":"France","state":"Paris","venueAddress":"1 rue de Rivoli"},"maxAttendees":128,"name":"Martial Law Declared !","organizerId":"67333ef9d85db661feea0bb6","registrationEndAt":"2024-11-27T11:00:00.000Z","registrationStartAt":"2024-11-22T10:28:00.000Z","slug":"martial-law-declared","startAt":"2024-11-28T10:27:00.000Z","status":"PUBLISHED","type":"DOUBLE_ELIMINATION","updatedAt":"2024-11-22T10:28:44.215Z"}]}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T11:38:10.302Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T11:38:10.322Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T11:38:11.761Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T11:38:11.780Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-25T11:38:23.224Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-25T11:38:23.265Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/conversations/673f00e9656c8bbe9b44ffb0/read","query":{},"timestamp":"2024-11-25T11:38:24.453Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations/673f00e9656c8bbe9b44ffb0/messages","query":{},"timestamp":"2024-11-25T11:38:24.456Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/conversations/673f00e9656c8bbe9b44ffb0/read","query":{},"timestamp":"2024-11-25T11:38:24.496Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"test"},"timestamp":"2024-11-25T11:38:40.471Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"may"},"timestamp":"2024-11-25T11:38:44.167Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T11:38:58.573Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-25T11:38:58.592Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T15:49:32.124Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T15:49:32.141Z"}
+{"body":{"email":"boymed93@gmail.com","password":"Anonymous1"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/auth/login","query":{},"timestamp":"2024-11-26T15:50:05.134Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T15:50:05.321Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T15:50:05.344Z"}
+{"error":"isUpdateInProgress is not defined","id":"674060bcba6085595df5c135","level":"error","message":"Failed to register for tournament","timestamp":"2024-11-26T15:50:10.639Z","userId":"67333ef9d85db661feea0bb6"}
+{"error":"isUpdateInProgress is not defined","id":"674060bcba6085595df5c135","level":"error","message":"Failed to register for tournament","timestamp":"2024-11-26T15:51:33.534Z","userId":"67333ef9d85db661feea0bb6"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/register","query":{},"timestamp":"2024-11-26T15:51:42.266Z"}
+{"error":"isUpdateInProgress is not defined","id":"674060bcba6085595df5c135","level":"error","message":"Failed to register for tournament","timestamp":"2024-11-26T15:51:57.584Z","userId":"67333ef9d85db661feea0bb6"}
+{"error":"Class constructor ObjectId cannot be invoked without 'new'","id":"674060bcba6085595df5c135","level":"error","message":"Failed to register for tournament","timestamp":"2024-11-26T15:52:51.310Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"info","message":"User registered for tournament","timestamp":"2024-11-26T15:53:19.089Z","tournamentId":"674060bcba6085595df5c135","userId":"67333ef9d85db661feea0bb6"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T15:53:24.382Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T15:53:24.410Z"}
+{"error":"Registration is not available","id":"674060bcba6085595df5c135","level":"error","message":"Failed to register for tournament","timestamp":"2024-11-26T15:53:26.242Z","userId":"67333ef9d85db661feea0bb6"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:04:14.577Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:04:14.613Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:04:34.463Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:04:34.488Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:07:45.938Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:07:45.967Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:19:54.100Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:20:04.397Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:21:06.304Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:21:06.324Z"}
+{"body":{"description":"haha","entryFee":10,"format":"DOUBLE_ELIMINATION","game":"tekken 8","maxEntrants":32,"name":"tekken 8","rules":"tekken 8 rules","startAt":"2024-11-26"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/events","query":{},"timestamp":"2024-11-26T16:21:26.676Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"tournamentId":"674060bcba6085595df5c135"},"timestamp":"2024-11-26T16:21:26.689Z","userId":"67333ef9d85db661feea0bb6"}
+{"body":{"description":"haha","entryFee":10,"format":"DOUBLE_ELIMINATION","game":"tekken 8","maxEntrants":32,"name":"tekken 8","rules":"tekken 8 rules","startAt":"2024-11-26"},"level":"info","message":"Create event controller started","timestamp":"2024-11-26T16:21:26.698Z","tournamentId":"674060bcba6085595df5c135"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-26T16:21:26.783Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-26T16:21:26.786Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-26T16:21:26.800Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-26T16:21:26.802Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-26T16:21:26.803Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-26T16:21:26.816Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/[object%20Object]/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-26T16:21:26.916Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-26T16:21:26.917Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-26T16:21:26.930Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-26T16:21:38.875Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-26T16:21:38.876Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-26T16:21:38.891Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-26T16:21:38.894Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-26T16:21:38.895Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-26T16:21:38.912Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/[object%20Object]/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-26T16:21:38.981Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-26T16:21:38.982Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-26T16:21:38.997Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:29:11.077Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:29:11.104Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:29:45.437Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:29:45.501Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:33:07.101Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:33:07.125Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:33:34.096Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:33:34.116Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:33:55.739Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:33:55.761Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:43:51.350Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:44:15.843Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:46:52.035Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:46:52.061Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:48:47.211Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:48:47.240Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:55:45.711Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:55:55.223Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:56:06.733Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:58:43.767Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:58:43.799Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:59:06.875Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:59:06.906Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:59:30.267Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T16:59:30.297Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T17:02:18.901Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T17:02:18.932Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T17:02:33.317Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T17:02:52.099Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T17:02:52.123Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T17:03:24.600Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-26T18:17:19.943Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-26T18:17:19.944Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-26T18:17:19.957Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-26T18:17:19.959Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-26T18:17:19.960Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-26T18:17:19.973Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/[object%20Object]/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-26T18:17:20.068Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-26T18:17:20.069Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-26T18:17:20.089Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:25:39.571Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:25:39.594Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:28:53.532Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:30:58.279Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:30:58.298Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:44:31.108Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:44:31.130Z"}
+{"error":"Registration is not available","id":"674060bcba6085595df5c135","level":"error","message":"Failed to register for tournament","timestamp":"2024-11-26T18:45:11.328Z","userId":"67333ef9d85db661feea0bb6"}
+{"error":"Registration is not available","id":"674060bcba6085595df5c135","level":"error","message":"Failed to register for tournament","timestamp":"2024-11-26T18:45:27.593Z","userId":"67333ef9d85db661feea0bb6"}
+{"error":"Registration is not available","id":"674060bcba6085595df5c135","level":"error","message":"Failed to register for tournament","timestamp":"2024-11-26T18:46:12.175Z","userId":"67333ef9d85db661feea0bb6"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:47:00.993Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:47:01.012Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:47:21.404Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:48:42.874Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:48:42.893Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:49:10.340Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:49:12.662Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:49:12.680Z"}
+{"error":"Registration is not available","id":"674060bcba6085595df5c135","level":"error","message":"Failed to register for tournament","timestamp":"2024-11-26T18:51:46.672Z","userId":"67333ef9d85db661feea0bb6"}
+{"error":"Registration is not available","id":"674060bcba6085595df5c135","level":"error","message":"Failed to register for tournament","timestamp":"2024-11-26T18:51:51.505Z","userId":"67333ef9d85db661feea0bb6"}
+{"error":"Registration is not available","id":"674060bcba6085595df5c135","level":"error","message":"Failed to register for tournament","timestamp":"2024-11-26T18:51:59.527Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"info","message":"User registered for tournament","timestamp":"2024-11-26T18:52:49.615Z","tournamentId":"67405cdc27a59af739b19e1c","userId":"67333ef9d85db661feea0bb6"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:53:56.796Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/registration-status","query":{},"timestamp":"2024-11-26T18:53:56.803Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:53:56.826Z"}
+{"error":"Registration is not available","id":"674060bcba6085595df5c135","level":"error","message":"Failed to register for tournament","timestamp":"2024-11-26T18:54:04.370Z","userId":"67333ef9d85db661feea0bb6"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:54:27.508Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/registration-status","query":{},"timestamp":"2024-11-26T18:54:27.529Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-26T18:54:27.542Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:25:48.409Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:25:48.459Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/registration-status","query":{},"timestamp":"2024-11-27T08:26:21.934Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:26:51.430Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:26:59.277Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:29:29.403Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:29:33.751Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:29:33.772Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/registration-status","query":{},"timestamp":"2024-11-27T08:29:36.153Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:32:27.577Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:32:27.598Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:32:41.850Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:32:41.873Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/registration-status","query":{},"timestamp":"2024-11-27T08:33:51.026Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:34:47.093Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:34:50.704Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/registration-status","query":{},"timestamp":"2024-11-27T08:35:00.697Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/registration-status","query":{},"timestamp":"2024-11-27T08:46:17.567Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:46:20.952Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:46:20.972Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/registration-status","query":{},"timestamp":"2024-11-27T08:46:22.382Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:46:55.543Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:47:21.745Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-27T08:47:39.396Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-27T08:47:39.397Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-27T08:47:39.413Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-27T08:47:39.415Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-27T08:47:39.416Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-27T08:47:39.429Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/[object%20Object]/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-27T08:47:39.529Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-27T08:47:39.530Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-27T08:47:39.542Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:54:25.323Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T08:54:51.585Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"warn","message":"Invalid tournament ID format","timestamp":"2024-11-27T08:54:51.585Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:55:53.639Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:55:53.677Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T08:56:03.222Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"warn","message":"Invalid tournament ID format","timestamp":"2024-11-27T08:56:03.223Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T08:56:54.316Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"warn","message":"Invalid tournament ID format","timestamp":"2024-11-27T08:56:54.317Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T08:57:27.599Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"warn","message":"Invalid tournament ID format","timestamp":"2024-11-27T08:57:27.600Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T08:59:34.695Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T08:59:58.336Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"warn","message":"Invalid tournament ID format","timestamp":"2024-11-27T08:59:58.337Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:01:05.837Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T09:01:07.296Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"warn","message":"Invalid tournament ID format","timestamp":"2024-11-27T09:01:07.296Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T09:01:17.098Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"warn","message":"Invalid tournament ID format","timestamp":"2024-11-27T09:01:17.099Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:02:08.528Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:02:49.752Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T09:02:52.395Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"warn","message":"Invalid tournament ID format","timestamp":"2024-11-27T09:02:52.396Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T09:02:57.118Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"warn","message":"Invalid tournament ID format","timestamp":"2024-11-27T09:02:57.118Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:03:37.320Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T09:03:42.676Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"warn","message":"Invalid tournament ID format","timestamp":"2024-11-27T09:03:42.677Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:03:55.476Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T09:03:56.803Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"warn","message":"Invalid tournament ID format","timestamp":"2024-11-27T09:03:56.804Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:04:39.456Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:04:46.616Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T09:04:47.271Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"warn","message":"Invalid tournament ID format","timestamp":"2024-11-27T09:04:47.272Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T09:04:55.142Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"warn","message":"Invalid tournament ID format","timestamp":"2024-11-27T09:04:55.143Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:05:26.338Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:05:42.186Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:06:08.446Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:06:12.521Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T09:06:16.999Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"warn","message":"Invalid tournament ID format","timestamp":"2024-11-27T09:06:17.000Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:07:18.613Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T09:07:20.177Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"warn","message":"Invalid tournament ID format","timestamp":"2024-11-27T09:07:20.178Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T09:07:31.576Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"warn","message":"Invalid tournament ID format","timestamp":"2024-11-27T09:07:31.577Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T09:08:48.697Z","userId":"67333ef9d85db661feea0bb6"}
+{"level":"warn","message":"Invalid tournament ID format","timestamp":"2024-11-27T09:08:48.701Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T09:10:44.869Z","userId":"67333ef9d85db661feea0bb6"}
+{"body":{"description":"Benjamin had a change of heart !!","endAt":"2024-12-29T00:30:00","location":{"city":"Paris","country":"France","state":"Paris","venueAddress":"1 rue de rivoli"},"name":"Martial Law Rescinded","startAt":"2024-12-28T19:20:00"},"id":"674060bcba6085595df5c135","idLength":24,"idType":"string","isValidObjectId":true,"level":"info","message":"Update tournament request received","timestamp":"2024-11-27T09:10:44.881Z"}
+{"level":"info","message":"Successfully created ObjectId","testObjectId":"674060bcba6085595df5c135","timestamp":"2024-11-27T09:10:44.883Z"}
+{"level":"info","message":"Tournament updated successfully","timestamp":"2024-11-27T09:10:44.915Z","tournamentId":"674060bcba6085595df5c135","userId":"67333ef9d85db661feea0bb6"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:10:46.498Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:10:46.527Z"}
+{"error":"Registration is not available","id":"674060bcba6085595df5c135","level":"error","message":"Failed to register for tournament","timestamp":"2024-11-27T09:17:45.897Z","userId":"67333ef9d85db661feea0bb6"}
+{"error":"Registration is not available","id":"674060bcba6085595df5c135","level":"error","message":"Failed to register for tournament","timestamp":"2024-11-27T09:17:56.909Z","userId":"67333ef9d85db661feea0bb6"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:19:31.534Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:19:44.418Z"}
+{"error":"Registration is not available","id":"674060bcba6085595df5c135","level":"error","message":"Failed to register for tournament","timestamp":"2024-11-27T09:19:50.917Z","userId":"67333ef9d85db661feea0bb6"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:19:56.851Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:19:56.873Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:21:01.066Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:21:05.436Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:21:05.458Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:21:48.411Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:21:54.258Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:21:54.281Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:22:35.671Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:22:44.853Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:22:44.876Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:24:01.200Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:24:07.236Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:24:07.261Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:26:58.570Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:27:41.666Z"}
+{"error":"Registration is not available","id":"674060bcba6085595df5c135","level":"error","message":"Failed to register for tournament","timestamp":"2024-11-27T09:27:47.585Z","userId":"67333ef9d85db661feea0bb6"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:29:56.351Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:30:04.819Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:30:04.842Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:31:08.892Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:31:08.914Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:34:13.278Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:47:50.065Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:48:53.594Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:50:02.027Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:50:12.562Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:50:12.582Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:50:39.046Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:50:51.946Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:50:51.968Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:52:25.298Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T09:55:39.307Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T09:55:39.324Z","userId":"67333ef9d85db661feea0bb6","username":"67333ef9d85db661feea0bb6"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T09:55:39.327Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T09:55:39.340Z","userId":"67333ef9d85db661feea0bb6","username":"67333ef9d85db661feea0bb6"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T09:57:56.529Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T09:57:59.405Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T09:58:45.041Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T09:58:45.055Z","userId":"67333ef9d85db661feea0bb6","username":"67333ef9d85db661feea0bb6"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T09:58:52.611Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T09:58:52.627Z","userId":"67333ef9d85db661feea0bb6","username":"67333ef9d85db661feea0bb6"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:59:26.592Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T09:59:26.612Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T09:59:26.717Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T09:59:26.732Z","userId":"67333ef9d85db661feea0bb6","username":"67333ef9d85db661feea0bb6"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T09:59:26.734Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T09:59:26.748Z","userId":"67333ef9d85db661feea0bb6","username":"67333ef9d85db661feea0bb6"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T09:59:35.084Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T09:59:35.100Z","userId":"67333ef9d85db661feea0bb6","username":"67333ef9d85db661feea0bb6"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:02:00.306Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:06:17.181Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:06:17.188Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:06:21.440Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:06:21.443Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/me","query":{},"timestamp":"2024-11-27T10:07:20.022Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/me","query":{},"timestamp":"2024-11-27T10:07:36.850Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T10:07:36.897Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/me","query":{},"timestamp":"2024-11-27T10:07:36.906Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T10:07:36.927Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/me","query":{},"timestamp":"2024-11-27T10:07:38.748Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T10:07:38.767Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/me","query":{},"timestamp":"2024-11-27T10:07:38.780Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T10:07:38.799Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:08:06.793Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:08:06.801Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/me","query":{},"timestamp":"2024-11-27T10:08:06.852Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T10:08:06.871Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/me","query":{},"timestamp":"2024-11-27T10:08:06.875Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T10:08:06.893Z","username":null}
+{"body":{"email":"boymed93@gmail.com","password":"Anonymous1"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/auth/login","query":{},"timestamp":"2024-11-27T10:08:16.621Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/me","query":{},"timestamp":"2024-11-27T10:08:16.779Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T10:08:16.797Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/me","query":{},"timestamp":"2024-11-27T10:08:16.800Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T10:08:16.817Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/me","query":{},"timestamp":"2024-11-27T10:08:18.597Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T10:08:18.619Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/me","query":{},"timestamp":"2024-11-27T10:08:18.622Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T10:08:18.640Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/me","query":{},"timestamp":"2024-11-27T10:08:21.502Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T10:08:21.519Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/me","query":{},"timestamp":"2024-11-27T10:08:21.522Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T10:08:21.538Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/me","query":{},"timestamp":"2024-11-27T10:08:22.493Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T10:08:22.509Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/me","query":{},"timestamp":"2024-11-27T10:08:22.511Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T10:08:22.528Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/me","query":{},"timestamp":"2024-11-27T10:09:05.534Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T10:09:05.548Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/me","query":{},"timestamp":"2024-11-27T10:09:41.951Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T10:09:41.967Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/me","query":{},"timestamp":"2024-11-27T10:09:43.807Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T10:09:43.821Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:09:55.146Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:10:18.912Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:10:18.922Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T10:14:50.259Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T10:14:50.300Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:15:02.443Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:15:02.449Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:15:11.840Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:15:11.844Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:15:42.086Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:15:42.090Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:15:42.146Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:15:42.149Z"}
+{"body":{"email":"boymed93@gmail.com","password":"Anonymous1"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/auth/login","query":{},"timestamp":"2024-11-27T10:15:46.029Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T10:15:46.182Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T10:15:46.206Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:15:48.345Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:15:48.352Z"}
+{"body":{"email":"boymed93@gmail.com","password":"Anonymous1"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/auth/login","query":{},"timestamp":"2024-11-27T10:15:51.865Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T10:15:51.994Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T10:15:52.016Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:15:55.563Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:15:55.571Z"}
+{"body":{"email":"boymed93@gmail.com","password":"Anonymous1"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/auth/login","query":{},"timestamp":"2024-11-27T10:15:59.589Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T10:15:59.716Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T10:15:59.735Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:16:02.806Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:16:02.809Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:16:02.853Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:16:02.856Z"}
+{"body":{"email":"boymed93@gmail.com","password":"Anonymous1"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/auth/login","query":{},"timestamp":"2024-11-27T10:16:11.908Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T10:16:12.060Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T10:16:12.078Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:16:28.858Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:16:28.876Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:16:41.433Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:16:41.439Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:17:42.308Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:17:42.312Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:17:53.837Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T10:17:53.841Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:18:22.667Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:18:22.689Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:18:24.737Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:18:24.758Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-27T10:18:27.242Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-27T10:18:27.274Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations/673f00e9656c8bbe9b44ffb0/messages","query":{},"timestamp":"2024-11-27T10:18:28.636Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/conversations/673f00e9656c8bbe9b44ffb0/read","query":{},"timestamp":"2024-11-27T10:18:28.640Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/conversations/673f00e9656c8bbe9b44ffb0/read","query":{},"timestamp":"2024-11-27T10:18:28.673Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/May","query":{},"timestamp":"2024-11-27T10:18:31.265Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/May","query":{},"timestamp":"2024-11-27T10:18:31.284Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-27T10:18:38.663Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-27T10:18:38.699Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-27T10:18:40.178Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-27T10:18:40.213Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T10:18:41.368Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T10:18:41.385Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-27T10:18:43.093Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-27T10:18:43.128Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:18:44.001Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:18:44.019Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:18:47.803Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:18:47.821Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:21:13.628Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:21:13.648Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:21:13.792Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:21:13.810Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:25:21.006Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:25:21.045Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:25:22.909Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:26:06.292Z"}
+{"body":{"email":"swiftbear83@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.445Z"}
+{"body":{"email":"epiclion42@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.449Z"}
+{"body":{"email":"swiftninja74@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.451Z"}
+{"body":{"email":"nobleknight02@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.453Z"}
+{"body":{"email":"wildknight65@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.457Z"}
+{"body":{"email":"silentknight04@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.459Z"}
+{"body":{"email":"mightylion96@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.462Z"}
+{"body":{"email":"epicknight53@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.464Z"}
+{"body":{"email":"epiclion39@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.467Z"}
+{"body":{"email":"noblebear50@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.470Z"}
+{"body":{"email":"swiftwarrior70@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.472Z"}
+{"body":{"email":"silentphoenix21@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.474Z"}
+{"body":{"email":"darkphoenix85@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.477Z"}
+{"body":{"email":"silentphoenix10@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.479Z"}
+{"body":{"email":"mightyknight08@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.482Z"}
+{"body":{"email":"mightyninja68@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.488Z"}
+{"body":{"email":"swiftbear95@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.494Z"}
+{"body":{"email":"quicklion91@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.499Z"}
+{"body":{"email":"silentlion93@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.501Z"}
+{"body":{"email":"epicphoenix37@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.504Z"}
+{"body":{"email":"darkeagle72@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.507Z"}
+{"body":{"email":"wildbear41@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.512Z"}
+{"body":{"email":"noblelion91@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.515Z"}
+{"body":{"email":"nobletiger88@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.517Z"}
+{"body":{"email":"quickeagle47@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.519Z"}
+{"body":{"email":"bravedragon46@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.521Z"}
+{"body":{"email":"bravewolf52@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.523Z"}
+{"body":{"email":"swiftninja95@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.525Z"}
+{"body":{"email":"epicdragon98@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.527Z"}
+{"body":{"email":"epicbear00@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.529Z"}
+{"body":{"email":"mightyphoenix62@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.532Z"}
+{"body":{"email":"noblewarrior04@example.com"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:26:09.536Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-27T10:26:47.858Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-27T10:26:47.890Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"test"},"timestamp":"2024-11-27T10:26:51.509Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:29:01.083Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:29:07.860Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:29:07.907Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:29:16.654Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:29:16.673Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"test"},"timestamp":"2024-11-27T10:29:29.765Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"testUs"},"timestamp":"2024-11-27T10:29:31.080Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"testUser"},"timestamp":"2024-11-27T10:29:32.245Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"may"},"timestamp":"2024-11-27T10:29:35.343Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:29:44.037Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:29:44.058Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:29:44.172Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:29:44.189Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"user"},"timestamp":"2024-11-27T10:29:49.398Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:30:09.184Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:30:09.190Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:30:09.303Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"user"},"timestamp":"2024-11-27T10:30:09.999Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"test"},"timestamp":"2024-11-27T10:30:15.523Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"testus"},"timestamp":"2024-11-27T10:30:16.485Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:30:22.335Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"testus"},"timestamp":"2024-11-27T10:30:23.141Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:30:26.841Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:30:26.863Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:30:26.999Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:30:27.019Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"test"},"timestamp":"2024-11-27T10:30:30.999Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"testUser"},"timestamp":"2024-11-27T10:30:35.174Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:34:22.823Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"testUser"},"timestamp":"2024-11-27T10:34:23.637Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:34:27.386Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"testUser"},"timestamp":"2024-11-27T10:34:28.191Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:34:39.828Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:34:39.847Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:34:39.951Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:34:39.969Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"ts"},"timestamp":"2024-11-27T10:34:44.314Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"test"},"timestamp":"2024-11-27T10:34:45.703Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"testUser"},"timestamp":"2024-11-27T10:34:47.681Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:34:53.080Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:34:53.101Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-27T10:34:54.859Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-27T10:34:54.890Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations/673f00e9656c8bbe9b44ffb0/messages","query":{},"timestamp":"2024-11-27T10:34:55.615Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/conversations/673f00e9656c8bbe9b44ffb0/read","query":{},"timestamp":"2024-11-27T10:34:55.619Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/conversations/673f00e9656c8bbe9b44ffb0/read","query":{},"timestamp":"2024-11-27T10:34:55.650Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"may"},"timestamp":"2024-11-27T10:34:58.219Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:36:18.440Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:36:18.456Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"user"},"timestamp":"2024-11-27T10:36:22.785Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"test"},"timestamp":"2024-11-27T10:36:26.001Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"testuser"},"timestamp":"2024-11-27T10:36:29.932Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:38:31.195Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"testuser"},"timestamp":"2024-11-27T10:38:32.013Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:38:41.472Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"testuser"},"timestamp":"2024-11-27T10:38:42.285Z"}
+{"body":{"userId":"672d046f3a2fa6a872e7d5d8"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:38:46.282Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/participants","query":{},"timestamp":"2024-11-27T10:38:59.124Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:42:45.209Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:42:45.224Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:42:45.326Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"testuser"},"timestamp":"2024-11-27T10:42:46.013Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T10:42:49.380Z","userId":"67333ef9d85db661feea0bb6"}
+{"addedBy":"67333ef9d85db661feea0bb6","level":"info","message":"Attendee added to tournament","timestamp":"2024-11-27T10:42:49.424Z","tournamentId":"674060bcba6085595df5c135","userId":"672d046f3a2fa6a872e7d5d8"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:42:50.970Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:42:50.990Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:42:51.108Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T10:42:51.113Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:42:51.128Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T10:42:51.135Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:42:56.321Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:42:56.343Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:42:56.468Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T10:42:56.472Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:42:56.488Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T10:42:56.496Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/search","query":{"q":"May"},"timestamp":"2024-11-27T10:44:11.703Z"}
+{"level":"info","message":"isOrganizer middleware started","params":{"id":"674060bcba6085595df5c135"},"timestamp":"2024-11-27T10:44:12.905Z","userId":"67333ef9d85db661feea0bb6"}
+{"addedBy":"67333ef9d85db661feea0bb6","level":"info","message":"Attendee added to tournament","timestamp":"2024-11-27T10:44:12.936Z","tournamentId":"674060bcba6085595df5c135","userId":"6734cd8936911fe11a2fc7d0"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:44:14.495Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:44:14.517Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:44:14.638Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T10:44:14.643Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T10:44:14.646Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:44:14.661Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T10:44:14.668Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T10:44:14.673Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:45:31.887Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T10:45:31.893Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T10:45:31.897Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:46:05.808Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T10:46:05.813Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T10:46:05.817Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:46:14.121Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:46:14.142Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:46:14.290Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T10:46:14.293Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T10:46:14.297Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:46:14.312Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T10:46:14.317Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T10:46:14.325Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:47:30.384Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T10:47:30.388Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T10:47:30.391Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:47:30.394Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:47:35.398Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T10:47:35.402Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T10:47:35.408Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:47:39.751Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T10:47:39.754Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T10:47:39.758Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:47:45.124Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T10:47:45.146Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:47:45.262Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T10:47:45.266Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T10:47:45.269Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T10:47:45.282Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T10:47:45.285Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T10:47:45.290Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T12:22:57.412Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T12:22:57.449Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T12:23:05.266Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T12:23:05.269Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T12:23:05.273Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T12:23:05.286Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T12:23:05.290Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T12:23:05.297Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-27T15:29:41.958Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-27T15:29:42.220Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/conversations/673f33928ed8c5f7e6595d62/read","query":{},"timestamp":"2024-11-27T15:29:43.726Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations/673f33928ed8c5f7e6595d62/messages","query":{},"timestamp":"2024-11-27T15:29:43.735Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/conversations/673f33928ed8c5f7e6595d62/read","query":{},"timestamp":"2024-11-27T15:29:43.778Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/conversations/673f00e9656c8bbe9b44ffb0/read","query":{},"timestamp":"2024-11-27T15:29:44.294Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations/673f00e9656c8bbe9b44ffb0/messages","query":{},"timestamp":"2024-11-27T15:29:44.298Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/conversations/673f00e9656c8bbe9b44ffb0/read","query":{},"timestamp":"2024-11-27T15:29:44.334Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/conversations/673f33928ed8c5f7e6595d62/read","query":{},"timestamp":"2024-11-27T15:29:45.424Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations/673f33928ed8c5f7e6595d62/messages","query":{},"timestamp":"2024-11-27T15:29:45.427Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/conversations/673f33928ed8c5f7e6595d62/read","query":{},"timestamp":"2024-11-27T15:29:45.452Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:44:27.485Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:44:27.488Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:44:27.491Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:44:27.503Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:44:27.508Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:44:27.512Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T15:44:39.471Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T15:44:39.490Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:44:39.577Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:44:39.581Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:44:39.584Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:44:39.596Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:44:39.600Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:44:39.607Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:44:54.931Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:44:54.935Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:44:54.938Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:44:54.949Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:44:54.955Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:44:54.958Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-27T15:44:56.871Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-27T15:44:56.873Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-27T15:44:56.887Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-27T15:44:56.889Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-27T15:44:56.890Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-27T15:44:56.903Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/[object%20Object]/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-27T15:44:56.980Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-27T15:44:56.981Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-27T15:44:56.992Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:45:02.326Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:45:02.329Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:45:02.332Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:45:02.344Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:45:02.348Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:45:02.355Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:46:02.858Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:46:02.863Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:46:02.866Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:46:07.469Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:46:07.472Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:46:07.475Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:48:07.281Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:48:07.285Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:48:07.289Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:50:28.310Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:50:28.315Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:50:28.319Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:50:35.304Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:50:35.309Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:50:35.312Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:51:23.307Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:51:23.310Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:51:23.314Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T15:51:28.431Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T15:51:28.450Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:51:28.565Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:51:28.571Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:51:28.575Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:51:28.587Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:51:28.594Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:51:28.599Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:52:11.748Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:52:11.753Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:52:11.757Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:52:21.136Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:52:21.155Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-27T15:52:23.221Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-27T15:52:23.257Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T15:52:24.207Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T15:52:24.226Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:52:25.998Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:52:26.002Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:52:26.005Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:52:26.019Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:52:26.024Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:52:26.032Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T15:54:25.298Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:54:25.327Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T15:54:25.331Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:54:25.350Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:54:25.453Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:54:25.457Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:54:25.463Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:54:25.478Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:54:25.482Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:54:25.489Z"}
+{"body":{"email":"boymed93@gmail.com","password":"Anonymous1"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/auth/login","query":{},"timestamp":"2024-11-27T15:54:40.505Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:54:40.659Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:54:40.677Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:54:40.679Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:54:40.696Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:54:43.057Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:54:43.061Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:54:43.064Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:54:43.079Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:54:43.084Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:54:43.093Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-27T15:54:47.234Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/conversations","query":{},"timestamp":"2024-11-27T15:54:47.269Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:54:48.031Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:54:48.049Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:54:48.051Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:54:48.065Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:54:49.678Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:54:49.695Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:54:49.697Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:54:49.711Z","username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:56:09.884Z"}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: 'FlowXII' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: 'FlowXII' }\"","value":{"username":"FlowXII"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:09.920Z","userId":{"username":"FlowXII"},"username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:56:09.925Z"}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: 'FlowXII' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: 'FlowXII' }\"","value":{"username":"FlowXII"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:09.938Z","userId":{"username":"FlowXII"},"username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:56:11.105Z"}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: 'FlowXII' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: 'FlowXII' }\"","value":{"username":"FlowXII"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:11.120Z","userId":{"username":"FlowXII"},"username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:56:11.123Z"}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: 'FlowXII' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: 'FlowXII' }\"","value":{"username":"FlowXII"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:11.135Z","userId":{"username":"FlowXII"},"username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T15:56:14.658Z"}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: undefined }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: undefined }\"","value":{},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:14.671Z","userId":{},"username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T15:56:14.675Z"}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: undefined }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: undefined }\"","value":{},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:14.688Z","userId":{},"username":null}
+{"body":{"email":"boymed93@gmail.com","password":"Anonymous1"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/auth/login","query":{},"timestamp":"2024-11-27T15:56:17.757Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:56:17.913Z"}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: 'FlowXII' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: 'FlowXII' }\"","value":{"username":"FlowXII"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:17.923Z","userId":{"username":"FlowXII"},"username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:56:17.934Z"}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: 'FlowXII' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: 'FlowXII' }\"","value":{"username":"FlowXII"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:17.945Z","userId":{"username":"FlowXII"},"username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:56:31.944Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:56:31.950Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:56:31.954Z"}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ userId: '67333ef9d85db661feea0bb6' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ userId: '67333ef9d85db661feea0bb6' }\"","value":{"userId":"67333ef9d85db661feea0bb6"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:31.961Z","userId":{"userId":"67333ef9d85db661feea0bb6"},"username":null}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ userId: '672d046f3a2fa6a872e7d5d8' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ userId: '672d046f3a2fa6a872e7d5d8' }\"","value":{"userId":"672d046f3a2fa6a872e7d5d8"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:31.964Z","userId":{"userId":"672d046f3a2fa6a872e7d5d8"},"username":null}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ userId: '6734cd8936911fe11a2fc7d0' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ userId: '6734cd8936911fe11a2fc7d0' }\"","value":{"userId":"6734cd8936911fe11a2fc7d0"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:31.969Z","userId":{"userId":"6734cd8936911fe11a2fc7d0"},"username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:56:31.971Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:56:31.975Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:56:31.979Z"}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ userId: '67333ef9d85db661feea0bb6' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ userId: '67333ef9d85db661feea0bb6' }\"","value":{"userId":"67333ef9d85db661feea0bb6"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:31.985Z","userId":{"userId":"67333ef9d85db661feea0bb6"},"username":null}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ userId: '672d046f3a2fa6a872e7d5d8' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ userId: '672d046f3a2fa6a872e7d5d8' }\"","value":{"userId":"672d046f3a2fa6a872e7d5d8"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:31.990Z","userId":{"userId":"672d046f3a2fa6a872e7d5d8"},"username":null}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ userId: '6734cd8936911fe11a2fc7d0' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ userId: '6734cd8936911fe11a2fc7d0' }\"","value":{"userId":"6734cd8936911fe11a2fc7d0"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:31.996Z","userId":{"userId":"6734cd8936911fe11a2fc7d0"},"username":null}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:56:52.793Z"}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: 'FlowXII' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: 'FlowXII' }\"","value":{"username":"FlowXII"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:52.824Z","userId":{"username":"FlowXII"},"username":null}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: 'FlowXII' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: 'FlowXII' }\"","value":{"username":"FlowXII"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:52.825Z","username":"FlowXII"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:56:52.831Z"}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: 'FlowXII' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: 'FlowXII' }\"","value":{"username":"FlowXII"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:52.841Z","userId":{"username":"FlowXII"},"username":null}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: 'FlowXII' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: 'FlowXII' }\"","value":{"username":"FlowXII"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:52.842Z","username":"FlowXII"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T15:56:54.208Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:54.219Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T15:56:54.223Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:54.241Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T15:56:54.262Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T15:56:54.267Z"}
+{"body":{"email":"boymed93@gmail.com","password":"Anonymous1"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/auth/login","query":{},"timestamp":"2024-11-27T15:56:56.399Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:56:56.544Z"}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: 'FlowXII' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: 'FlowXII' }\"","value":{"username":"FlowXII"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:56.555Z","userId":{"username":"FlowXII"},"username":null}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: 'FlowXII' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: 'FlowXII' }\"","value":{"username":"FlowXII"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:56.556Z","username":"FlowXII"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:56:56.559Z"}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: 'FlowXII' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: 'FlowXII' }\"","value":{"username":"FlowXII"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:56.570Z","userId":{"username":"FlowXII"},"username":null}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: 'FlowXII' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: 'FlowXII' }\"","value":{"username":"FlowXII"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:56:56.571Z","username":"FlowXII"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:57:00.096Z"}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: 'FlowXII' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: 'FlowXII' }\"","value":{"username":"FlowXII"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:57:00.108Z","userId":{"username":"FlowXII"},"username":null}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: 'FlowXII' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: 'FlowXII' }\"","value":{"username":"FlowXII"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:57:00.109Z","username":"FlowXII"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:57:00.114Z"}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: 'FlowXII' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: 'FlowXII' }\"","value":{"username":"FlowXII"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:57:00.123Z","userId":{"username":"FlowXII"},"username":null}
+{"error":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ username: 'FlowXII' }\" (type Object) at path \"_id\" for model \"User\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ username: 'FlowXII' }\"","value":{"username":"FlowXII"},"valueType":"Object"},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:57:00.124Z","username":"FlowXII"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T15:57:37.027Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:57:37.067Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T15:57:37.073Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T15:57:37.085Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T15:57:37.102Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile","query":{},"timestamp":"2024-11-27T15:57:37.107Z"}
+{"body":{"email":"boymed93@gmail.com","password":"Anonymous1"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/auth/login","query":{},"timestamp":"2024-11-27T15:57:39.134Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:57:39.282Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T15:57:39.303Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:57:48.474Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:57:48.478Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:57:48.482Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T15:57:48.498Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T15:57:48.503Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T15:57:48.508Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-27T15:58:24.234Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-27T15:58:24.235Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-27T15:58:24.252Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-27T15:58:24.254Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-27T15:58:24.256Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-27T15:58:24.271Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/[object%20Object]/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-27T15:58:24.359Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-27T15:58:24.359Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-27T15:58:24.373Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/[object%20Object]/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-27T16:05:49.503Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-27T16:05:49.504Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-27T16:05:49.517Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/[object%20Object]/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-27T16:05:49.519Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-27T16:05:49.520Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-27T16:05:49.533Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T16:32:28.914Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T16:32:28.925Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T16:32:28.927Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T16:32:28.938Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T16:32:35.836Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T16:32:35.846Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username","query":{},"timestamp":"2024-11-27T16:32:40.775Z"}
+{"error":{},"level":"error","message":"Error fetching user profile","timestamp":"2024-11-27T16:32:40.786Z"}
+{"body":{"email":"boymed93@gmail.com","password":"Anonymous1"},"level":"info","message":"Event route accessed","method":"POST","params":{},"path":"/auth/login","query":{},"timestamp":"2024-11-27T16:32:42.290Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T16:32:42.434Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/username/FlowXII","query":{},"timestamp":"2024-11-27T16:32:42.452Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T16:32:46.310Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T16:32:46.314Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T16:32:46.317Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T16:32:46.335Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T16:32:46.340Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T16:32:46.344Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/tournaments/674060bcba6085595df5c135/events/6745f5863adc8661b6feb2dc","query":{},"timestamp":"2024-11-27T16:32:53.673Z"}
+{"eventId":"6745f5863adc8661b6feb2dc","isValidObjectId":true,"level":"info","message":"Fetching event details","timestamp":"2024-11-27T16:32:53.674Z"}
+{"eventData":"6745f5863adc8661b6feb2dc","eventId":"6745f5863adc8661b6feb2dc","level":"info","message":"Event found successfully","timestamp":"2024-11-27T16:32:53.690Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T16:32:57.401Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T16:32:57.405Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T16:32:57.409Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/67333ef9d85db661feea0bb6","query":{},"timestamp":"2024-11-27T16:32:57.421Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/672d046f3a2fa6a872e7d5d8","query":{},"timestamp":"2024-11-27T16:32:57.428Z"}
+{"body":{},"level":"info","message":"Event route accessed","method":"GET","params":{},"path":"/users/profile/id/6734cd8936911fe11a2fc7d0","query":{},"timestamp":"2024-11-27T16:32:57.431Z"}

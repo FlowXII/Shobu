@@ -12,6 +12,19 @@ const api = axios.create({
   }
 });
 
+// Add response interceptor to handle 401 responses globally
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401 && !error.config.url.includes('/auth/login')) {
+      // Don't dispatch logout actions for login attempts
+      store.dispatch(clearUser());
+      store.dispatch(setAuthenticated(false));
+    }
+    return Promise.reject(error);
+  }
+);
+
 export const loginUser = createAsyncThunk(
   'user/login',
   async (credentials, { dispatch, rejectWithValue }) => {
@@ -32,16 +45,19 @@ export const fetchUserData = createAsyncThunk(
   'user/fetchUserData',
   async (_, { dispatch, rejectWithValue }) => {
     try {
-      const response = await api.get('/users/profile');
+      const response = await api.get('/users/profile/username');
       if (response.data.success) {
         dispatch(setAuthenticated(true));
         return response.data.data;
       }
-      dispatch(setAuthenticated(false));
       return rejectWithValue('No user data found');
     } catch (error) {
-      dispatch(setAuthenticated(false));
-      return rejectWithValue(error.response?.data?.error || 'Failed to fetch user data');
+      // Only handle non-401 errors here
+      if (error.response?.status !== 401) {
+        dispatch(setAuthenticated(false));
+        return rejectWithValue(error.response?.data?.error || 'Failed to fetch user data');
+      }
+      throw error;
     }
   }
 );

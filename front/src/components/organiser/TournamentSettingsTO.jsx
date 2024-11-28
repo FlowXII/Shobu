@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { useLoaderData, useNavigate } from 'react-router-dom';
+import { updateTournament } from '../../loaders/tournamentLoader';
 import { 
   Card, 
   CardBody, 
@@ -7,8 +9,35 @@ import {
   Textarea,
   Button 
 } from "@material-tailwind/react";
+import { toast } from 'react-toastify';
 
-const TournamentSettingsTO = ({ tournament, onUpdate, formData, setFormData }) => {
+const TournamentSettingsTO = ({ formData, setFormData }) => {
+  const navigate = useNavigate();
+  const { tournament } = useLoaderData();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Add validation
+    if (!tournament?._id) {
+      console.warn('Tournament ID is missing', { tournament });
+      return;
+    }
+
+    try {
+      const result = await updateTournament(tournament._id, formData);
+      if (result) {
+        toast.success('Tournament updated successfully');
+        navigate(0); // Refresh to get updated data
+      } else {
+        toast.error('Failed to update tournament');
+      }
+    } catch (error) {
+      console.error('Error updating tournament:', error);
+      toast.error('Failed to update tournament');
+    }
+  };
+
   // Pre-fill form data when tournament data is available
   useEffect(() => {
     if (tournament) {
@@ -48,7 +77,7 @@ const TournamentSettingsTO = ({ tournament, onUpdate, formData, setFormData }) =
   };
 
   return (
-    <form onSubmit={onUpdate} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <Card className="bg-gray-800/50 border border-white/10">
         <CardBody className="space-y-4">
           <div className="flex items-center gap-2 mb-2">

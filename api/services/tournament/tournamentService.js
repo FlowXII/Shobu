@@ -3,6 +3,20 @@ import logger from '../../utils/logger.js';
 import User from '../../models/User.js';
 import mongoose from 'mongoose';
 
+const updateInProgressMap = new Map();
+
+const isUpdateInProgress = (userId) => {
+  return updateInProgressMap.get(userId) === true;
+};
+
+const setUpdateInProgress = (userId, value) => {
+  if (value) {
+    updateInProgressMap.set(userId, true);
+  } else {
+    updateInProgressMap.delete(userId);
+  }
+};
+
 const validateTournamentData = (data) => {
   const errors = [];
 
@@ -225,69 +239,82 @@ export const cancelRegistration = async (tournamentId, userId) => {
 };
 
 const updateUserTournamentStats = async (userId) => {
-  // Add debouncing to avoid multiple updates in quick succession
   if (isUpdateInProgress(userId)) {
     return;
   }
 
-  const [organizerCount, participantCount, recentTournaments] = await Promise.all([
-    Tournament.countDocuments({ organizerId: userId }),
-    Tournament.countDocuments({ 'attendees.userId': userId }),
-    Tournament.find({ 
-      'attendees.userId': userId,
-      status: { $in: ['COMPLETED', 'IN_PROGRESS'] }
-    })
-    .sort({ startAt: -1 })
-    .limit(5)
-    .select('_id name startAt attendees')
-  ]);
+  try {
+    setUpdateInProgress(userId, true);
+    
+    const [organizerCount, participantCount, recentTournaments] = await Promise.all([
+      Tournament.countDocuments({ organizerId: userId }),
+      Tournament.countDocuments({ 'attendees.userId': userId }),
+      Tournament.find({ 
+        'attendees.userId': userId,
+        status: { $in: ['COMPLETED', 'IN_PROGRESS'] }
+      })
+      .sort({ startAt: -1 })
+      .limit(5)
+      .select('_id name startAt attendees')
+    ]);
 
-  // Calculate placements from recent tournaments
-  const recentResults = recentTournaments.map(tournament => {
-    const attendee = tournament.attendees.find(a => 
-      a.userId.toString() === userId.toString()
-    );
-    return {
-      tournamentId: tournament._id,
-      placement: attendee?.placement || null,
-      date: tournament.startAt
-    };
-  }).filter(result => result.placement !== null);
+    // Calculate placements from recent tournaments
+    const recentResults = recentTournaments.map(tournament => {
+      const attendee = tournament.attendees.find(a => 
+        a.userId.toString() === userId.toString()
+      );
+      return {
+        tournamentId: tournament._id,
+        placement: attendee?.placement || null,
+        date: tournament.startAt
+      };
+    }).filter(result => result.placement !== null);
 
-  // Calculate total matches and wins from all tournaments
-  const [totalMatches, totalWins] = await Tournament.aggregate([
-    { $match: { 'attendees.userId': mongoose.Types.ObjectId(userId) } },
-    { $unwind: '$attendees' },
-    { $match: { 'attendees.userId': mongoose.Types.ObjectId(userId) } },
-    {
-      $group: {
-        _id: null,
-        totalMatches: { $sum: '$attendees.matchesPlayed' },
-        totalWins: { $sum: '$attendees.matchesWon' }
+    // Calculate total matches and wins from all tournaments
+    const [totalMatches, totalWins] = await Tournament.aggregate([
+      { 
+        $match: { 
+          'attendees.userId': new mongoose.Types.ObjectId(userId) 
+        } 
+      },
+      { $unwind: '$attendees' },
+      { 
+        $match: { 
+          'attendees.userId': new mongoose.Types.ObjectId(userId) 
+        } 
+      },
+      {
+        $group: {
+          _id: null,
+          totalMatches: { $sum: '$attendees.matchesPlayed' },
+          totalWins: { $sum: '$attendees.matchesWon' }
+        }
       }
-    }
-  ]).then(result => result[0] ? [result[0].totalMatches, result[0].totalWins] : [0, 0]);
+    ]).then(result => result[0] ? [result[0].totalMatches, result[0].totalWins] : [0, 0]);
 
-  // Use atomic operations for updates
-  await User.findByIdAndUpdate(userId, {
-    $set: {
-      'statsCache.tournamentsOrganized': organizerCount,
-      'statsCache.tournamentsParticipated': participantCount,
-      'statsCache.lastUpdated': new Date(),
-      'statsCache.totalMatches': totalMatches,
-      'statsCache.totalWins': totalWins,
-      'statsCache.recentResults': recentResults
-    }
-  }, { 
-    new: true,
-    // Only update if cache is older than 5 minutes
-    condition: { 
-      $or: [
-        { 'statsCache.lastUpdated': { $exists: false } },
-        { 'statsCache.lastUpdated': { $lt: new Date(Date.now() - 5 * 60 * 1000) } }
-      ]
-    }
-  });
+    // Use atomic operations for updates
+    await User.findByIdAndUpdate(userId, {
+      $set: {
+        'statsCache.tournamentsOrganized': organizerCount,
+        'statsCache.tournamentsParticipated': participantCount,
+        'statsCache.lastUpdated': new Date(),
+        'statsCache.totalMatches': totalMatches,
+        'statsCache.totalWins': totalWins,
+        'statsCache.recentResults': recentResults
+      }
+    }, { 
+      new: true,
+      // Only update if cache is older than 5 minutes
+      condition: { 
+        $or: [
+          { 'statsCache.lastUpdated': { $exists: false } },
+          { 'statsCache.lastUpdated': { $lt: new Date(Date.now() - 5 * 60 * 1000) } }
+        ]
+      }
+    });
+  } finally {
+    setUpdateInProgress(userId, false);
+  }
 };
 
 export const updateTournamentResults = async (tournamentId, results) => {

@@ -27,10 +27,10 @@ router.use((req, res, next) => {
 
 // Event routes
 router.post('/tournaments/:tournamentId/events', authenticate, isOrganizer, createEventController);
-router.get('/events/:eventId', getEventController);
+router.get('/tournaments/:tournamentId/events/:eventId', getEventController);
 router.get('/tournaments/:tournamentId/events', getTournamentEventsController);
-router.post('/events/:eventId/register', authenticate, registerForEventController);
-router.put('/events/:eventId', authenticate, isOrganizer, updateEventController);
-router.delete('/events/:eventId', authenticate, isOrganizer, deleteEventController);
+router.post('/tournaments/:tournamentId/events/:eventId/register', authenticate, registerForEventController);
+router.put('/tournaments/:tournamentId/events/:eventId', authenticate, isOrganizer, updateEventController);
+router.delete('/tournaments/:tournamentId/events/:eventId', authenticate, isOrganizer, deleteEventController);
 
 export default router; 

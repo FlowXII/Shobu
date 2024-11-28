@@ -1,44 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Typography, Card, CardBody } from "@material-tailwind/react";
 import { Calendar, MapPin, Users, Trophy } from 'lucide-react';
-import { useParams } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
 
 const TournamentOverviewTO = () => {
-  const { tournamentId } = useParams();
-  const [tournament, setTournament] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { tournament } = useLoaderData();
 
-  useEffect(() => {
-    const fetchTournament = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/tournaments/${tournamentId}`,
-          {
-            credentials: 'include',
-          }
-        );
-        
-        if (!response.ok) throw new Error('Failed to fetch tournament');
-        
-        const data = await response.json();
-        setTournament(data);
-      } catch (error) {
-        console.error('Error fetching tournament:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTournament();
-  }, [tournamentId]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!tournament) {
-    return null;
-  }
+  if (!tournament) return null;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

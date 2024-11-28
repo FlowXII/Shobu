@@ -21,6 +21,9 @@ const userSlice = createSlice({
       state.error.user = null;
       state.loading.user = false;
       state.initialized = true;
+    },
+    updateUserData: (state, action) => {
+      state.user = { ...state.user, ...action.payload };
     }
   },
   extraReducers: (builder) => {
@@ -46,7 +49,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserData.fulfilled, (state, action) => {
         state.loading.user = false;
-        state.user = action.payload;
+        state.user = { ...state.user, ...action.payload };
         state.error.user = null;
         state.initialized = true;
       })
@@ -54,7 +57,6 @@ const userSlice = createSlice({
         state.loading.user = false;
         state.error.user = action.payload;
         state.initialized = true;
-        state.user = null;
       })
       .addCase(registerUser.pending, (state) => {
         state.loading.user = true;

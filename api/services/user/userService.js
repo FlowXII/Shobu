@@ -106,29 +106,26 @@ export const updateUserProfile = async (userId, updates) => {
   ).select('-password');
 };
 
-export const getUserProfile = async (userId, username = null) => {
+export const getUserProfile = async ({ userId, username }) => {
   try {
-    let query = username 
-      ? { username } // If username provided, find by username
-      : { _id: userId }; // Otherwise find by ID
-    
-    const user = await User.findOne(query)
-      .select(username 
-        ? '-password -email' // Public profile (less info)
-        : '-password' // Own profile (more info)
-      )
-      .lean();
+    let user;
+    if (userId) {
+      // Query by user ID
+      user = await User.findById(userId);
+    } else if (username) {
+      // Query by username
+      user = await User.findOne({ username: username });
+    } else {
+      throw new Error('No valid identifier provided');
+    }
 
     if (!user) {
       throw new Error('User not found');
     }
 
-    return {
-      success: true,
-      data: user
-    };
+    return user;
   } catch (error) {
-    logger.error('Error fetching user profile', { userId, username, error });
+    console.error('getUserProfile error', { error, userId, username });
     throw error;
   }
 };

@@ -41,20 +41,24 @@ export const createTournamentController = async (req, res) => {
 export const getTournamentController = async (req, res) => {
   try {
     const { id } = req.params;
-    
+
+    // Log the incoming tournament ID
+    console.log('Received tournament ID:', id);
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
+      console.log('Invalid tournament ID format:', id);
       return res.status(400).json({
         success: false,
         error: 'Invalid tournament ID format'
       });
     }
-    
+
     const tournament = await Tournament.findById(id)
       .populate({
         path: 'events',
         model: 'Event'
       });
-    
+
     if (!tournament) {
       return res.status(404).json({
         success: false,
@@ -67,7 +71,7 @@ export const getTournamentController = async (req, res) => {
       data: tournament
     });
   } catch (error) {
-    logger.error('Failed to fetch tournament', { 
+    console.error('Failed to fetch tournament', { 
       error: error.message,
       id: req.params.id,
       stack: error.stack 
@@ -104,22 +108,70 @@ export const getAllTournamentsController = async (req, res) => {
 export const updateTournamentController = async (req, res) => {
   try {
     const { id } = req.params;
+    
+    // Add detailed logging for debugging
+    logger.info('Update tournament request received', {
+      id,
+      idType: typeof id,
+      idLength: id?.length,
+      body: req.body,
+      isValidObjectId: mongoose.Types.ObjectId.isValid(id)
+    });
+
+    // Test creating an ObjectId
+    try {
+      const testObjectId = new mongoose.Types.ObjectId(id);
+      logger.info('Successfully created ObjectId', { testObjectId: testObjectId.toString() });
+    } catch (err) {
+      logger.warn('Failed to create ObjectId', { error: err.message });
+    }
+
+    // Improved ID validation
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      logger.warn('Invalid tournament ID format', { 
+        id,
+        type: typeof id,
+        length: id?.length,
+        isValidObjectId: mongoose.Types.ObjectId.isValid(id)
+      });
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Invalid tournament ID format' 
+      });
+    }
+
     const tournament = await Tournament.findById(id);
     
     if (!tournament) {
-      return res.status(404).json({ success: false, error: 'Tournament not found' });
+      logger.warn('Tournament not found', { id });
+      return res.status(404).json({ 
+        success: false, 
+        error: 'Tournament not found' 
+      });
     }
 
     // Check if user is the organizer
     if (tournament.organizerId.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ success: false, error: 'Unauthorized' });
+      logger.warn('Unauthorized tournament update attempt', { 
+        userId: req.user._id,
+        tournamentId: id 
+      });
+      return res.status(403).json({ 
+        success: false, 
+        error: 'Unauthorized' 
+      });
     }
 
     const updatedTournament = await Tournament.findByIdAndUpdate(
-      tournament._id,
+      id,
       { ...req.body },
       { new: true, runValidators: true }
     );
+
+    logger.info('Tournament updated successfully', { 
+      tournamentId: id,
+      userId: req.user._id 
+    });
 
     res.status(200).json({ success: true, data: updatedTournament });
   } catch (error) {
@@ -163,6 +215,22 @@ export const registerForTournamentController = async (req, res) => {
       return res.status(404).json({ 
         success: false, 
         error: 'Tournament not found' 
+      });
+    }
+
+    // Check if registration is open
+    if (!tournament.isRegistrationOpen) {
+      return res.status(400).json({
+        success: false,
+        error: 'Tournament registration is closed'
+      });
+    }
+
+    // Check if tournament is at capacity
+    if (tournament.attendees.length >= tournament.maxParticipants) {
+      return res.status(400).json({
+        success: false,
+        error: 'Tournament is at full capacity'
       });
     }
 
@@ -296,6 +364,8 @@ export const completeTournamentController = async (req, res) => {
 
 export const getUserTournamentsController = async (req, res) => {
   try {
+    logger.info('Accessing user tournaments', { userId: req.user._id });
+
     const tournaments = await Tournament.find({
       $or: [
         { organizerId: req.user._id },
@@ -305,7 +375,8 @@ export const getUserTournamentsController = async (req, res) => {
     .populate('events')
     .sort({ createdAt: -1 });
     
-    // Categorize tournaments
+    logger.info('Fetched tournaments:', { tournaments });
+
     const organizing = tournaments.filter(t => t.organizerId.toString() === req.user._id.toString());
     const participating = tournaments.filter(t => 
       t.organizerId.toString() !== req.user._id.toString() && 
@@ -328,6 +399,67 @@ export const getUserTournamentsController = async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Failed to fetch tournaments'
+    });
+  }
+}; 
+
+export const addAttendeeController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(id) || !mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid ID format'
+      });
+    }
+
+    const tournament = await Tournament.findById(id);
+    
+    if (!tournament) {
+      return res.status(404).json({ 
+        success: false, 
+        error: 'Tournament not found' 
+      });
+    }
+
+    // Check if user is already registered
+    if (tournament.attendees.some(attendee => attendee.userId.toString() === userId)) {
+      return res.status(400).json({
+        success: false,
+        error: 'User is already registered for this tournament'
+      });
+    }
+
+    // Add the attendee
+    tournament.attendees.push({
+      userId,
+      status: 'REGISTERED',
+      registeredAt: new Date()
+    });
+
+    await tournament.save();
+
+    logger.info('Attendee added to tournament', {
+      userId,
+      tournamentId: id,
+      addedBy: req.user._id
+    });
+
+    res.status(200).json({
+      success: true,
+      data: tournament
+    });
+  } catch (error) {
+    logger.error('Failed to add attendee', {
+      error: error.message,
+      id: req.params.id,
+      stack: error.stack
+    });
+    res.status(400).json({
+      success: false,
+      error: error.message
     });
   }
 }; 

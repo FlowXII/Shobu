@@ -3,7 +3,6 @@ import User from '../models/User.js';
 
 export const authenticate = async (req, res, next) => {
   try {
-    // Check for token in both possible cookie names
     const token = req.cookies.jwt || req.cookies.auth_token;
     
     if (!token) {
@@ -11,6 +10,7 @@ export const authenticate = async (req, res, next) => {
       return res.status(401).json({ error: 'Authentication required' });
     }
 
+    console.log('Authentication token found, verifying...');
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
     if (!decoded.userId) {
@@ -18,6 +18,7 @@ export const authenticate = async (req, res, next) => {
       return res.status(401).json({ error: 'Invalid token format' });
     }
 
+    console.log(`User ID extracted from token: ${decoded.userId}`);
     const user = await User.findById(decoded.userId);
     
     if (!user) {
@@ -25,12 +26,12 @@ export const authenticate = async (req, res, next) => {
       return res.status(401).json({ error: 'User not found' });
     }
 
-    // Attach both full user object and userId for flexibility
     req.user = user;
     req.userId = user._id;
-    req.user = user; // Attach the full user object to the request
+    console.log(`User authenticated successfully: ${user.username} (ID: ${user._id})`);
     next();
   } catch (error) {
+    console.error('Authentication error:', error);
     return res.status(401).json({ error: 'Invalid token' });
   }
 };

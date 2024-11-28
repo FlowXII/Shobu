@@ -18,6 +18,7 @@ import { useSelector } from 'react-redux';
 
 const EventDetails = () => {
   const { eventId } = useParams();
+  console.log(eventId);
   const [activeTab, setActiveTab] = useState("overview");
   const { event, loading, canRegister, handleRegister } = useEvent(eventId);
   const currentUser = useSelector(state => state.user.user);

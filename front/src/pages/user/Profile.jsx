@@ -153,7 +153,12 @@ const TournamentHistory = ({ tournaments, loading, userId }) => {
 const Profile = () => {
   const dispatch = useDispatch();
   const { username } = useParams();
-  const { loading, error, profileData, updateProfile } = useProfile(username);
+  const currentUser = useSelector((state) => state.user.user);
+  
+  // Use the current user's username if no username parameter is provided
+  const targetUsername = username || currentUser?.username;
+  
+  const { loading, error, profileData, updateProfile } = useProfile(targetUsername);
   const [open, setOpen] = useState(0);
   const [activeTab, setActiveTab] = useState('about');
   const [editForm, setEditForm] = useState({
@@ -251,6 +256,9 @@ const Profile = () => {
   const startggProfile = profileData?.startgg?.profile;
   const startggPlayer = profileData?.startgg?.player;
 
+  // Check if this is the current user's profile
+  const isOwnProfile = currentUser?.username === profileData?.username;
+
   return (
     <div className="flex flex-col items-center justify-start p-8 overflow-x-hidden">
       {/* Banner Image */}
@@ -281,7 +289,7 @@ const Profile = () => {
                   <Chip size="sm" value="Tournament Organizer" className="bg-purple-500/20 text-purple-400 border border-purple-500/20" />
                 </div>
               </div>
-              {!username && (
+              {isOwnProfile && (
                 <Button
                   size="sm"
                   className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
@@ -316,7 +324,7 @@ const Profile = () => {
                     About
                   </div>
                 </button>
-                {!username && (
+                {isOwnProfile && (
                   <button
                     type="button"
                     onClick={() => handleTabChange('edit')}
@@ -379,7 +387,7 @@ const Profile = () => {
               )}
 
               {/* Edit Tab Content */}
-              {activeTab === 'edit' && !username && (
+              {activeTab === 'edit' && isOwnProfile && (
                 <form onSubmit={handleEditSubmit} className="space-y-6">
                   <div>
                     <Typography variant="small" className="mb-2 text-gray-200">Bio</Typography>

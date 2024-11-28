@@ -16,17 +16,7 @@ import {
 } from "@material-tailwind/react";
 import { Users, UserPlus, Trash2, Shield, Search, Mail, Ban, Wand2 } from 'lucide-react';
 import { toast } from 'react-toastify';
-
-const adjectives = ['Quick', 'Silent', 'Mighty', 'Brave', 'Swift', 'Dark', 'Light', 'Epic', 'Noble', 'Wild'];
-const nouns = ['Warrior', 'Ninja', 'Dragon', 'Knight', 'Phoenix', 'Tiger', 'Eagle', 'Wolf', 'Bear', 'Lion'];
-const numbers = Array.from({ length: 100 }, (_, i) => String(i).padStart(2, '0'));
-
-const generateRandomUsername = () => {
-  const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
-  const noun = nouns[Math.floor(Math.random() * nouns.length)];
-  const num = numbers[Math.floor(Math.random() * numbers.length)];
-  return `${adj}${noun}${num}`;
-};
+import { addParticipant, removeParticipant } from '../../loaders/eventLoader';
 
 const EventParticipantsTO = ({ event, onUpdate }) => {
   const [openAddDialog, setOpenAddDialog] = useState(false);
@@ -43,70 +33,49 @@ const EventParticipantsTO = ({ event, onUpdate }) => {
 
   const handleAddParticipant = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/events/${event._id}/participants`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({ email: newParticipantEmail }),
-        }
-      );
-
-      if (!response.ok) throw new Error('Failed to add participant');
-      toast.success('Participant added successfully');
+      await addParticipant(event.tournamentId, event._id, newParticipantEmail);
       setOpenAddDialog(false);
       setNewParticipantEmail('');
+      onUpdate();
     } catch (error) {
       toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRemoveParticipant = async (participantId) => {
+    setLoading(true);
+    try {
+      await removeParticipant(event.tournamentId, event._id, participantId);
+      onUpdate();
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleGenerateParticipants = async (e) => {
     e.preventDefault();
-    setLoading(true);
-
     try {
-      const participants = Array.from({ length: generatingCount }, () => ({
-        displayName: generateRandomUsername(),
-        email: `${generateRandomUsername().toLowerCase()}@example.com`,
-      }));
+      const participants = Array.from({ length: generatingCount }, () => {
+        const username = generateRandomUsername();
+        return {
+          email: `${username.toLowerCase()}@example.com`,
+          displayName: username
+        };
+      });
 
-      const updateData = {
-        participants: [...(event.participants || []), ...participants]
-      };
-
-      console.log('Sending update with data:', updateData);
-
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/events/${event._id}`,
-        {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify(updateData),
-        }
-      );
-
-      const responseData = await response.json();
-      console.log('Raw API response:', responseData);
-
-      if (!response.ok) {
-        throw new Error(responseData.error || 'Failed to generate participants');
-      }
-
-      if (typeof onUpdate === 'function') {
-        onUpdate(responseData.data);
-      }
-      
-      toast.success(`Generated ${generatingCount} participants successfully`);
+      await generateParticipants(event._id, participants);
       setOpenGenerateDialog(false);
+      onUpdate();
+      toast.success(`Generated ${generatingCount} participants successfully`);
     } catch (error) {
       console.error('Generate participants error:', error);
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
+      toast.error('Failed to generate participants');
     }
   };
 

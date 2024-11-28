@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useParams, useNavigate, useLoaderData } from 'react-router-dom';
 import {
   Card,
   CardBody,
@@ -26,91 +25,82 @@ import {
   Plus
 } from 'lucide-react';
 import { toast } from 'react-toastify';
-import LoadingIndicator from '../layout/LoadingIndicator';
-import TournamentOverviewTO from '../../pages/organiser/TournamentOverviewTO';
-import TournamentEventsTO from './TournamentEventsTO';
-import TournamentParticipantsTO from './TournamentParticipantsTO';
-import TournamentSettingsTO from './TournamentSettingsTO';
+import LoadingIndicator from '../../components/layout/LoadingIndicator';
+import TournamentOverviewTO from './TournamentOverviewTO';
+import TournamentEventsTO from '../../components/organiser/TournamentEventsTO';
+import TournamentParticipantsTO from '../../components/organiser/TournamentParticipantsTO';
+import TournamentSettingsTO from '../../components/organiser/TournamentSettingsTO';
 
 const TournamentDetailsTO = () => {
-  const { tournamentId } = useParams();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user.user);
-  const [tournament, setTournament] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { tournament } = useLoaderData();
   const [activeTab, setActiveTab] = useState("overview");
-  const [formData, setFormData] = useState({});
+  
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    startAt: '',
+    endAt: '',
+    location: {
+      venueAddress: '',
+      city: '',
+      state: '',
+      country: ''
+    }
+  });
 
   useEffect(() => {
-    if (!tournamentId) {
+    if (!tournament) {
       navigate('/tournaments');
-      return;
     }
-    fetchTournament();
-  }, [tournamentId, navigate]);
+  }, [tournament, navigate]);
 
-  const fetchTournament = async () => {
+  const updateTournament = async (updatedData) => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/tournaments/${tournamentId}`,
-        { credentials: 'include' }
-      );
-      if (!response.ok) throw new Error('Failed to fetch tournament');
-      const data = await response.json();
-      setTournament(data.data);
-      setFormData(data.data);
-    } catch (error) {
-      toast.error('Failed to load tournament');
-      navigate('/tournaments');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/tournaments/${tournamentId}`,
+        `${import.meta.env.VITE_API_BASE_URL}/tournaments/${tournament._id}`,
         {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+          },
           credentials: 'include',
-          body: JSON.stringify(formData),
+          body: JSON.stringify(updatedData),
         }
       );
+      
       if (!response.ok) throw new Error('Failed to update tournament');
-      const data = await response.json();
-      setTournament(data.data);
-      toast.success('Tournament updated successfully');
+      const { data } = await response.json();
+      navigate(0);
+      return data;
     } catch (error) {
       toast.error('Failed to update tournament');
+      return null;
     }
   };
 
   const getStatusChip = () => {
-    if (!tournament) return null;
-    
-    const now = new Date();
-    const startTime = new Date(tournament.startAt);
-    
-    if (now > startTime) {
-      return <Chip color="green" value="In Progress" className="w-fit" />;
-    } else {
-      return <Chip color="blue" value="Upcoming" className="w-fit" />;
-    }
+    const statusColors = {
+      draft: "gray",
+      published: "green",
+      ongoing: "blue",
+      completed: "purple",
+      cancelled: "red"
+    };
+
+    return (
+      <Chip
+        size="sm"
+        variant="ghost"
+        color={statusColors[tournament.status] || "gray"}
+        value={tournament.status?.charAt(0).toUpperCase() + tournament.status?.slice(1)}
+        className="normal-case"
+      />
+    );
   };
 
-  if (loading) return <LoadingIndicator />;
-
   if (!tournament) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Typography variant="h4" className="text-red-500">
-          Tournament not found
-        </Typography>
-      </div>
-    );
+    return null;
   }
 
   return (
@@ -136,7 +126,7 @@ const TournamentDetailsTO = () => {
                 color="blue"
                 size="sm"
                 className="flex items-center gap-2 normal-case"
-                onClick={() => navigate(`/tournaments/${tournament._id}/view`)}
+                onClick={() => navigate(`/tournaments/${tournament._id}`)}
               >
                 <Eye size={14} />
                 View Public Page
@@ -151,8 +141,8 @@ const TournamentDetailsTO = () => {
                       <Users className="text-blue-400" size={20} />
                     </div>
                     <div>
-                      <Typography variant="small" className="text-gray-400">Participants</Typography>
-                      <Typography variant="h6">{tournament.participants?.length || 0}</Typography>
+                      <Typography variant="small" className="text-gray-400">Attendees</Typography>
+                      <Typography variant="h6">{tournament.numAttendees || 0}</Typography>
                     </div>
                   </div>
                 </CardBody>
@@ -245,14 +235,14 @@ const TournamentDetailsTO = () => {
                 } transition-all duration-200`}
               >
                 <UserCog size={16} />
-                <span className="font-medium text-sm">Participants</span>
-                {tournament.participants?.length > 0 && (
+                <span className="font-medium text-sm">Attendees</span>
+                {tournament.numAttendees > 0 && (
                   <span className={`ml-2 px-2 py-0.5 text-xs rounded-full ${
                     activeTab === "participants"
                       ? "bg-blue-500/20 text-blue-400"
                       : "bg-gray-700 text-gray-400"
                   }`}>
-                    {tournament.participants.length}
+                    {tournament.numAttendees}
                   </span>
                 )}
               </Tab>
@@ -278,7 +268,7 @@ const TournamentDetailsTO = () => {
                 <TournamentEventsTO 
                   tournament={tournament}
                   isOrganizer={true}
-                  onUpdate={fetchTournament}
+                  onUpdate={updateTournament}
                 />
               </TabPanel>
               <TabPanel value="participants" className="p-0">
@@ -287,7 +277,7 @@ const TournamentDetailsTO = () => {
               <TabPanel value="settings" className="p-0">
                 <TournamentSettingsTO 
                   tournament={tournament}
-                  onUpdate={handleUpdate}
+                  onUpdate={updateTournament}
                   formData={formData}
                   setFormData={setFormData}
                 />

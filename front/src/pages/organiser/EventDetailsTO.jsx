@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate, useLocation, useLoaderData } from 'react-router-dom';
 import {
   Card,
   CardBody,
@@ -25,79 +25,33 @@ import {
   Calendar,
   ChevronRight
 } from 'lucide-react';
-import { useEvent } from '../../hooks/useEvent';
-import {
-  EventSettingsTO,
-  EventParticipantsTO,
-  EventBracketsTO
-} from '.';
+import { eventDetailsLoader } from '../../loaders/eventLoader';
+import EventSettingsTO from '../../components/organiser/EventSettingsTO';
+import EventParticipantsTO from '../../components/organiser/EventParticipantsTO';
+import EventBracketsTO from '../../components/organiser/EventBracketsTO';
 import { toast } from 'react-toastify';
   
 const EventDetailsTO = () => {
-  const { tournamentId, eventId } = useParams();
+  const { event } = useLoaderData();
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState("settings");
-  const { event, loading, refreshEvent } = useEvent(eventId);
 
   useEffect(() => {
-    if (!loading && !event) {
-      console.error('Event not found:', { eventId, tournamentId });
+    if (!event) {
       navigate(`/tournaments/${tournamentId}/to`);
       return;
     }
 
-    if (event && event.tournamentId !== tournamentId) {
-      console.error('Event belongs to different tournament:', {
-        eventId,
-        eventTournamentId: event.tournamentId,
-        currentTournamentId: tournamentId
-      });
-      navigate(`/tournaments/${event.tournamentId}/events/${eventId}/to`);
+    if (event.tournamentId !== tournamentId) {
+      navigate(`/tournaments/${event.tournamentId}/events/${event._id}/to`);
     }
-  }, [event, loading, tournamentId, eventId]);
-
-  // Debug loading and event state
-  useEffect(() => {
-    console.log('Loading:', loading);
-    console.log('Event data:', event);
-  }, [loading, event]);
+  }, [event, tournamentId]);
 
   const handleUpdateEvent = async (formData) => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/events/${eventId}`,
-        {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify(formData),
-        }
-      );
-
-      if (!response.ok) throw new Error('Failed to update event');
-      toast.success('Event updated successfully');
-      refreshEvent();
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
-
-  const handleDeleteEvent = async () => {
-    if (!confirm('Are you sure you want to delete this event?')) return;
-    
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/events/${eventId}`,
-        {
-          method: 'DELETE',
-          credentials: 'include',
-        }
-      );
-
-      if (!response.ok) throw new Error('Failed to delete event');
-      toast.success('Event deleted successfully');
-      navigate(`/tournaments/${event?.tournamentContext?._id}/to`);
+      await updateEvent(event.tournamentId, event._id, formData);
+      navigate('.', { replace: true });
     } catch (error) {
       toast.error(error.message);
     }
@@ -116,7 +70,7 @@ const EventDetailsTO = () => {
     }
   };
 
-  if (loading) {
+  if (!event) {
     return <div>Loading...</div>;
   }
 
@@ -165,7 +119,7 @@ const EventDetailsTO = () => {
                 color="blue"
                 size="sm"
                 className="flex items-center gap-2 normal-case"
-                onClick={() => navigate(`/tournaments/${tournamentId}/events/${eventId}/view`)}
+                onClick={() => navigate(`/tournaments/${tournamentId}/events/${event._id}/view`)}
               >
                 <Eye size={14} />
                 View Public Page
@@ -283,7 +237,6 @@ const EventDetailsTO = () => {
                 <EventSettingsTO 
                   event={event} 
                   onUpdate={handleUpdateEvent}
-                  onDelete={handleDeleteEvent}
                 />
               </TabPanel>
               <TabPanel value="participants" className="p-0">
@@ -291,7 +244,7 @@ const EventDetailsTO = () => {
                   event={event} 
                   onUpdate={() => {
                     console.log('Triggering refresh');
-                    refreshEvent();
+                    navigate('.', { replace: true });
                   }} 
                 />
               </TabPanel>

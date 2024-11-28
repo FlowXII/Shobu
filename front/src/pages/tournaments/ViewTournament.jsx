@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate, useLoaderData } from 'react-router-dom';
 import {
   Card,
   CardBody,
@@ -13,61 +13,38 @@ import {
   Calendar,
   Users2,
   ArrowLeft,
-  DollarSign,
   Clock,
 } from 'lucide-react';
 import { toast } from 'react-toastify';
-import LoadingIndicator from '../../components/layout/LoadingIndicator';
+import { registerForTournament } from '../../loaders/tournamentLoader';
 
 const ViewTournament = () => {
-  const { id } = useParams();
   const navigate = useNavigate();
-  const [tournament, setTournament] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [isRegistered, setIsRegistered] = useState(false);
-
-  useEffect(() => {
-    const fetchTournament = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/tournaments/${id}`, {
-          credentials: 'include'
-        });
-
-        if (!response.ok) throw new Error('Tournament not found');
-
-        const data = await response.json();
-        setTournament(data.data);
-        setIsRegistered(data.data.isRegistered || false);
-      } catch (error) {
-        console.error('Error fetching tournament:', error);
-        toast.error('Failed to load tournament details');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTournament();
-  }, [id]);
+  const { tournament } = useLoaderData();
+  console.log('Tournament data:', tournament);
+  
+  const isAnAttendee = tournament?.isAnAttendee;
 
   const handleRegister = async () => {
+    if (isAnAttendee) {
+      return;
+    }
+
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/tournaments/${id}/register`, {
-        method: 'POST',
-        credentials: 'include',
-      });
-
-      if (!response.ok) throw new Error('Failed to register');
-
-      setIsRegistered(true);
-      toast.success('Successfully registered for tournament!');
+      const result = await registerForTournament(tournament._id);
+      if (result) {
+        toast.success('Successfully registered for tournament!');
+        window.location.reload();
+      }
     } catch (error) {
-      console.error('Registration error:', error);
       toast.error('Failed to register for tournament');
     }
   };
 
-  if (loading) return <LoadingIndicator />;
-  if (!tournament) return <Typography className="text-center">Tournament not found</Typography>;
+  if (!tournament) {
+    navigate('/tournaments');
+    return null;
+  }
 
   const getStatusChip = () => {
     const now = new Date();
@@ -78,18 +55,20 @@ const ViewTournament = () => {
     }
     return <Chip color="blue" value="Upcoming" className="w-fit" />;
   };
-
+  console.log("isAnAttendee", isAnAttendee);
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Back Button */}
-      <Button
-        variant="text"
-        color="blue-gray"
-        className="flex items-center gap-2 mb-4"
-        onClick={() => navigate('/tournaments')}
-      >
-        <ArrowLeft className="h-4 w-4" /> Back to Tournaments
-      </Button>
+      <div className="relative z-10">
+        <Button
+          variant="filled"
+          color="blue-gray"
+          className="flex items-center gap-2 mb-4 bg-gray-800 hover:bg-gray-700 transition-colors cursor-pointer"
+          onClick={() => navigate('/tournaments')}
+        >
+          <ArrowLeft className="h-4 w-4" /> 
+          Back to Tournaments
+        </Button>
+      </div>
 
       {/* Main Info Card */}
       <Card className="bg-gray-900 border-2 border-blue-500/50 mb-6">
@@ -110,13 +89,14 @@ const ViewTournament = () => {
               
               <Button
                 variant="gradient"
-                color={isRegistered ? "green" : "blue"}
+                color={isAnAttendee ? "green" : "blue"}
                 className="flex items-center gap-2"
                 onClick={handleRegister}
-                disabled={isRegistered}
+                disabled={isAnAttendee}
               >
+
                 <Trophy className="h-4 w-4" />
-                {isRegistered ? "Registered" : "Register Now"}
+                {isAnAttendee ? "Registered" : "Register Now"}
               </Button>
             </div>
 

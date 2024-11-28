@@ -12,9 +12,9 @@ export const isOrganizer = async (req, res, next) => {
 
     let tournamentId;
 
-    // If tournamentId is directly in params (for tournament operations)
-    if (req.params.tournamentId) {
-      tournamentId = req.params.tournamentId;
+    // Check for both id and tournamentId in params
+    if (req.params.tournamentId || req.params.id) {
+      tournamentId = req.params.tournamentId || req.params.id;
     } 
     // If eventId is in params (for event operations)
     else if (req.params.eventId) {
@@ -28,8 +28,16 @@ export const isOrganizer = async (req, res, next) => {
       tournamentId = event.tournamentId;
     }
 
+    if (!tournamentId) {
+      logger.warn('No tournament ID found in request');
+      return res.status(400).json({
+        success: false,
+        error: 'Tournament ID is required'
+      });
+    }
+
     if (!mongoose.Types.ObjectId.isValid(tournamentId)) {
-      logger.warn('Invalid tournament ID format');
+      logger.warn('Invalid tournament ID format', { tournamentId });
       return res.status(400).json({
         success: false,
         error: 'Invalid tournament ID format'
