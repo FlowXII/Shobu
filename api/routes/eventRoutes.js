@@ -6,8 +6,10 @@ import {
   getTournamentEventsController,
   registerForEventController,
   updateEventController,
-  deleteEventController
+  deleteEventController,
+  generateParticipantsController
 } from '../controllers/eventController.js';
+import { generateBrackets } from '../controllers/bracketController.js';
 import { authenticate } from '../middleware/auth.js';
 import { isOrganizer } from '../middleware/isOrganizer.js';
 
@@ -32,5 +34,17 @@ router.get('/tournaments/:tournamentId/events', getTournamentEventsController);
 router.post('/tournaments/:tournamentId/events/:eventId/register', authenticate, registerForEventController);
 router.put('/tournaments/:tournamentId/events/:eventId', authenticate, isOrganizer, updateEventController);
 router.delete('/tournaments/:tournamentId/events/:eventId', authenticate, isOrganizer, deleteEventController);
+router.post(
+  '/tournaments/:tournamentId/events/:eventId/participants/generate', 
+  authenticate, 
+  isOrganizer, 
+  generateParticipantsController
+);
+router.post(
+  '/tournaments/:tournamentId/events/:eventId/brackets/generate',
+  authenticate,
+  isOrganizer,
+  generateBrackets
+);
 
 export default router; 

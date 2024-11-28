@@ -14,7 +14,8 @@ export const isOrganizer = async (req, res, next) => {
 
     // Check for both id and tournamentId in params
     if (req.params.tournamentId || req.params.id) {
-      tournamentId = req.params.tournamentId || req.params.id;
+      // Handle case where tournamentId might be a MongoDB object
+      tournamentId = req.params.tournamentId?._id || req.params.tournamentId || req.params.id?._id || req.params.id;
     } 
     // If eventId is in params (for event operations)
     else if (req.params.eventId) {
@@ -25,8 +26,20 @@ export const isOrganizer = async (req, res, next) => {
           error: 'Event not found'
         });
       }
-      tournamentId = event.tournamentId;
+      // Handle case where tournamentId might be a MongoDB object
+      tournamentId = event.tournamentId?._id || event.tournamentId;
     }
+
+    // Convert to string if it's an object
+    if (typeof tournamentId === 'object' && tournamentId !== null) {
+      tournamentId = tournamentId.toString();
+    }
+
+    logger.debug('Processing tournament ID', {
+      originalId: req.params.tournamentId,
+      processedId: tournamentId,
+      type: typeof tournamentId
+    });
 
     if (!tournamentId) {
       logger.warn('No tournament ID found in request');
@@ -37,7 +50,10 @@ export const isOrganizer = async (req, res, next) => {
     }
 
     if (!mongoose.Types.ObjectId.isValid(tournamentId)) {
-      logger.warn('Invalid tournament ID format', { tournamentId });
+      logger.warn('Invalid tournament ID format', { 
+        tournamentId,
+        type: typeof tournamentId
+      });
       return res.status(400).json({
         success: false,
         error: 'Invalid tournament ID format'
@@ -71,7 +87,8 @@ export const isOrganizer = async (req, res, next) => {
   } catch (error) {
     logger.error('Error in isOrganizer middleware', {
       error: error.message,
-      stack: error.stack
+      stack: error.stack,
+      params: req.params
     });
     res.status(500).json({
       success: false,

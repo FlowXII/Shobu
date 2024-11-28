@@ -38,6 +38,9 @@ const eventSchema = new mongoose.Schema({
 });
 
 eventSchema.pre('save', function(next) {
+  if (!this.phases) {
+    this.phases = [];
+  }
   this.entryFee = Math.max(0, Number(this.entryFee) || 0);
   next();
 });

@@ -16,8 +16,9 @@ const api = axios.create({
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 && !error.config.url.includes('/auth/login')) {
-      // Don't dispatch logout actions for login attempts
+    if (error.response?.status === 401 && 
+        !error.config.url.includes('/auth/login') && 
+        !error.config.url.includes('/users/profile')) {
       store.dispatch(clearUser());
       store.dispatch(setAuthenticated(false));
     }
@@ -43,21 +44,24 @@ export const loginUser = createAsyncThunk(
 
 export const fetchUserData = createAsyncThunk(
   'user/fetchUserData',
-  async (_, { dispatch, rejectWithValue }) => {
+  async (username, { dispatch, rejectWithValue }) => {
     try {
-      const response = await api.get('/users/profile/username');
+      const endpoint = username 
+        ? `/users/profile/${username}`
+        : '/users/profile/me';
+        
+      const response = await api.get(endpoint);
       if (response.data.success) {
         dispatch(setAuthenticated(true));
         return response.data.data;
       }
       return rejectWithValue('No user data found');
     } catch (error) {
-      // Only handle non-401 errors here
-      if (error.response?.status !== 401) {
+      if (error.response?.status === 401) {
         dispatch(setAuthenticated(false));
-        return rejectWithValue(error.response?.data?.error || 'Failed to fetch user data');
+        return rejectWithValue('Not authenticated');
       }
-      throw error;
+      return rejectWithValue(error.response?.data?.error || 'Failed to fetch user data');
     }
   }
 );

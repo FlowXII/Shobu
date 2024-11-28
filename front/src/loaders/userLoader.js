@@ -13,14 +13,37 @@ export async function fetchUserById(userId) {
   try {
     console.log(`Fetching profile for userId: ${userId}`);
     const response = await api.get(`/users/profile/id/${userId}`);
+    
+    if (!response.data || !response.data.data) {
+      throw new Error('Invalid response format');
+    }
+    
     console.log(`Fetched profile for userId: ${userId}`, response.data.data);
     return response.data.data;
   } catch (error) {
-    console.error('Error fetching user profile:', error);
+    console.error('Error fetching user profile:', {
+      userId,
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      message: error.response?.data?.message || error.message,
+      stack: error.stack,
+      config: {
+        url: error.config?.url,
+        method: error.config?.method,
+      }
+    });
+    
+    // Return a more detailed fallback object
     return {
-      username: 'Unknown User',
-      email: 'No email provided',
-      avatar: null
+      username: `User ${userId?.slice(0, 6) || 'Unknown'}...`,
+      email: null,
+      avatar: null,
+      _id: userId,
+      error: true,
+      errorDetails: {
+        status: error.response?.status,
+        message: error.response?.data?.message || error.message
+      }
     };
   }
 }

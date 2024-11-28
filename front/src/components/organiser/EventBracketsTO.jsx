@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Card,
   CardBody,
@@ -15,25 +15,171 @@ import { Trophy, Users, Brackets, Plus } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { generateBrackets } from '../../loaders/eventLoader';
 
-const EventBracketsTO = ({ event }) => {
+const BRACKET_CONFIG = {
+  LAYOUT: {
+    MATCH_HEIGHT: 80,
+    MATCH_WIDTH: 220,
+    CONNECTOR_WIDTH: 20,
+    ROUND_SPACING: 60,
+    MATCH_SPACING: 10
+  }
+};
+
+const bracketStyles = {
+  bracketContainer: "relative p-4 overflow-x-auto max-h-[800px]",
+  roundColumn: "flex flex-col items-center min-w-[240px]",
+  roundsWrapper: "flex gap-12 items-start",
+  matchCard: "border border-gray-700 rounded p-2 bg-gray-800/50 w-[220px]",
+  matchPlayer: "py-1 px-2 my-1 bg-gray-700/50 rounded text-sm flex items-center justify-between",
+  connector: "absolute bg-gray-600",
+  roundLabel: "text-gray-400 text-sm font-medium mb-2"
+};
+
+const EventBracketsTO = ({ event, onBracketsGenerated }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [seeding, setSeeding] = useState('random');
-  const [bracketType, setBracketType] = useState(event?.format || 'DOUBLE_ELIMINATION');
+  const [bracketType, setBracketType] = useState(event?.format || 'SINGLE_ELIMINATION');
   const [loading, setLoading] = useState(false);
+  const [brackets, setBrackets] = useState(null);
+  const containerRef = useRef(null);
+  const [containerHeight, setContainerHeight] = useState(0);
+
+  useEffect(() => {
+    if (event?.phases?.length > 0) {
+      // Find the bracket phase
+      const bracketPhase = event.phases.find(phase => phase.type === 'bracket');
+      if (bracketPhase) {
+        console.log('Found bracket phase:', bracketPhase); // Debug log
+        setBrackets(bracketPhase);
+      }
+    }
+  }, [event]);
+
+  useEffect(() => {
+    console.log('Full event object:', event);
+  }, [event]);
 
   const handleGenerateBrackets = async (e) => {
     e.preventDefault();
     setLoading(true);
     
     try {
-      await generateBrackets(event.tournamentId, event._id, bracketType, seeding);
+      // Get the correct tournament ID
+      const tournamentId = typeof event.tournamentId === 'object' 
+        ? event.tournamentId._id 
+        : event.tournamentId;
+
+      const result = await generateBrackets(
+        tournamentId,
+        event._id,
+        bracketType, 
+        seeding
+      );
+      
+      setBrackets(result.phase);
+      if (onBracketsGenerated) {
+        onBracketsGenerated(result);
+      }
+      
       toast.success('Brackets generated successfully');
       setOpenDialog(false);
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message || 'Failed to generate brackets');
     } finally {
       setLoading(false);
     }
+  };
+
+  const organizeSets = (sets) => {
+    return sets?.reduce((acc, set) => {
+      const round = set.fullRoundText || `Round ${set.round || 1}`;
+      if (!acc[round]) acc[round] = [];
+      acc[round].push(set);
+      return acc;
+    }, {}) || {};
+  };
+
+  const MatchCard = ({ set }) => (
+    <div className={bracketStyles.matchCard}>
+      {set.slots?.map((slot, index) => (
+        <div key={`slot-${index}`} className={bracketStyles.matchPlayer}>
+          <div className="flex items-center gap-2">
+            <div className={`w-2 h-2 rounded-full ${index === 0 ? 'bg-blue-500' : 'bg-red-500'}`} />
+            <Typography variant="small">
+              {slot?.entrant?.name || slot?.displayName || 'BYE'}
+            </Typography>
+          </div>
+          {slot?.seedNumber && (
+            <Typography variant="small" className="text-gray-500">
+              #{slot.seedNumber}
+            </Typography>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+
+  const renderBrackets = () => {
+    if (!brackets?.sets?.length) return null;
+
+    const roundSets = organizeSets(brackets.sets);
+    const rounds = Object.keys(roundSets);
+
+    // Modified spacing calculation
+    const getMatchSpacing = (roundIndex) => {
+      // Use a more controlled scaling factor
+      return BRACKET_CONFIG.LAYOUT.MATCH_SPACING * (roundIndex + 1);
+    };
+
+    return (
+      <div className={bracketStyles.bracketContainer}>
+        <div className={bracketStyles.roundsWrapper}>
+          {rounds.map((round, roundIndex) => {
+            const matchesInRound = roundSets[round];
+            const spacing = getMatchSpacing(roundIndex);
+            
+            return (
+              <div key={round} className={bracketStyles.roundColumn} style={{
+                marginTop: spacing
+              }}>
+                <Typography className={bracketStyles.roundLabel}>
+                  {round}
+                </Typography>
+                
+                <div className="flex flex-col" style={{ gap: `${spacing}px` }}>
+                  {matchesInRound.map((set, matchIndex) => (
+                    <div key={set._id || matchIndex} className="relative">
+                      <MatchCard set={set} />
+                      
+                      {roundIndex < rounds.length - 1 && (
+                        <>
+                          <div className={bracketStyles.connector} style={{
+                            width: `${BRACKET_CONFIG.LAYOUT.CONNECTOR_WIDTH}px`,
+                            height: '2px',
+                            right: `-${BRACKET_CONFIG.LAYOUT.CONNECTOR_WIDTH}px`,
+                            top: '50%',
+                            transform: 'translateY(-50%)'
+                          }} />
+                          
+                          {matchIndex % 2 === 0 && (
+                            <div className={bracketStyles.connector} style={{
+                              width: '2px',
+                              height: `${spacing + BRACKET_CONFIG.LAYOUT.MATCH_HEIGHT/2}px`,
+                              right: `-${BRACKET_CONFIG.LAYOUT.CONNECTOR_WIDTH}px`,
+                              top: '50%'
+                            }} />
+                          )}
+                        </>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -58,9 +204,14 @@ const EventBracketsTO = ({ event }) => {
             </div>
           </div>
 
-          {event?.brackets ? (
-            <div className="bracket-display">
-              {/* Add your bracket visualization component here */}
+          {loading ? (
+            <div className="text-center py-8 text-gray-400">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+              Generating brackets...
+            </div>
+          ) : brackets ? (
+            <div className="bracket-display overflow-x-auto">
+              {renderBrackets()}
             </div>
           ) : (
             <div className="text-center py-8 text-gray-400">

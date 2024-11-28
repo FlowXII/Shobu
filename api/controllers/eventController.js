@@ -77,7 +77,16 @@ const getEventController = async (req, res) => {
     }
 
     const event = await Event.findById(eventId)
-      .populate('tournamentId', 'name slug');
+      .populate({
+        path: 'phases',
+        populate: {
+          path: 'sets',
+          populate: {
+            path: 'slots'
+          }
+        }
+      })
+      .populate('participants');
 
     if (!event) {
       logger.warn('Event not found', { eventId });
@@ -315,6 +324,71 @@ const deleteEventController = async (req, res) => {
   }
 };
 
+const generateParticipantsController = async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    const { participants } = req.body;
+    
+    logger.info('Generating participants for event', { 
+      eventId,
+      count: participants.length 
+    });
+
+    if (!mongoose.Types.ObjectId.isValid(eventId)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid event ID format'
+      });
+    }
+
+    const event = await Event.findById(eventId);
+    if (!event) {
+      logger.warn('Event not found for generating participants', { eventId });
+      return res.status(404).json({
+        success: false,
+        error: 'Event not found'
+      });
+    }
+
+    // Add the new participants
+    const updatedEvent = await Event.findByIdAndUpdate(
+      eventId,
+      { 
+        $push: { 
+          participants: { 
+            $each: participants.map(p => ({
+              ...p,
+              registeredAt: new Date(),
+              checkedIn: false
+            }))
+          }
+        }
+      },
+      { new: true, runValidators: true }
+    ).populate('tournamentId', 'name slug');
+
+    logger.info('Participants generated successfully', { 
+      eventId,
+      count: participants.length
+    });
+
+    res.status(200).json({
+      success: true,
+      data: updatedEvent
+    });
+  } catch (error) {
+    logger.error('Failed to generate participants', { 
+      error: error.message,
+      eventId: req.params.eventId,
+      stack: error.stack 
+    });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to generate participants'
+    });
+  }
+};
+
 // Export the controllers
 export {
   createEventController,
@@ -322,5 +396,6 @@ export {
   getTournamentEventsController,
   registerForEventController,
   updateEventController,
-  deleteEventController
+  deleteEventController,
+  generateParticipantsController
 }; 

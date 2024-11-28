@@ -54,11 +54,33 @@ const EventSettingsTO = ({ event, onUpdate, onDelete }) => {
     e.preventDefault();
     setLoading(true);
     
+    console.log('EventSettingsTO - Starting form submission:', {
+      eventId: event._id,
+      tournamentId: event.tournamentId,
+      formData,
+      tournamentIdType: typeof event.tournamentId,
+      tournamentIdValue: event.tournamentId?.toString?.()
+    });
+    
     try {
-      const updatedEvent = await updateEvent(event.tournamentId, event._id, formData);
+      const tournamentId = event.tournamentId?._id || event.tournamentId;
+      const eventId = event._id?._id || event._id;
+      
+      const updatedEvent = await updateEvent(
+        tournamentId.toString(),
+        eventId.toString(),
+        formData
+      );
+      
+      console.log('EventSettingsTO - Update successful:', updatedEvent);
       onUpdate(updatedEvent);
       toast.success('Event updated successfully');
     } catch (error) {
+      console.error('EventSettingsTO - Update failed:', {
+        error,
+        message: error.message,
+        stack: error.stack
+      });
       toast.error(error.message);
     } finally {
       setLoading(false);

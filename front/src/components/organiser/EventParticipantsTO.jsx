@@ -16,7 +16,8 @@ import {
 } from "@material-tailwind/react";
 import { Users, UserPlus, Trash2, Shield, Search, Mail, Ban, Wand2 } from 'lucide-react';
 import { toast } from 'react-toastify';
-import { addParticipant, removeParticipant } from '../../loaders/eventLoader';
+import { generateRandomUsername } from '../../utils/generators';
+import { addParticipant, removeParticipant, generateParticipants } from '../../loaders/eventLoader';
 
 const EventParticipantsTO = ({ event, onUpdate }) => {
   const [openAddDialog, setOpenAddDialog] = useState(false);
@@ -60,7 +61,17 @@ const EventParticipantsTO = ({ event, onUpdate }) => {
 
   const handleGenerateParticipants = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
+      const tournamentId = event.tournamentId?._id || event.tournamentId;
+      const eventId = event._id?._id || event._id;
+
+      console.log('Generating participants:', {
+        tournamentId,
+        eventId,
+        count: generatingCount
+      });
+
       const participants = Array.from({ length: generatingCount }, () => {
         const username = generateRandomUsername();
         return {
@@ -69,13 +80,25 @@ const EventParticipantsTO = ({ event, onUpdate }) => {
         };
       });
 
-      await generateParticipants(event._id, participants);
+      await generateParticipants(
+        tournamentId.toString(),
+        eventId.toString(),
+        participants
+      );
+      
       setOpenGenerateDialog(false);
       onUpdate();
       toast.success(`Generated ${generatingCount} participants successfully`);
     } catch (error) {
-      console.error('Generate participants error:', error);
+      console.error('Generate participants error:', {
+        error,
+        message: error.message,
+        tournamentId: event.tournamentId,
+        eventId: event._id
+      });
       toast.error('Failed to generate participants');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -136,7 +159,7 @@ const EventParticipantsTO = ({ event, onUpdate }) => {
                   <div>
                     <div className="flex items-center gap-2">
                       <Typography className="font-medium text-gray-200">
-                        {participant.displayName}
+                        {participant.displayName || 'Unnamed Participant'}
                       </Typography>
                       {participant.isOrganizer && (
                         <Shield className="text-blue-400" size={16} />
@@ -150,7 +173,7 @@ const EventParticipantsTO = ({ event, onUpdate }) => {
                       )}
                     </div>
                     <Typography className="text-sm text-gray-400">
-                      {participant.email}
+                      {participant.email || 'No email provided'}
                     </Typography>
                     {participant.checkedIn && (
                       <Chip
@@ -231,11 +254,11 @@ const EventParticipantsTO = ({ event, onUpdate }) => {
                 onChange={(value) => setGeneratingCount(Number(value))}
                 className="!text-white"
               >
-                <Option value="8">8 Participants</Option>
-                <Option value="16">16 Participants</Option>
-                <Option value="32">32 Participants</Option>
-                <Option value="64">64 Participants</Option>
-                <Option value="128">128 Participants</Option>
+                {[8, 16, 32, 64, 128].map(count => (
+                  <Option key={`count-${count}`} value={String(count)}>
+                    {count} Participants
+                  </Option>
+                ))}
               </Select>
             </div>
           </DialogBody>

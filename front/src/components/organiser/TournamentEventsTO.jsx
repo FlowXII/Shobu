@@ -213,87 +213,123 @@ const TournamentEventsTO = ({ tournament, isOrganizer, onUpdate }) => {
         {tournament.events?.map((event) => (
           <Card 
             key={event._id} 
-            className="bg-gray-800/50 border border-white/10 hover:bg-gray-700/50 transition-colors cursor-pointer"
+            className="bg-gray-800/50 border border-white/10 hover:bg-gray-700/50 transition-colors cursor-pointer overflow-hidden"
             onClick={() => handleEventClick(event)}
           >
-            <CardBody>
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <Typography variant="h6" className="text-white">
-                    {event.name}
-                  </Typography>
-                  <Typography className="text-gray-400 mb-2">
-                    {event.gameName || event.game}
-                  </Typography>
-                  <div className="flex flex-wrap gap-2">
-                    <Chip
-                      value={
-                        <div className="flex items-center gap-1">
-                          <Calendar size={14} />
-                          {new Date(event.startAt || event.startTime).toLocaleDateString()}
-                        </div>
-                      }
-                      className="bg-gray-700"
-                    />
-                    <Chip
-                      value={
-                        <div className="flex items-center gap-1">
-                          <Users size={14} />
-                          {event.numEntrants || 0}/{event.maxEntrants || '∞'}
-                        </div>
-                      }
-                      className="bg-gray-700"
-                    />
-                    <Chip
-                      value={
-                        <div className="flex items-center gap-1">
-                          <DollarSign size={14} />
-                          {formatEntryFee(event.entryFee)}
-                        </div>
-                      }
-                      className="bg-gray-700"
-                    />
+            <CardBody className="p-0">
+              {/* Status Banner */}
+              <div className={`px-4 py-1.5 text-xs font-medium ${
+                new Date(event.startAt) < new Date() 
+                  ? 'bg-green-500/20 text-green-300'
+                  : 'bg-blue-500/20 text-blue-300'
+              }`}>
+                {new Date(event.startAt) < new Date() ? 'In Progress' : 'Upcoming'}
+              </div>
+
+              <div className="p-4 space-y-4">
+                {/* Header Section */}
+                <div className="flex justify-between items-start">
+                  <div>
+                    <Typography variant="h5" className="text-white font-bold">
+                      {event.name}
+                    </Typography>
+                    <Typography className="text-gray-400">
+                      {event.gameName || event.game}
+                    </Typography>
+                  </div>
+                  <div className="flex gap-2">
+                    {isOrganizer && (
+                      <>
+                        <Button 
+                          size="sm" 
+                          variant="text" 
+                          className="text-gray-400 hover:text-white"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEventClick(event);
+                          }}
+                        >
+                          <Edit2 size={16} />
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="text" 
+                          className="text-red-400 hover:text-red-500"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteEvent(event._id);
+                          }}
+                        >
+                          <Trash2 size={16} />
+                        </Button>
+                      </>
+                    )}
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  {isOrganizer && (
-                    <>
-                      <Button 
-                        size="sm" 
-                        variant="text" 
-                        className="text-gray-400 hover:text-white"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEventClick(event);
-                        }}
-                      >
-                        <Edit2 size={16} />
-                      </Button>
-                      <Button 
-                        size="sm" 
-                        variant="text" 
-                        className="text-red-400 hover:text-red-500"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteEvent(event._id);
-                        }}
-                      >
-                        <Trash2 size={16} />
-                      </Button>
-                    </>
+
+                {/* Info Grid */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <Typography variant="small" className="text-gray-400">Format</Typography>
+                    <Typography className="text-white">
+                      {event.format || 'Double Elimination'}
+                    </Typography>
+                  </div>
+                  <div className="space-y-1">
+                    <Typography variant="small" className="text-gray-400">Start Time</Typography>
+                    <Typography className="text-white">
+                      {new Date(event.startAt).toLocaleTimeString([], { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                      })}
+                    </Typography>
+                  </div>
+                  <div className="space-y-1">
+                    <Typography variant="small" className="text-gray-400">Participants</Typography>
+                    <Typography className="text-white">
+                      {event.participants?.length || 0}/{event.maxEntrants || '∞'}
+                    </Typography>
+                  </div>
+                  <div className="space-y-1">
+                    <Typography variant="small" className="text-gray-400">Entry Fee</Typography>
+                    <Typography className="text-white">
+                      {formatEntryFee(event.entryFee)}
+                    </Typography>
+                  </div>
+                </div>
+
+                {/* Description Preview */}
+                {event.description && (
+                  <div className="pt-2 border-t border-gray-700">
+                    <Typography variant="small" className="text-gray-300 line-clamp-2">
+                      {event.description}
+                    </Typography>
+                  </div>
+                )}
+
+                {/* Footer Chips */}
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {event.state === 1 && (
+                    <Chip
+                      size="sm"
+                      value="Registration Open"
+                      className="bg-green-500/20 text-green-300"
+                    />
                   )}
-                  <ChevronRight 
-                    className="text-gray-400" 
-                    size={20} 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (!event?._id || !tournament?._id) {
-                        console.error('Missing event or tournament ID:', { event, tournament });
-                        return;
-                      }
-                      navigate(`/tournaments/${tournament._id}/events/${event._id}/to`);
-                    }}
-                  />
+                  {event.participants?.some(p => p.checkedIn) && (
+                    <Chip
+                      size="sm"
+                      value={`${event.participants.filter(p => p.checkedIn).length} Checked In`}
+                      className="bg-blue-500/20 text-blue-300"
+                    />
+                  )}
+                  {event.sets?.length > 0 && (
+                    <Chip
+                      size="sm"
+                      value={`${event.sets.length} Matches`}
+                      className="bg-purple-500/20 text-purple-300"
+                    />
+                  )}
                 </div>
               </div>
             </CardBody>
