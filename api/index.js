@@ -15,6 +15,7 @@ import postRoutes from './routes/postRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
 import conversationRoutes from './routes/conversationRoutes.js';
+import ticketRoutes from './routes/ticketRoutes.js';
 dotenv.config();
 
 const app = express();
@@ -34,6 +35,7 @@ app.use(cookieParser());
 app.use('/api/tournaments', upcomingTournamentsRoute);
 app.use('/api/stations', stationViewerRoute);
 app.use('/api/dashboard', dashboardRoute);
+app.use('/api', ticketRoutes);
 app.use('/api/notifications', pushNotificationsRoute);
 app.use('/api/stations/reporting', stationReportingRoute);
 app.use('/api/tournaments', tournamentRoutes);

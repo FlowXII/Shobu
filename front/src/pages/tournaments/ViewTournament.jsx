@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { registerForTournament } from '../../loaders/tournamentLoader';
+import TicketSection from '../../components/tickets/TicketSection';
 
 const ViewTournament = () => {
   const navigate = useNavigate();
@@ -218,6 +219,8 @@ const ViewTournament = () => {
           </CardBody>
         </Card>
       )}
+
+      <TicketSection tournamentId={tournament._id} />
     </div>
   );
 };

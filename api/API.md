@@ -180,6 +180,37 @@
   - Query params: `countryCode`, `perPage`, `videogameId`
   - Returns: Array of upcoming tournaments
 
+## Ticket Routes
+
+### Ticket Management
+- `POST /api/tournaments/:tournamentId/tickets`
+  - Create new ticket
+  - Requires: Authentication
+  - Body: `{ title, description, priority, assignedTo }`
+  - Returns: Created ticket object
+
+- `GET /api/tournaments/:tournamentId/tickets`
+  - Get all tickets for a tournament
+  - Requires: Authentication
+  - Returns: Array of ticket objects
+
+- `GET /api/tickets/:ticketId`
+  - Get specific ticket details
+  - Requires: Authentication
+  - Returns: Ticket object with comments
+
+- `PATCH /api/tickets/:ticketId/status`
+  - Update ticket status
+  - Requires: Authentication
+  - Body: `{ status }` (PENDING, IN_PROGRESS, or RESOLVED)
+  - Returns: Updated ticket object
+
+- `POST /api/tickets/:ticketId/comments`
+  - Add comment to ticket
+  - Requires: Authentication
+  - Body: `{ content }`
+  - Returns: Updated ticket object with new comment
+
 ## Error Responses
 
 All routes may return the following error responses:

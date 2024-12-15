@@ -2,52 +2,55 @@ import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { Trophy, Target, Users, Award } from 'lucide-react';
 
 const DashboardStats = ({ tournaments }) => {
-  const stats = [
-    { 
-      label: 'Total Tournaments', 
-      value: tournaments.length, 
-      icon: Trophy, 
-      color: 'text-yellow-400' 
-    },
-    { 
-      label: 'Active Events', 
-      value: tournaments.reduce((acc, t) => acc + (t.events?.length || 0), 0), 
-      icon: Target, 
-      color: 'text-blue-400' 
-    },
-    { 
-      label: 'Total Participants', 
-      value: tournaments.reduce((acc, t) => acc + (t.numAttendees || 0), 0), 
-      icon: Users, 
-      color: 'text-green-400' 
-    },
-    { 
-      label: 'Success Rate', 
-      value: '98%', 
-      icon: Award, 
-      color: 'text-purple-400' 
-    },
-  ];
-
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {stats.map((stat, index) => (
-        <Card key={index} className="bg-gray-800/50 border border-white/10">
-          <CardBody className="flex items-center gap-4">
-            <div className="p-3 rounded-lg bg-gray-900/50">
-              <stat.icon className={`w-6 h-6 ${stat.color}`} />
-            </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <Card className="bg-gray-800/50 border border-white/10">
+        <CardBody>
+          <div className="flex items-center gap-4">
+            <Trophy className="text-yellow-400" size={24} />
             <div>
-              <Typography variant="h4" className="text-white">
-                {stat.value}
+              <Typography variant="small" className="text-gray-400">
+                Total Tournaments
               </Typography>
-              <Typography className="text-gray-400">
-                {stat.label}
+              <Typography variant="h4" className="text-white">
+                {tournaments.length}
               </Typography>
             </div>
-          </CardBody>
-        </Card>
-      ))}
+          </div>
+        </CardBody>
+      </Card>
+
+      <Card className="bg-gray-800/50 border border-white/10">
+        <CardBody>
+          <div className="flex items-center gap-4">
+            <Users className="text-blue-400" size={24} />
+            <div>
+              <Typography variant="small" className="text-gray-400">
+                Total Participants
+              </Typography>
+              <Typography variant="h4" className="text-white">
+                {tournaments.reduce((sum, t) => sum + (t.numAttendees || 0), 0)}
+              </Typography>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+
+      <Card className="bg-gray-800/50 border border-white/10">
+        <CardBody>
+          <div className="flex items-center gap-4">
+            <Trophy className="text-green-400" size={24} />
+            <div>
+              <Typography variant="small" className="text-gray-400">
+                Organizer Level
+              </Typography>
+              <Typography variant="h4" className="text-white">
+                Rookie
+              </Typography>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
     </div>
   );
 };

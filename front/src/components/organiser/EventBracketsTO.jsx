@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Card,
   CardBody,
@@ -16,23 +16,73 @@ import { toast } from 'react-toastify';
 import { generateBrackets } from '../../loaders/eventLoader';
 
 const BRACKET_CONFIG = {
-  LAYOUT: {
-    MATCH_HEIGHT: 80,
-    MATCH_WIDTH: 220,
-    CONNECTOR_WIDTH: 20,
-    ROUND_SPACING: 60,
-    MATCH_SPACING: 10
-  }
-};
+  styles: {
+    container: "m-2 p-4",
+    headerRow: "mb-4 grid grid-flow-col grid-cols-[repeat(auto-fit,minmax(0,1fr))] items-center border-0 border-b-2 border-gray-200 text-center text-lg font-bold uppercase",
+    bracketsGrid: "grid grid-flow-col grid-cols-[repeat(auto-fit,minmax(0,1fr))] items-center gap-8",
+    roundColumn: "grid grid-flow-row auto-rows-min",
+    match: "w-48 bg-gray-800/90 p-2 text-white shadow-xl rounded-lg border border-gray-700 hover:border-gray-600 transition-all duration-200",
+    matchSlot: "flex items-center justify-between py-1",
+    playerSection: "flex items-center flex-1 min-w-0",
+    playerName: "truncate text-white text-sm",
+    score: "ml-2 text-white font-semibold bg-gray-700/50 px-2 py-0.5 rounded min-w-[2rem] text-center",
+    roundIdentifier: "text-xs text-gray-400 mb-1",
+  },
+  
+  spacing: {
+    baseSpacing: 1,
+    round2Spacing: 2,
 
-const bracketStyles = {
-  bracketContainer: "relative p-4 overflow-x-auto max-h-[800px]",
-  roundColumn: "flex flex-col items-center min-w-[240px]",
-  roundsWrapper: "flex gap-12 items-start",
-  matchCard: "border border-gray-700 rounded p-2 bg-gray-800/50 w-[220px]",
-  matchPlayer: "py-1 px-2 my-1 bg-gray-700/50 rounded text-sm flex items-center justify-between",
-  connector: "absolute bg-gray-600",
-  roundLabel: "text-gray-400 text-sm font-medium mb-2"
+    getColumnStyles: (roundIndex, totalRounds) => {
+      const base = BRACKET_CONFIG.spacing.baseSpacing;
+      const round2 = BRACKET_CONFIG.spacing.round2Spacing;
+      
+      let gap;
+      if (roundIndex === 1) {
+        gap = `${round2 * base}rem`;
+      } else {
+        gap = `${Math.pow(2, roundIndex) * base}rem`;
+      }
+
+      const isFinalRound = roundIndex === totalRounds - 1;
+      
+      return {
+        display: 'grid',
+        gridAutoRows: 'min-content',
+        gap,
+        alignContent: isFinalRound ? 'center' : 'start',
+        paddingRight: `${base}rem`,
+        ...(isFinalRound && {
+          height: '100%',
+          alignSelf: 'stretch'
+        })
+      };
+    },
+
+    getMatchStyles: (roundIndex) => {
+      const base = BRACKET_CONFIG.spacing.baseSpacing;
+      const round2 = BRACKET_CONFIG.spacing.round2Spacing;
+
+      if (roundIndex === 0) {
+        return { 
+          marginTop: '0',
+          transition: 'margin 0.3s ease-in-out'
+        };
+      }
+
+      let marginTop;
+      if (roundIndex === 1) {
+        marginTop = `${(round2) * base + 0.5}rem`;
+      } else {
+        marginTop = `${(Math.pow(2, roundIndex) - 1) * base}rem`;
+      }
+
+      return {
+        marginTop,
+        transition: 'margin 0.3s ease-in-out'
+      };
+    }
+  }
 };
 
 const EventBracketsTO = ({ event, onBracketsGenerated }) => {
@@ -41,22 +91,14 @@ const EventBracketsTO = ({ event, onBracketsGenerated }) => {
   const [bracketType, setBracketType] = useState(event?.format || 'SINGLE_ELIMINATION');
   const [loading, setLoading] = useState(false);
   const [brackets, setBrackets] = useState(null);
-  const containerRef = useRef(null);
-  const [containerHeight, setContainerHeight] = useState(0);
 
   useEffect(() => {
     if (event?.phases?.length > 0) {
-      // Find the bracket phase
       const bracketPhase = event.phases.find(phase => phase.type === 'bracket');
       if (bracketPhase) {
-        console.log('Found bracket phase:', bracketPhase); // Debug log
         setBrackets(bracketPhase);
       }
     }
-  }, [event]);
-
-  useEffect(() => {
-    console.log('Full event object:', event);
   }, [event]);
 
   const handleGenerateBrackets = async (e) => {
@@ -64,7 +106,6 @@ const EventBracketsTO = ({ event, onBracketsGenerated }) => {
     setLoading(true);
     
     try {
-      // Get the correct tournament ID
       const tournamentId = typeof event.tournamentId === 'object' 
         ? event.tournamentId._id 
         : event.tournamentId;
@@ -90,90 +131,65 @@ const EventBracketsTO = ({ event, onBracketsGenerated }) => {
     }
   };
 
-  const organizeSets = (sets) => {
-    return sets?.reduce((acc, set) => {
-      const round = set.fullRoundText || `Round ${set.round || 1}`;
-      if (!acc[round]) acc[round] = [];
-      acc[round].push(set);
-      return acc;
-    }, {}) || {};
-  };
-
-  const MatchCard = ({ set }) => (
-    <div className={bracketStyles.matchCard}>
-      {set.slots?.map((slot, index) => (
-        <div key={`slot-${index}`} className={bracketStyles.matchPlayer}>
-          <div className="flex items-center gap-2">
-            <div className={`w-2 h-2 rounded-full ${index === 0 ? 'bg-blue-500' : 'bg-red-500'}`} />
-            <Typography variant="small">
-              {slot?.entrant?.name || slot?.displayName || 'BYE'}
-            </Typography>
-          </div>
-          {slot?.seedNumber && (
-            <Typography variant="small" className="text-gray-500">
-              #{slot.seedNumber}
-            </Typography>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-
   const renderBrackets = () => {
     if (!brackets?.sets?.length) return null;
 
-    const roundSets = organizeSets(brackets.sets);
-    const rounds = Object.keys(roundSets);
+    const rounds = brackets.sets.reduce((acc, set) => {
+      const roundNumber = set.fullRoundText?.match(/Round (\d+)/)?.[1] || '1';
+      acc[roundNumber] = acc[roundNumber] || [];
+      acc[roundNumber].push(set);
+      return acc;
+    }, {});
 
-    // Modified spacing calculation
-    const getMatchSpacing = (roundIndex) => {
-      // Use a more controlled scaling factor
-      return BRACKET_CONFIG.LAYOUT.MATCH_SPACING * (roundIndex + 1);
-    };
+    const sortedRoundNumbers = Object.keys(rounds).sort((a, b) => Number(a) - Number(b));
+    const totalRounds = sortedRoundNumbers.length;
 
     return (
-      <div className={bracketStyles.bracketContainer}>
-        <div className={bracketStyles.roundsWrapper}>
-          {rounds.map((round, roundIndex) => {
-            const matchesInRound = roundSets[round];
-            const spacing = getMatchSpacing(roundIndex);
+      <div className={BRACKET_CONFIG.styles.container}>
+        <div className={BRACKET_CONFIG.styles.headerRow}>
+          {sortedRoundNumbers.map((round) => (
+            <div key={round}>Round {round}</div>
+          ))}
+        </div>
+
+        <div className={BRACKET_CONFIG.styles.bracketsGrid}>
+          {sortedRoundNumbers.map((round, roundIndex) => {
+            const columnStyles = BRACKET_CONFIG.spacing.getColumnStyles(roundIndex, totalRounds);
             
             return (
-              <div key={round} className={bracketStyles.roundColumn} style={{
-                marginTop: spacing
-              }}>
-                <Typography className={bracketStyles.roundLabel}>
-                  {round}
-                </Typography>
-                
-                <div className="flex flex-col" style={{ gap: `${spacing}px` }}>
-                  {matchesInRound.map((set, matchIndex) => (
-                    <div key={set._id || matchIndex} className="relative">
-                      <MatchCard set={set} />
-                      
-                      {roundIndex < rounds.length - 1 && (
-                        <>
-                          <div className={bracketStyles.connector} style={{
-                            width: `${BRACKET_CONFIG.LAYOUT.CONNECTOR_WIDTH}px`,
-                            height: '2px',
-                            right: `-${BRACKET_CONFIG.LAYOUT.CONNECTOR_WIDTH}px`,
-                            top: '50%',
-                            transform: 'translateY(-50%)'
-                          }} />
-                          
-                          {matchIndex % 2 === 0 && (
-                            <div className={bracketStyles.connector} style={{
-                              width: '2px',
-                              height: `${spacing + BRACKET_CONFIG.LAYOUT.MATCH_HEIGHT/2}px`,
-                              right: `-${BRACKET_CONFIG.LAYOUT.CONNECTOR_WIDTH}px`,
-                              top: '50%'
-                            }} />
-                          )}
-                        </>
-                      )}
+              <div 
+                key={round}
+                className={BRACKET_CONFIG.styles.roundColumn}
+                style={columnStyles}
+              >
+                {rounds[round].map((set, index) => {
+                  const matchStyles = BRACKET_CONFIG.spacing.getMatchStyles(roundIndex);
+                  
+                  return (
+                    <div 
+                      key={set._id || index}
+                      className={BRACKET_CONFIG.styles.match}
+                      style={matchStyles}
+                    >
+                      {set.slots?.map((slot, slotIndex) => (
+                        <div 
+                          key={slotIndex}
+                          className={BRACKET_CONFIG.styles.matchSlot}
+                        >
+                          <div className={BRACKET_CONFIG.styles.playerSection}>
+                            <div className={`w-3 h-3 ${slotIndex === 0 ? 'bg-blue-500' : 'bg-red-500'} rounded-full mr-2 flex-shrink-0`} />
+                            <p className={BRACKET_CONFIG.styles.playerName}>
+                              {slot?.entrant?.name || slot?.displayName || 'BYE'}
+                            </p>
+                          </div>
+                          <p className={BRACKET_CONFIG.styles.score}>
+                            {slot?.score || '0'}
+                          </p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
             );
           })}
@@ -191,17 +207,15 @@ const EventBracketsTO = ({ event, onBracketsGenerated }) => {
               <Brackets className="text-gray-400" size={20} />
               <Typography variant="h6">Tournament Brackets</Typography>
             </div>
-            <div className="flex gap-2">
-              <Button
-                size="sm"
-                className="flex items-center gap-2 bg-blue-600"
-                onClick={() => setOpenDialog(true)}
-                disabled={!event?.participants?.length}
-              >
-                <Plus size={16} />
-                Generate Brackets
-              </Button>
-            </div>
+            <Button
+              size="sm"
+              className="flex items-center gap-2 bg-blue-600"
+              onClick={() => setOpenDialog(true)}
+              disabled={!event?.participants?.length}
+            >
+              <Plus size={16} />
+              Generate Brackets
+            </Button>
           </div>
 
           {loading ? (
@@ -210,9 +224,7 @@ const EventBracketsTO = ({ event, onBracketsGenerated }) => {
               Generating brackets...
             </div>
           ) : brackets ? (
-            <div className="bracket-display overflow-x-auto">
-              {renderBrackets()}
-            </div>
+            renderBrackets()
           ) : (
             <div className="text-center py-8 text-gray-400">
               No brackets generated yet. Add participants and generate brackets to get started.

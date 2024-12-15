@@ -41,8 +41,9 @@ export async function fetchEventById(tournamentId, eventId) {
   if (typeof tournamentId === 'object' && tournamentId._id) {
     tournamentId = tournamentId._id.toString();
   }
+  console.log(tournamentId, eventId);
   return await fetchWithCredentials(
-    `/tournaments/${tournamentId}/events/${eventId}?populate=phases.sets.slots,phases.metadata,phases.participants`
+    `/tournaments/${tournamentId}/events/${eventId}?populate=phases.sets.slots.entrant,phases.metadata`
   );
 }
 
@@ -131,6 +132,35 @@ export async function generateParticipants(tournamentId, eventId, participants) 
   });
 }
 
+export async function fetchEventsByIds(tournamentId, eventIds) {
+  if (typeof tournamentId === 'object' && tournamentId._id) {
+    tournamentId = tournamentId._id.toString();
+  }
+
+  console.log('fetchEventsByIds - Fetching events:', {
+    tournamentId,
+    eventIds
+  });
+
+  return await fetchWithCredentials(
+    `/tournaments/${tournamentId}/events?ids=${eventIds.join(',')}&populate=phases.sets.slots.entrant,phases.metadata`
+  );
+}
+
+export async function fetchTournamentEvents(tournamentId) {
+  if (typeof tournamentId === 'object' && tournamentId._id) {
+    tournamentId = tournamentId._id.toString();
+  }
+
+  console.log('fetchTournamentEvents - Fetching all events for tournament:', {
+    tournamentId
+  });
+
+  return await fetchWithCredentials(
+    `/tournaments/${tournamentId}/events?populate=phases.sets.slots.entrant,phases.metadata`
+  );
+}
+
 // Loaders
 export async function eventDetailsLoader({ params }) {
   if (!params.eventId || !params.tournamentId) {
@@ -151,4 +181,4 @@ export async function eventDetailsLoader({ params }) {
     toast.error('Failed to load event details');
     return { event: null };
   }
-} 
+}

@@ -108,7 +108,7 @@ const EventDetailsTO = () => {
             <div>
               <Typography variant="small" className="text-gray-400">Tournament</Typography>
               <Typography variant="h6" className="text-gray-200">
-                {event?.tournamentId?.name || 'Loading...'}
+                {event?.tournament?.name || 'Loading...'}
               </Typography>
             </div>
           </div>
