@@ -18,7 +18,11 @@ import {
   organizerLoader,
   tournamentDetailsLoader
 } from '../loaders/tournamentLoader';
-import { eventDetailsLoader } from '../loaders/eventLoader';
+import { 
+  eventDetailsLoader, 
+  eventPhasesLoader, 
+  eventSetsLoader 
+} from '../loaders/eventLoader';
 
 // Organizer Pages
 import OrganizerDashboard from '../pages/organiser/OrganizerDashboard';
@@ -81,7 +85,16 @@ export const routes = [
       {
         path: ":tournamentId/events/:eventId/to",
         element: <EventDetailsTO />,
-        loader: eventDetailsLoader
+        loader: async ({ params }) => {
+          const [eventData, phasesData] = await Promise.all([
+            eventDetailsLoader({ params }),
+            eventPhasesLoader({ params })
+          ]);
+          return {
+            ...eventData,
+            ...phasesData
+          };
+        }
       }
     ]
   },

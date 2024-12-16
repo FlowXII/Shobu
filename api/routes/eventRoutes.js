@@ -9,9 +9,10 @@ import {
   deleteEventController,
   generateParticipantsController
 } from '../controllers/eventController.js';
-import { generateBrackets } from '../controllers/bracketController.js';
+import { generateEventBrackets } from '../controllers/bracketController.js';
 import { authenticate } from '../middleware/auth.js';
 import { isOrganizer } from '../middleware/isOrganizer.js';
+import seedingRoutes from './seedingRoutes.js';
 
 const router = express.Router();
 
@@ -46,5 +47,8 @@ router.post(
   isOrganizer,
   generateBrackets
 );
+
+// Add the seeding routes as nested routes
+router.use('/tournaments/:tournamentId/events/:eventId/phases/:phaseId/seeding', seedingRoutes);
 
 export default router; 

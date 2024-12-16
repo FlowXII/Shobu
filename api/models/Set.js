@@ -1,25 +1,57 @@
 import mongoose from 'mongoose';
 
-const setSchema = new mongoose.Schema({
-  eventId: { type: mongoose.Schema.Types.ObjectId, ref: 'Event', required: true },
-  fullRoundText: String,
-  state: { type: Number, required: true }, // 1: Created, 2: Ongoing, 4: Ready, 6: Called, 7: Completed
-  station: {
-    id: String,
-    number: Number
+const SetSchema = new mongoose.Schema({
+  eventId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Event',
+    required: true
+  },
+  phaseId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Phase',
+    required: true
+  },
+  player1: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  player2: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
   },
   slots: [{
-    id: String,
     entrant: {
-      id: String,
-      name: String
-    }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    score: {
+      type: Number,
+      default: 0
+    },
+    displayName: String
   }],
-  score1: Number,
-  score2: Number,
-  winnerId: String,
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
-});
+  status: {
+    type: String,
+    enum: ['PENDING', 'CALLED', 'IN_PROGRESS', 'COMPLETED'],
+    default: 'PENDING'
+  },
+  winner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  station: {
+    type: String
+  },
+  startTime: Date,
+  endTime: Date,
+  round: Number,
+  bestOf: {
+    type: Number,
+    required: true
+  },
+  fullRoundText: String
+}, { timestamps: true });
 
-export default mongoose.model('Set', setSchema); 
+export default mongoose.model('Set', SetSchema);

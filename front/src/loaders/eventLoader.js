@@ -161,7 +161,38 @@ export async function fetchTournamentEvents(tournamentId) {
   );
 }
 
-// Loaders
+// New loader functions
+export async function fetchEventPhases(tournamentId, eventId) {
+  if (typeof tournamentId === 'object' && tournamentId._id) {
+    tournamentId = tournamentId._id.toString();
+  }
+  
+  return await fetchWithCredentials(
+    `/tournaments/${tournamentId}/events/${eventId}/phases?populate=sets.slots.entrant`
+  );
+}
+
+export async function fetchEventSets(tournamentId, eventId, phaseId) {
+  if (typeof tournamentId === 'object' && tournamentId._id) {
+    tournamentId = tournamentId._id.toString();
+  }
+  
+  const url = phaseId 
+    ? `/tournaments/${tournamentId}/events/${eventId}/phases/${phaseId}/sets`
+    : `/tournaments/${tournamentId}/events/${eventId}/sets`;
+    
+  return await fetchWithCredentials(url);
+}
+
+export async function updateSetScore(setId, scores) {
+  return await fetchWithCredentials(`/sets/${setId}/score`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ scores })
+  });
+}
+
+// Loader functions for React Router
 export async function eventDetailsLoader({ params }) {
   if (!params.eventId || !params.tournamentId) {
     console.warn('Missing event or tournament ID');
@@ -180,5 +211,41 @@ export async function eventDetailsLoader({ params }) {
     console.error('Event loader error:', error);
     toast.error('Failed to load event details');
     return { event: null };
+  }
+}
+
+export async function eventPhasesLoader({ params }) {
+  if (!params.eventId || !params.tournamentId) {
+    console.warn('Missing event or tournament ID');
+    return { phases: [] };
+  }
+
+  try {
+    const phases = await fetchEventPhases(params.tournamentId, params.eventId);
+    return { phases };
+  } catch (error) {
+    console.error('Phases loader error:', error);
+    toast.error('Failed to load event phases');
+    return { phases: [] };
+  }
+}
+
+export async function eventSetsLoader({ params }) {
+  if (!params.eventId || !params.tournamentId) {
+    console.warn('Missing event or tournament ID');
+    return { sets: [] };
+  }
+
+  try {
+    const sets = await fetchEventSets(
+      params.tournamentId, 
+      params.eventId,
+      params.phaseId
+    );
+    return { sets };
+  } catch (error) {
+    console.error('Sets loader error:', error);
+    toast.error('Failed to load event sets');
+    return { sets: [] };
   }
 }

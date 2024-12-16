@@ -16,6 +16,9 @@ import eventRoutes from './routes/eventRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
 import conversationRoutes from './routes/conversationRoutes.js';
 import ticketRoutes from './routes/ticketRoutes.js';
+import setRoutes from './routes/setRoutes.js';
+import matchRoutes from './routes/matchRoutes.js';
+import seedingRoutes from './routes/seedingRoutes.js';
 dotenv.config();
 
 const app = express();
@@ -39,7 +42,10 @@ app.use('/api', ticketRoutes);
 app.use('/api/notifications', pushNotificationsRoute);
 app.use('/api/stations/reporting', stationReportingRoute);
 app.use('/api/tournaments', tournamentRoutes);
+app.use('/api/sets', setRoutes);
+app.use('/api/matches', matchRoutes);
 app.use('/api/posts', postRoutes);
+app.use('/api/seeding', seedingRoutes);
 app.use('/api', eventRoutes);
 
 // Auth routes

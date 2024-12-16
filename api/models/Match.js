@@ -1,13 +1,30 @@
 import mongoose from 'mongoose';
 
-const matchSchema = new mongoose.Schema({
-  setId: { type: mongoose.Schema.Types.ObjectId, ref: "Set" },
-  participants: [{
-    playerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    score: Number,
-  }],
-  winnerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  createdAt: { type: Date, default: Date.now },
-});
+const MatchSchema = new mongoose.Schema({
+  setId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Set',
+    required: true
+  },
+  matchNumber: {
+    type: Number,
+    required: true
+  },
+  player1Score: {
+    type: Number,
+    default: 0
+  },
+  player2Score: {
+    type: Number,
+    default: 0
+  },
+  winner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  stage: {
+    type: String // e.g., "Battlefield", "Final Destination"
+  }
+}, { timestamps: true });
 
-export default mongoose.model('Match', matchSchema); 
+export default mongoose.model('Match', MatchSchema);

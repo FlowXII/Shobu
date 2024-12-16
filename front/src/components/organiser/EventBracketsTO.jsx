@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   CardBody,
@@ -13,7 +13,8 @@ import {
 } from "@material-tailwind/react";
 import { Trophy, Users, Brackets, Plus } from 'lucide-react';
 import { toast } from 'react-toastify';
-import { generateBrackets } from '../../loaders/eventLoader';
+import { generateBrackets, updateSetScore } from '../../loaders/eventLoader';
+import { useNavigate } from 'react-router-dom';
 
 const BRACKET_CONFIG = {
   styles: {
@@ -85,21 +86,16 @@ const BRACKET_CONFIG = {
   }
 };
 
-const EventBracketsTO = ({ event, onBracketsGenerated }) => {
+const EventBracketsTO = ({ event }) => {
+  const navigate = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
   const [seeding, setSeeding] = useState('random');
   const [bracketType, setBracketType] = useState(event?.format || 'SINGLE_ELIMINATION');
   const [loading, setLoading] = useState(false);
-  const [brackets, setBrackets] = useState(null);
+  const [selectedSet, setSelectedSet] = useState(null);
+  const [selectedScores, setSelectedScores] = useState({ player1: null, player2: null });
 
-  useEffect(() => {
-    if (event?.phases?.length > 0) {
-      const bracketPhase = event.phases.find(phase => phase.type === 'bracket');
-      if (bracketPhase) {
-        setBrackets(bracketPhase);
-      }
-    }
-  }, [event]);
+  const bracketPhase = event?.phases?.find(phase => phase.type === 'bracket');
 
   const handleGenerateBrackets = async (e) => {
     e.preventDefault();
@@ -110,18 +106,14 @@ const EventBracketsTO = ({ event, onBracketsGenerated }) => {
         ? event.tournamentId._id 
         : event.tournamentId;
 
-      const result = await generateBrackets(
+      await generateBrackets(
         tournamentId,
         event._id,
         bracketType, 
         seeding
       );
       
-      setBrackets(result.phase);
-      if (onBracketsGenerated) {
-        onBracketsGenerated(result);
-      }
-      
+      navigate('.', { replace: true }); // Refresh the page data
       toast.success('Brackets generated successfully');
       setOpenDialog(false);
     } catch (error) {
@@ -131,10 +123,46 @@ const EventBracketsTO = ({ event, onBracketsGenerated }) => {
     }
   };
 
-  const renderBrackets = () => {
-    if (!brackets?.sets?.length) return null;
+  const handleSetClick = (set) => {
+    setSelectedSet(set);
+  };
 
-    const rounds = brackets.sets.reduce((acc, set) => {
+  const handleCloseModal = () => {
+    setSelectedSet(null);
+    setSelectedScores({ player1: null, player2: null });
+  };
+
+  const handleScoreSelect = (playerNum, score) => {
+    setSelectedScores(prev => ({
+      ...prev,
+      [`player${playerNum}`]: score
+    }));
+  };
+
+  const handleReportSet = async () => {
+    if (selectedScores.player1 === null || selectedScores.player2 === null) return;
+    
+    setLoading(true);
+    try {
+      await updateSetScore(selectedSet._id, [
+        selectedScores.player1,
+        selectedScores.player2
+      ]);
+
+      toast.success('Scores reported successfully');
+      handleCloseModal();
+      navigate('.', { replace: true }); // Refresh the page data
+    } catch (error) {
+      toast.error(error.message || 'Error reporting scores');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const renderBrackets = () => {
+    if (!bracketPhase?.sets?.length) return null;
+
+    const rounds = bracketPhase.sets.reduce((acc, set) => {
       const roundNumber = set.fullRoundText?.match(/Round (\d+)/)?.[1] || '1';
       acc[roundNumber] = acc[roundNumber] || [];
       acc[roundNumber].push(set);
@@ -168,25 +196,38 @@ const EventBracketsTO = ({ event, onBracketsGenerated }) => {
                   return (
                     <div 
                       key={set._id || index}
-                      className={BRACKET_CONFIG.styles.match}
+                      className={`${BRACKET_CONFIG.styles.match} cursor-pointer hover:border-blue-500`}
                       style={matchStyles}
+                      onClick={() => handleSetClick(set)}
                     >
-                      {set.slots?.map((slot, slotIndex) => (
-                        <div 
-                          key={slotIndex}
-                          className={BRACKET_CONFIG.styles.matchSlot}
-                        >
-                          <div className={BRACKET_CONFIG.styles.playerSection}>
-                            <div className={`w-3 h-3 ${slotIndex === 0 ? 'bg-blue-500' : 'bg-red-500'} rounded-full mr-2 flex-shrink-0`} />
-                            <p className={BRACKET_CONFIG.styles.playerName}>
-                              {slot?.entrant?.name || slot?.displayName || 'BYE'}
+                      {set.slots?.map((slot, slotIndex) => {
+                        console.log('Detailed slot info:', {
+                          slotFull: slot,
+                          entrantInfo: slot?.entrant,
+                          displayName: slot?.entrant?.displayName,
+                          allParticipants: event.participants?.map(p => p.displayName)
+                        });
+
+                        // Try direct access to slot data
+                        const displayName = slot?.entrant?.displayName || 'TBD';
+                        
+                        return (
+                          <div 
+                            key={slotIndex}
+                            className={BRACKET_CONFIG.styles.matchSlot}
+                          >
+                            <div className={BRACKET_CONFIG.styles.playerSection}>
+                              <div className={`w-3 h-3 ${slotIndex === 0 ? 'bg-blue-500' : 'bg-red-500'} rounded-full mr-2 flex-shrink-0`} />
+                              <p className={BRACKET_CONFIG.styles.playerName}>
+                                {displayName}
+                              </p>
+                            </div>
+                            <p className={BRACKET_CONFIG.styles.score}>
+                              {slot?.score || '0'}
                             </p>
                           </div>
-                          <p className={BRACKET_CONFIG.styles.score}>
-                            {slot?.score || '0'}
-                          </p>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   );
                 })}
@@ -223,7 +264,7 @@ const EventBracketsTO = ({ event, onBracketsGenerated }) => {
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
               Generating brackets...
             </div>
-          ) : brackets ? (
+          ) : bracketPhase ? (
             renderBrackets()
           ) : (
             <div className="text-center py-8 text-gray-400">
@@ -280,6 +321,71 @@ const EventBracketsTO = ({ event, onBracketsGenerated }) => {
             </Button>
           </DialogFooter>
         </form>
+      </Dialog>
+
+      <Dialog
+        open={selectedSet !== null}
+        handler={handleCloseModal}
+        className="bg-gray-900 text-white max-w-[600px]"
+      >
+        {selectedSet && (
+          <div className="p-6">
+            <DialogHeader className="text-white">Report Set Scores</DialogHeader>
+            <DialogBody className="space-y-6">
+              {/* Match Information */}
+              <div className="bg-gray-800 p-4 rounded-lg">
+                <Typography className="text-gray-400">
+                  {selectedSet.slots[0]?.entrant?.name || 'TBD'} vs {selectedSet.slots[1]?.entrant?.name || 'TBD'}
+                </Typography>
+                <Typography variant="small" className="text-gray-500">
+                  {selectedSet.fullRoundText}
+                </Typography>
+              </div>
+
+              {/* Score Selection */}
+              {selectedSet.slots.map((slot, index) => (
+                <div key={index} className="flex flex-col items-center space-y-2">
+                  <Typography variant="h6" className="text-white font-bold">
+                    {slot.entrant?.name || 'TBD'}
+                  </Typography>
+                  <div className="grid grid-cols-5 gap-2">
+                    {[-1, 0, 1, 2, 3].map((score) => (
+                      <Button
+                        key={score}
+                        size="sm"
+                        onClick={() => handleScoreSelect(index + 1, score)}
+                        className={`
+                          px-4 py-2 
+                          ${selectedScores[`player${index + 1}`] === score 
+                            ? 'bg-blue-500 hover:bg-blue-600' 
+                            : 'bg-gray-600 hover:bg-gray-700'}
+                        `}
+                      >
+                        {score}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </DialogBody>
+            <DialogFooter className="space-x-2">
+              <Button
+                variant="text"
+                onClick={handleCloseModal}
+                className="text-gray-400 hover:text-white"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleReportSet}
+                disabled={selectedScores.player1 === null || selectedScores.player2 === null || loading}
+                className="bg-blue-500 hover:bg-blue-600"
+              >
+                {loading ? 'Submitting...' : 'Submit Scores'}
+              </Button>
+            </DialogFooter>
+          </div>
+        )}
       </Dialog>
     </div>
   );

@@ -30,6 +30,7 @@ import { eventDetailsLoader, updateEvent, deleteEvent } from '../../loaders/even
 import EventSettingsTO from '../../components/organiser/EventSettingsTO';
 import EventParticipantsTO from '../../components/organiser/EventParticipantsTO';
 import EventBracketsTO from '../../components/organiser/EventBracketsTO';
+import EventSeedingTO from '../../components/organiser/EventSeedingTO';
 import { toast } from 'react-toastify';
   
 const EventDetailsTO = () => {
@@ -83,6 +84,29 @@ const EventDetailsTO = () => {
   const getTournamentId = () => {
     return event?.tournamentId?._id || event?.tournamentId || tournamentId;
   };
+
+  const TABS = [
+    {
+      label: "Settings",
+      value: "settings",
+      icon: Settings
+    },
+    {
+      label: "Participants",
+      value: "participants",
+      icon: Users
+    },
+    {
+      label: "Seeding",
+      value: "seeding",
+      icon: Eye
+    },
+    {
+      label: "Brackets",
+      value: "brackets",
+      icon: TrophyIcon
+    }
+  ];
 
   if (!event) {
     return <div>Loading...</div>;
@@ -213,51 +237,21 @@ const EventDetailsTO = () => {
           <CardBody>
             <Tabs value={activeTab} className="overflow-visible">
               <TabsHeader className="bg-gray-800/50 border border-gray-700/50 p-0 rounded-lg">
-                <Tab 
-                  value="settings" 
-                  onClick={() => setActiveTab("settings")}
-                  className={`flex items-center gap-2 py-2 px-4 min-h-[40px] ${
-                    activeTab === "settings" 
-                      ? "text-blue-500 bg-blue-500/10" 
-                      : "text-gray-400 hover:text-gray-300 hover:bg-gray-700/50"
-                  } transition-all duration-200`}
-                >
-                  <ScrollText size={16} />
-                  <span className="font-medium text-sm">Settings</span>
-                </Tab>
-                <Tab 
-                  value="participants"
-                  onClick={() => setActiveTab("participants")}
-                  className={`flex items-center gap-2 py-2 px-4 min-h-[40px] ${
-                    activeTab === "participants" 
-                      ? "text-blue-500 bg-blue-500/10" 
-                      : "text-gray-400 hover:text-gray-300 hover:bg-gray-700/50"
-                  } transition-all duration-200`}
-                >
-                  <UserCog size={16} />
-                  <span className="font-medium text-sm">Participants</span>
-                  {event?.participants?.length > 0 && (
-                    <span className={`ml-2 px-2 py-0.5 text-xs rounded-full ${
-                      activeTab === "participants"
-                        ? "bg-blue-500/20 text-blue-400"
-                        : "bg-gray-700 text-gray-400"
-                    }`}>
-                      {event.participants.length}
-                    </span>
-                  )}
-                </Tab>
-                <Tab 
-                  value="brackets"
-                  onClick={() => setActiveTab("brackets")}
-                  className={`flex items-center gap-2 py-2 px-4 min-h-[40px] ${
-                    activeTab === "brackets" 
-                      ? "text-blue-500 bg-blue-500/10" 
-                      : "text-gray-400 hover:text-gray-300 hover:bg-gray-700/50"
-                  } transition-all duration-200`}
-                >
-                  <TrophyIcon size={16} />
-                  <span className="font-medium text-sm">Brackets</span>
-                </Tab>
+                {TABS.map((tab) => (
+                  <Tab 
+                    key={tab.value}
+                    value={tab.value} 
+                    onClick={() => setActiveTab(tab.value)}
+                    className={`flex items-center gap-2 py-2 px-4 min-h-[40px] ${
+                      activeTab === tab.value 
+                        ? "text-blue-500 bg-blue-500/10" 
+                        : "text-gray-400 hover:text-gray-300 hover:bg-gray-700/50"
+                    } transition-all duration-200`}
+                  >
+                    <tab.icon size={16} />
+                    <span className="font-medium text-sm">{tab.label}</span>
+                  </Tab>
+                ))}
               </TabsHeader>
 
               <TabsBody className="mt-6">
@@ -275,6 +269,14 @@ const EventDetailsTO = () => {
                       console.log('Triggering refresh');
                       navigate('.', { replace: true });
                     }} 
+                  />
+                </TabPanel>
+                <TabPanel value="seeding" className="p-0">
+                  <EventSeedingTO 
+                    event={event}
+                    onSeedingFinalized={() => {
+                      navigate('.', { replace: true });
+                    }}
                   />
                 </TabPanel>
                 <TabPanel value="brackets" className="p-0">
