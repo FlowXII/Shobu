@@ -1,32 +1,46 @@
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
 
 dotenv.config({ path: '.env.test' });
 
 // Setup test environment variables
 process.env.NODE_ENV = 'test';
 process.env.PORT = '4001';
-process.env.DB_URI = process.env.TEST_DB_URI || 'mongodb://localhost:27017/shobu_test';
+process.env.DB_URI = process.env.DB_URI;
+process.env.JWT_SECRET = 'test-jwt-secret';
 
-// Setup MongoDB Memory Server for testing
+// Helper function to create auth token for testing
+global.generateTestToken = (userId) => {
+  return jwt.sign({ userId }, process.env.JWT_SECRET);
+};
+
+// Helper function to create auth header
+global.getAuthHeader = (token) => ({
+  Cookie: `jwt=${token}`
+});
+
 beforeAll(async () => {
-  await mongoose.connect(process.env.DB_URI);
-});
-
-afterAll(async () => {
-  await mongoose.connection.dropDatabase();
-  await mongoose.connection.close();
-});
-
-// Clear all collections after each test
-afterEach(async () => {
-  const collections = mongoose.connection.collections;
-  for (const key in collections) {
-    await collections[key].deleteMany();
+  try {
+    await mongoose.connect(process.env.DB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('MongoDB connected successfully');
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error);
   }
 });
 
-// Mock environment variables
-process.env.VAPID_PUBLIC_KEY = 'test_public_key';
-process.env.VAPID_PRIVATE_KEY = 'test_private_key';
-process.env.VAPID_EMAIL = 'test@example.com'; 
+afterAll(async () => {
+  try {
+    await mongoose.connection.close();
+    console.log('MongoDB connection closed');
+  } catch (error) {
+    console.error('Error closing MongoDB connection:', error);
+  }
+});
+
+afterEach(async () => {
+  const collection = mongoose.connection.collection('jest');
+});

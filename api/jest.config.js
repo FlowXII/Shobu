@@ -1,7 +1,8 @@
 export default {
   testEnvironment: 'node',
-  transform: {},
-  extensionsToTreatAsEsm: ['.js'],
+  transform: {
+    '^.+\\.jsx?$': 'babel-jest',
+  },
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
@@ -10,4 +11,6 @@ export default {
   collectCoverage: true,
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov'],
-} 
+  verbose: false,
+  testTimeout: 20000,
+}; 

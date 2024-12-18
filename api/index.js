@@ -35,12 +35,12 @@ app.use(cookieParser());
 app.use('/api/tournaments', upcomingTournamentsRoute);
 app.use('/api/stations', stationViewerRoute);
 app.use('/api/dashboard', dashboardRoute);
-app.use('/api', ticketRoutes);
+app.use('/api/tickets', ticketRoutes);
 app.use('/api/notifications', pushNotificationsRoute);
 app.use('/api/stations/reporting', stationReportingRoute);
 app.use('/api/tournaments', tournamentRoutes);
 app.use('/api/posts', postRoutes);
-app.use('/api', eventRoutes);
+app.use('/api/events', eventRoutes);
 
 // Auth routes
 app.use('/api/auth', authRoutes);

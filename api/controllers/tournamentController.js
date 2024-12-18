@@ -261,37 +261,26 @@ export const registerForTournamentController = async (req, res) => {
 export const checkInAttendeeController = async (req, res) => {
   try {
     const { id, userId } = req.params;
+
     const tournament = await Tournament.findById(id);
-    
     if (!tournament) {
-      return res.status(404).json({ 
-        success: false, 
-        error: 'Tournament not found' 
-      });
+      return res.status(404).json({ error: 'Tournament not found' });
     }
 
-    const updatedTournament = await checkInAttendee(tournament._id, userId);
-    
-    logger.info('Attendee checked in', {
-      userId,
-      tournamentId: tournament._id,
-      checkedInBy: req.user._id
-    });
+    // Check if user is registered
+    if (!tournament.attendees.includes(userId)) {
+      return res.status(400).json({ error: 'Attendee not found' });
+    }
 
-    res.status(200).json({
-      success: true,
-      data: updatedTournament
-    });
+    // Check-in logic here
+    // For example, mark the user as checked in
+    tournament.checkedInAttendees.push(userId);
+    await tournament.save();
+
+    res.status(200).json({ success: true, data: tournament });
   } catch (error) {
-    logger.error('Failed to check in attendee', {
-      error: error.message,
-      userId: req.params.userId,
-      id: req.params.id
-    });
-    res.status(400).json({
-      success: false,
-      error: error.message
-    });
+    console.error('Error checking in attendee', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 

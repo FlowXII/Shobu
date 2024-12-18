@@ -5,7 +5,20 @@ export const validateTournamentData = (data) => {
     errors.push('Tournament name must be at least 3 characters long');
   }
 
-  // ... rest of the validation logic moved from service ...
+  if (!data.slug || !/^[a-zA-Z0-9-]+$/.test(data.slug)) {
+    errors.push('Slug must contain only letters, numbers, and hyphens');
+  }
+
+  if (!data.type || !['single-elimination', 'double-elimination', 'round-robin'].includes(data.type)) {
+    errors.push('Invalid tournament type');
+  }
+
+  const now = new Date();
+  if (data.registrationStartAt && data.registrationEndAt) {
+    if (now < new Date(data.registrationStartAt) || now > new Date(data.registrationEndAt)) {
+      errors.push('Registration is not available');
+    }
+  }
 
   return errors;
 }; 
