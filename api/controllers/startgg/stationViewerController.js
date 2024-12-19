@@ -1,4 +1,4 @@
-import { FetchStations } from '../services/stationViewerService.js';
+import { FetchStations } from '../../services/startgg/Stations/stationViewerService.js';
 
 export const getStations = async (req, res) => {
   const { eventId } = req.params; // Assuming eventId is passed as a URL parameter

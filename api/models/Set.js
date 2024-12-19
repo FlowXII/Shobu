@@ -1,25 +1,25 @@
 import mongoose from 'mongoose';
 
 const setSchema = new mongoose.Schema({
+  phaseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Phase', required: true },
   eventId: { type: mongoose.Schema.Types.ObjectId, ref: 'Event', required: true },
-  fullRoundText: String,
-  state: { type: Number, required: true }, // 1: Created, 2: Ongoing, 4: Ready, 6: Called, 7: Completed
-  station: {
-    id: String,
-    number: Number
-  },
+  roundNumber: { type: Number, required: true },
+  fullRoundText: { type: String, required: true },
   slots: [{
-    id: String,
-    entrant: {
-      id: String,
-      name: String
-    }
+    entrant: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
+    score: { type: Number, default: 0 }
   }],
-  score1: Number,
-  score2: Number,
-  winnerId: String,
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
-});
+  state: { 
+    type: String, 
+    enum: ['pending', 'called', 'in_progress', 'completed'], 
+    default: 'pending' 
+  },
+  metadata: {
+    isComplete: { type: Boolean, default: false },
+    winnerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
+    loserId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null }
+  }
+}, { timestamps: true });
 
-export default mongoose.model('Set', setSchema); 
+const Set = mongoose.model('Set', setSchema);
+export default Set; 

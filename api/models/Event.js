@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import './Phase.js';
 
 const eventSchema = new mongoose.Schema({
   tournamentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Tournament', required: true },

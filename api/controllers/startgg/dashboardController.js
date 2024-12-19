@@ -1,5 +1,5 @@
-import { fetchDashboardData } from '../services/dashboard/dashboardService.js';
-import User from '../models/User.js';
+import { fetchDashboardData } from '../../services/startgg/dashboard/dashboardService.js';
+import User from '../../models/User.js';
 
 export const getDashboard = async (req, res) => {
   try {

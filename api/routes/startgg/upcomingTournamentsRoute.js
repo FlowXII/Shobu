@@ -1,5 +1,5 @@
 import express from 'express';
-import { getUpcomingTournaments } from '../controllers/upcomingTournamentsController.js';
+import { getUpcomingTournaments } from '../../controllers/startgg/upcomingTournamentsController.js';
 
 const router = express.Router();
 

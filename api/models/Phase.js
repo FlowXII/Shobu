@@ -23,4 +23,5 @@ const phaseSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-export default mongoose.model('Phase', phaseSchema); 
+const Phase = mongoose.model('Phase', phaseSchema);
+export default Phase; 

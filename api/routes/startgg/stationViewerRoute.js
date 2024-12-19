@@ -1,5 +1,5 @@
 import express from 'express';
-import { getStations } from '../controllers/stationViewerController.js'; // Updated casing
+import { getStations } from '../../controllers/startgg/stationViewerController.js'; // Updated casing
 
 const router = express.Router();
 

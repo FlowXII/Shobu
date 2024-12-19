@@ -1,210 +1,125 @@
 import Tournament from '../models/Tournament.js';
-import { createTournament } from '../services/tournament/tournamentService.js';
 import logger from '../utils/logger.js';
 import { 
   registerForTournament, 
   updateTournament, 
   checkInAttendee,
   cancelRegistration,
-  updateTournamentResults
+  updateTournamentResults,
+  createTournament
 } from '../services/tournament/tournamentService.js';
-import { validateTournamentData } from '../validators/tournamentValidator.js';
 import mongoose from 'mongoose';
+import { 
+  sendCreatedResponse,
+  sendSuccessResponse,
+  sendUpdatedResponse,
+  sendDeletedResponse,
+  sendListResponse
+} from '../utils/responseHandler.js';
+import { catchAsync } from '../utils/catchAsync.js';
+import { ValidationError, NotFoundError, AuthorizationError } from '../utils/errors.js';
 
-export const createTournamentController = async (req, res) => {
-  try {
-    logger.info('Creating tournament', { userId: req.user._id });
-    logger.debug('Tournament creation payload:', req.body);
+export const createTournamentController = catchAsync(async (req, res) => {
+  logger.info('Creating tournament', { userId: req.user._id });
+  
+  // Add the organizerId to the tournament data
+  const tournamentData = {
+    ...req.body,
+    organizerId: req.user._id
+  };
 
-    const tournamentData = {
-      ...req.body,
-      organizerId: req.user._id
-    };
+  const tournament = await createTournament(tournamentData);
+  
+  return sendCreatedResponse({
+    res,
+    data: tournament,
+    message: 'Tournament created successfully'
+  });
+});
 
-    const tournament = await createTournament(tournamentData);
-    logger.info('Tournament created successfully', { 
-      tournamentId: tournament._id,
-      slug: tournament.slug 
-    });
-    
-    res.status(201).json({ success: true, data: tournament });
-  } catch (error) {
-    logger.error('Failed to create tournament', { 
-      error: error.message,
-      userId: req.user._id,
-      stack: error.stack 
-    });
-    res.status(400).json({ success: false, error: error.message });
+
+export const getTournamentController = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ValidationError('Invalid tournament ID format');
   }
-}; 
 
-export const getTournamentController = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    // Log the incoming tournament ID
-    console.log('Received tournament ID:', id);
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      console.log('Invalid tournament ID format:', id);
-      return res.status(400).json({
-        success: false,
-        error: 'Invalid tournament ID format'
-      });
-    }
-
-    const tournament = await Tournament.findById(id)
-      .populate({
-        path: 'events',
-        model: 'Event'
-      });
-
-    if (!tournament) {
-      return res.status(404).json({
-        success: false,
-        error: 'Tournament not found'
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      data: tournament
+  const tournament = await Tournament.findById(id)
+    .populate({
+      path: 'events',
+      model: 'Event'
     });
-  } catch (error) {
-    console.error('Failed to fetch tournament', { 
-      error: error.message,
-      id: req.params.id,
-      stack: error.stack 
-    });
-    res.status(500).json({
-      success: false,
-      error: 'Failed to fetch tournament details'
-    });
+
+  if (!tournament) {
+    throw new NotFoundError('Tournament');
   }
-}; 
 
-export const getAllTournamentsController = async (req, res) => {
-  try {
-    const tournaments = await Tournament.find()
-      .sort({ createdAt: -1 }) // Sort by newest first
-      .limit(50); // Limit to 50 tournaments for now
-    
-    res.status(200).json({
-      success: true,
-      data: tournaments
-    });
-  } catch (error) {
-    logger.error('Failed to fetch tournaments', { 
-      error: error.message,
-      stack: error.stack 
-    });
-    res.status(500).json({
-      success: false,
-      error: 'Failed to fetch tournaments'
-    });
+  return sendSuccessResponse({
+    res,
+    data: tournament
+  });
+});
+
+// Get all tournaments
+export const getAllTournamentsController = catchAsync(async (req, res) => {
+  const tournaments = await Tournament.find()
+    .sort({ createdAt: -1 })
+    .limit(50);
+  
+  return sendListResponse({
+    res,
+    data: tournaments
+  });
+});
+
+export const updateTournamentController = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ValidationError('Invalid tournament ID format');
   }
-}; 
 
-export const updateTournamentController = async (req, res) => {
-  try {
-    const { id } = req.params;
-    
-    // Add detailed logging for debugging
-    logger.info('Update tournament request received', {
-      id,
-      idType: typeof id,
-      idLength: id?.length,
-      body: req.body,
-      isValidObjectId: mongoose.Types.ObjectId.isValid(id)
-    });
-
-    // Test creating an ObjectId
-    try {
-      const testObjectId = new mongoose.Types.ObjectId(id);
-      logger.info('Successfully created ObjectId', { testObjectId: testObjectId.toString() });
-    } catch (err) {
-      logger.warn('Failed to create ObjectId', { error: err.message });
-    }
-
-    // Improved ID validation
-    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
-      logger.warn('Invalid tournament ID format', { 
-        id,
-        type: typeof id,
-        length: id?.length,
-        isValidObjectId: mongoose.Types.ObjectId.isValid(id)
-      });
-      return res.status(400).json({ 
-        success: false, 
-        error: 'Invalid tournament ID format' 
-      });
-    }
-
-    const tournament = await Tournament.findById(id);
-    
-    if (!tournament) {
-      logger.warn('Tournament not found', { id });
-      return res.status(404).json({ 
-        success: false, 
-        error: 'Tournament not found' 
-      });
-    }
-
-    // Check if user is the organizer
-    if (tournament.organizerId.toString() !== req.user._id.toString()) {
-      logger.warn('Unauthorized tournament update attempt', { 
-        userId: req.user._id,
-        tournamentId: id 
-      });
-      return res.status(403).json({ 
-        success: false, 
-        error: 'Unauthorized' 
-      });
-    }
-
-    const updatedTournament = await Tournament.findByIdAndUpdate(
-      id,
-      { ...req.body },
-      { new: true, runValidators: true }
-    );
-
-    logger.info('Tournament updated successfully', { 
-      tournamentId: id,
-      userId: req.user._id 
-    });
-
-    res.status(200).json({ success: true, data: updatedTournament });
-  } catch (error) {
-    logger.error('Failed to update tournament', { 
-      error: error.message, 
-      id: req.params.id,
-      stack: error.stack 
-    });
-    res.status(400).json({ success: false, error: error.message });
+  const tournament = await Tournament.findById(id);
+  
+  if (!tournament) {
+    throw new NotFoundError('Tournament');
   }
-};
-
-export const deleteTournamentController = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const tournament = await Tournament.findById(id);
-    
-    if (!tournament) {
-      return res.status(404).json({ success: false, error: 'Tournament not found' });
-    }
-
-    // Check if user is the organizer
-    if (tournament.organizerId.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ success: false, error: 'Unauthorized' });
-    }
-
-    await Tournament.findByIdAndDelete(id);
-    res.status(200).json({ success: true, message: 'Tournament deleted successfully' });
-  } catch (error) {
-    logger.error('Failed to delete tournament', { error: error.message, id: req.params.id });
-    res.status(400).json({ success: false, error: error.message });
+  
+// Check if the user is the organizer of the tournament
+  if (tournament.organizerId.toString() !== req.user._id.toString()) {
+    throw new AuthorizationError('Not authorized to update this tournament');
   }
-}; 
+
+  const updatedTournament = await updateTournament(id, req.body);
+
+  return sendUpdatedResponse({
+    res,
+    data: updatedTournament,
+    message: 'Tournament updated successfully'
+  });
+});
+
+export const deleteTournamentController = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  
+  const tournament = await Tournament.findById(id);
+  
+  if (!tournament) {
+    throw new NotFoundError('Tournament');
+  }
+
+  if (tournament.organizerId.toString() !== req.user._id.toString()) {
+    throw new AuthorizationError('Not authorized to delete this tournament');
+  }
+
+  await Tournament.findByIdAndDelete(id);
+
+  return sendDeletedResponse({
+    res,
+    message: 'Tournament deleted successfully'
+  });
+});
 
 export const registerForTournamentController = async (req, res) => {
   try {

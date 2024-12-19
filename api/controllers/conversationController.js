@@ -57,6 +57,7 @@ export const getUserConversations = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 20;
 
+    // Get all conversations for the user
     const conversations = await Conversation.find({
       participants: userId,
       isActive: true
@@ -68,11 +69,13 @@ export const getUserConversations = async (req, res) => {
       .populate('lastMessage')
       .lean();
 
+    // Get the total number of conversations for pagination
     const total = await Conversation.countDocuments({
       participants: userId,
       isActive: true
     });
 
+    // Return the conversations and pagination metadata
     res.json({
       conversations,
       pagination: {
@@ -86,6 +89,7 @@ export const getUserConversations = async (req, res) => {
   }
 };
 
+// Delete a conversation
 export const deleteConversation = async (req, res) => {
   try {
     const { conversationId } = req.params;

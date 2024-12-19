@@ -31,6 +31,7 @@ import EventSettingsTO from '../../components/organiser/EventSettingsTO';
 import EventParticipantsTO from '../../components/organiser/EventParticipantsTO';
 import EventBracketsTO from '../../components/organiser/EventBracketsTO';
 import { toast } from 'react-toastify';
+import { generateBracketPhase, getPhase } from '../../loaders/phaseLoader';
   
 const EventDetailsTO = () => {
   const { event } = useLoaderData();
@@ -38,6 +39,8 @@ const EventDetailsTO = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState("settings");
+  const [currentPhase, setCurrentPhase] = useState(null);
+  const [generatingBrackets, setGeneratingBrackets] = useState(false);
 
   useEffect(() => {
     if (!event) {
@@ -82,6 +85,30 @@ const EventDetailsTO = () => {
 
   const getTournamentId = () => {
     return event?.tournamentId?._id || event?.tournamentId || tournamentId;
+  };
+
+  const handleBracketGeneration = async (bracketData) => {
+    if (generatingBrackets) return;
+    
+    setGeneratingBrackets(true);
+    try {
+      const result = await generateBracketPhase(
+        getTournamentId(),
+        event._id,
+        bracketData
+      );
+      
+      if (result) {
+        setCurrentPhase(result);
+        navigate('.', { replace: true });
+        return result;
+      }
+    } catch (error) {
+      console.error('Failed to generate brackets:', error);
+      throw error;
+    } finally {
+      setGeneratingBrackets(false);
+    }
   };
 
   if (!event) {
@@ -278,7 +305,11 @@ const EventDetailsTO = () => {
                   />
                 </TabPanel>
                 <TabPanel value="brackets" className="p-0">
-                  <EventBracketsTO event={event} />
+                  <EventBracketsTO 
+                    event={event}
+                    currentPhase={currentPhase}
+                    onBracketGenerate={handleBracketGeneration}
+                  />
                 </TabPanel>
               </TabsBody>
             </Tabs>

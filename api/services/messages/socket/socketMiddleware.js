@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import User from '../../models/User.js';
+import User from '../../../models/User.js';
 import { getIO } from './socketService.js';
 
 export const socketAuth = async (socket, next) => {

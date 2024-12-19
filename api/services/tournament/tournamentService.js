@@ -2,6 +2,7 @@ import Tournament from '../../models/Tournament.js';
 import logger from '../../utils/logger.js';
 import User from '../../models/User.js';
 import mongoose from 'mongoose';
+import { ValidationError, NotFoundError, AppError } from '../../utils/errors.js';
 
 const updateInProgressMap = new Map();
 
@@ -18,22 +19,20 @@ const setUpdateInProgress = (userId, value) => {
 };
 
 const validateTournamentData = (data) => {
-  const errors = [];
-
   if (!data.name || data.name.trim().length < 3) {
-    errors.push('Tournament name must be at least 3 characters long');
+    throw new ValidationError('Tournament name must be at least 3 characters long');
   }
 
   if (!data.slug || !/^[a-zA-Z0-9-]+$/.test(data.slug)) {
-    errors.push('Slug must contain only letters, numbers, and hyphens');
+    throw new ValidationError('Slug must contain only letters, numbers, and hyphens');
   }
 
   if (!data.startAt) {
-    errors.push('Start date is required');
+    throw new ValidationError('Start date is required');
   }
 
   if (data.endAt && new Date(data.endAt) < new Date(data.startAt)) {
-    errors.push('End date cannot be before start date');
+    throw new ValidationError('End date cannot be before start date');
   }
 
   if (data.registrationStartAt && data.registrationEndAt) {
@@ -42,53 +41,48 @@ const validateTournamentData = (data) => {
     const tournamentStart = new Date(data.startAt);
 
     if (regEnd < regStart) {
-      errors.push('Registration end date cannot be before registration start date');
+      throw new ValidationError('Registration end date cannot be before registration start date');
     }
     if (regEnd > tournamentStart) {
-      errors.push('Registration must end before tournament starts');
+      throw new ValidationError('Registration must end before tournament starts');
     }
   }
 
   if (!['SINGLE_ELIMINATION', 'DOUBLE_ELIMINATION', 'ROUND_ROBIN'].includes(data.type)) {
-    errors.push('Invalid tournament type');
+    throw new ValidationError('Invalid tournament type');
   }
 
   if (data.maxAttendees && (isNaN(data.maxAttendees) || data.maxAttendees < 2)) {
-    errors.push('Maximum attendees must be at least 2');
+    throw new ValidationError('Maximum attendees must be at least 2');
   }
 
   if (data.events) {
     data.events.forEach((event, index) => {
       if (!event.eventId) {
-        errors.push(`Event at index ${index} must have an eventId`);
+        throw new ValidationError(`Event at index ${index} must have an eventId`);
       }
       if (event.startAt && event.endAt && new Date(event.endAt) < new Date(event.startAt)) {
-        errors.push(`Event at index ${index} cannot end before it starts`);
+        throw new ValidationError(`Event at index ${index} cannot end before it starts`);
       }
       if (!['SCHEDULED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'].includes(event.status)) {
-        errors.push(`Invalid status for event at index ${index}`);
+        throw new ValidationError(`Invalid status for event at index ${index}`);
       }
     });
   }
 
   if (data.location) {
     if (data.location.country && data.location.country.length < 2) {
-      errors.push('Country name must be at least 2 characters long');
+      throw new ValidationError('Country name must be at least 2 characters long');
     }
     if (data.location.venueAddress && data.location.venueAddress.length < 5) {
-      errors.push('Venue address must be at least 5 characters long');
+      throw new ValidationError('Venue address must be at least 5 characters long');
     }
   }
-
-  return errors;
 };
 
 export const createTournament = async (tournamentData) => {
   try {
-    const validationErrors = validateTournamentData(tournamentData);
-    if (validationErrors.length > 0) {
-      throw new Error(`Validation failed: ${validationErrors.join(', ')}`);
-    }
+    validateTournamentData(tournamentData);
 
     logger.debug('Attempting to create tournament in database', {
       name: tournamentData.name,
@@ -128,8 +122,14 @@ export const createTournament = async (tournamentData) => {
       tournamentId: savedTournament._id 
     });
     
+    if (!savedTournament) {
+      throw new AppError('Failed to create tournament', 500);
+    }
+
     return savedTournament;
   } catch (error) {
+    if (error instanceof AppError) throw error;
+    
     logger.error('Database error while creating tournament', {
       error: error.message,
       stack: error.stack,
@@ -139,7 +139,7 @@ export const createTournament = async (tournamentData) => {
         organizerId: tournamentData.organizerId
       }
     });
-    throw new Error(`Error creating tournament: ${error.message}`);
+    throw new AppError(`Error creating tournament: ${error.message}`, 500);
   }
 };
 
@@ -177,11 +177,15 @@ export const updateTournament = async (tournamentId, updateData) => {
 export const registerForTournament = async (tournamentId, userId) => {
   const tournament = await Tournament.findById(tournamentId);
   if (!tournament) {
-    throw new Error('Tournament not found');
+    throw new NotFoundError('Tournament');
   }
 
-  if (!tournament.canUserRegister(userId)) {
-    throw new Error('Registration is not available');
+  if (!tournament.isRegistrationOpen) {
+    throw new ValidationError('Tournament registration is closed');
+  }
+
+  if (tournament.attendees.length >= tournament.maxParticipants) {
+    throw new ValidationError('Tournament is at full capacity');
   }
 
   tournament.attendees.push({

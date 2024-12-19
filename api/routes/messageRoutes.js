@@ -1,6 +1,6 @@
 import express from 'express';
 import { authenticate } from '../middleware/auth.js';
-import { attachIO } from '../services/socket/socketMiddleware.js';
+import { attachIO } from '../services/messages/socket/socketMiddleware.js';
 import { 
   sendMessage, 
   getConversationMessages, 

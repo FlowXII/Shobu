@@ -9,7 +9,7 @@ import {
   deleteEventController,
   generateParticipantsController
 } from '../controllers/eventController.js';
-import { generateBrackets } from '../controllers/bracketController.js';
+
 import { authenticate } from '../middleware/auth.js';
 import { isOrganizer } from '../middleware/isOrganizer.js';
 
@@ -40,11 +40,6 @@ router.post(
   isOrganizer, 
   generateParticipantsController
 );
-router.post(
-  '/tournaments/:tournamentId/events/:eventId/brackets/generate',
-  authenticate,
-  isOrganizer,
-  generateBrackets
-);
+
 
 export default router; 

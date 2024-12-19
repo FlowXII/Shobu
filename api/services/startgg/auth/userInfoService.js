@@ -1,6 +1,6 @@
 import { fetchGraphQLData } from '../dashboard/dashboardFetch.js';
 import jwt from 'jsonwebtoken';
-import config from '../../config/startgg.config.js';
+import config from '../../../config/startgg.config.js';
 
 // Using the same query from dashboardGQL.js
 const userInfoQuery = `

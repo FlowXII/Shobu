@@ -1,7 +1,7 @@
 import { Server } from 'socket.io';
 import jwt from 'jsonwebtoken';
-import Conversation from '../../models/Conversation.js';
-import Message from '../../models/Message.js';
+import Conversation from '../../../models/Conversation.js';
+import Message from '../../../models/Message.js';
 
 let io;
 

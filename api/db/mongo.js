@@ -18,10 +18,7 @@ const client = new MongoClient(uri, {
 // Add Mongoose connection
 export const connectDB = async () => {
   try {
-    await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(uri);
     console.log('MongoDB connected successfully');
   } catch (error) {
     console.error('MongoDB connection error:', error);

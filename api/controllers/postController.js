@@ -1,51 +1,55 @@
 import Post from '../models/Post.js';
 import { validatePost } from '../validators/postValidator.js';
+import { catchAsync } from '../utils/catchAsync.js';
+import { ValidationError } from '../utils/errors.js';
+import { 
+  sendCreatedResponse,
+  sendListResponse
+} from '../utils/responseHandler.js';
 
-export const createPost = async (req, res) => {
-  try {
-    const { content } = req.body;
+export const createPost = catchAsync(async (req, res) => {
+  const { content } = req.body;
 
-    const validationError = validatePost({ content });
-    if (validationError) {
-      return res.status(400).json({ error: validationError });
-    }
-
-    const post = new Post({
-      userId: req.user._id,
-      content
-    });
-
-    await post.save();
-    res.status(201).json(post);
-  } catch (error) {
-    console.error('Create post error:', error);
-    res.status(500).json({ error: 'Failed to create post' });
+  const validationError = validatePost({ content });
+  if (validationError) {
+    throw new ValidationError(validationError);
   }
-};
 
-export const getFeedPosts = async (req, res) => {
-  try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+  const post = new Post({
+    userId: req.user._id,
+    content
+  });
 
-    const posts = await Post.find()
-      .sort({ createdAt: -1 })
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .populate('userId', 'username startgg.profile.images')
-      .lean();
+  await post.save();
+  
+  return sendCreatedResponse({
+    res,
+    data: post,
+    message: 'Post created successfully'
+  });
+});
 
-    const total = await Post.countDocuments();
+export const getFeedPosts = catchAsync(async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
 
-    res.json({
-      posts,
+  const posts = await Post.find()
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit)
+    .populate('userId', 'username startgg.profile.images')
+    .lean();
+
+  const total = await Post.countDocuments();
+
+  return sendListResponse({
+    res,
+    data: posts,
+    meta: {
       pagination: {
         current: page,
         total: Math.ceil(total / limit)
       }
-    });
-  } catch (error) {
-    console.error('Get feed posts error:', error);
-    res.status(500).json({ error: 'Failed to fetch posts' });
-  }
-}; 
+    }
+  });
+}); 

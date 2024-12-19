@@ -1,4 +1,4 @@
-import { fetchUpcomingTournaments } from '../services/upcomingTournamentsService.js';
+import { fetchUpcomingTournaments } from '../../services/startgg/upcoming/upcomingTournamentsService.js';
 
 export const getUpcomingTournaments = async (req, res) => {
   const { countryCode, perPage, videogameId } = req.query;

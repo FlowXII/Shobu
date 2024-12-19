@@ -1,4 +1,4 @@
-import { reportSet, resetSet, markSetCalled, markSetInProgress } from '../services/Stations/stationReportingService.js';
+import { reportSet, resetSet, markSetCalled, markSetInProgress } from '../../services/startgg/Stations/stationReportingService.js';
 
 export const handleReportSet = async (req, res) => {
   const { setId, player1Id, player2Id, player1Score, player2Score } = req.body;

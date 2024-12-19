@@ -1,6 +1,6 @@
 import express from 'express';
-import { handleReportSet, handleResetSet, handleMarkSetCalled, handleMarkSetInProgress } from '../controllers/stationReportingController.js';
-import { verifyToken } from '../auth/startgg/startgg.middleware.js';
+import { handleReportSet, handleResetSet, handleMarkSetCalled, handleMarkSetInProgress } from '../../controllers/startgg/stationReportingController.js';
+import { verifyToken } from '../../auth/startgg/startgg.middleware.js';
 
 const router = express.Router();
 

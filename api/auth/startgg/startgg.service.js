@@ -1,5 +1,5 @@
 import config from '../../config/startgg.config.js';
-import { fetchGraphQLData } from '../../services/dashboard/dashboardFetch.js';
+import { fetchGraphQLData } from '../../services/startgg/dashboard/dashboardFetch.js';
 import User from '../../models/User.js';
 
 const userInfoQuery = `

@@ -2,7 +2,7 @@ import app from './index.js';
 import dotenv from 'dotenv';
 import { connectDB } from './db/mongo.js';
 import { createServer } from 'http';
-import { initializeSocket } from './services/socket/socketService.js';
+import { initializeSocket } from './services/messages/socket/socketService.js';
 
 dotenv.config();
 
